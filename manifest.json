@@ -1,0 +1,20 @@
+{
+	"name": "Fitness Booking App",
+	"short_name": "FitnessApp",
+	"start_url": "index.html",
+	"display": "standalone",
+	"background_color": "#ffffff",
+	"theme_color": "#f7931e",
+	"icons": [
+		{
+			"src": "icon256.png",
+			"sizes": "256x256",
+			"type": "image/png"
+		},
+		{
+			"src": "icon512.png",
+			"sizes": "512x512",
+			"type": "image/png"
+		}
+	]
+}
