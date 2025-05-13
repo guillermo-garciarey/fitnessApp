@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>Untitled</title>
+		<meta charset="utf-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, user-scalable=no"
+		/>
+		<link
+			rel="stylesheet"
+			href="alt_assets/css/main.css"
+		/>
+		<script
+			src="https://kit.fontawesome.com/c7c54647d2.js"
+			crossorigin="anonymous"
+		></script>
+		<link
+			rel="icon"
+			href="data:,"
+		/>
+	</head>
+	<body class="is-preload">
+		<!-- Header -->
+		<section id="header">
+			<header>
+				<span class="image avatar"
+					><img
+						src="alt_images/avatar.jpg"
+						alt=""
+				/></span>
+				<h1 id="logo"><a href="#"></a></h1>
+				<p>Fitness Enthusiast</p>
+			</header>
+			<nav id="nav">
+				<ul>
+					<li>
+						<a
+							href="#one"
+							class="active"
+							>About</a
+						>
+					</li>
+					<li><a href="#two">Things I Can Do</a></li>
+					<li><a href="#three">A Few Accomplishments</a></li>
+					<li><a href="#four">Contact</a></li>
+				</ul>
+			</nav>
+			<footer>
+				<ul class="icons">
+					<li>
+						<a
+							href="#"
+							class="icon brands fa-twitter"
+							><span class="label">Twitter</span></a
+						>
+					</li>
+					<li>
+						<a
+							href="#"
+							class="icon brands fa-facebook-f"
+							><span class="label">Facebook</span></a
+						>
+					</li>
+					<li>
+						<a
+							href="#"
+							class="icon brands fa-instagram"
+							><span class="label">Instagram</span></a
+						>
+					</li>
+					<li>
+						<a
+							href="#"
+							class="icon brands fa-github"
+							><span class="label">Github</span></a
+						>
+					</li>
+					<li>
+						<a
+							href="#"
+							class="icon solid fa-envelope"
+							><span class="label">Email</span></a
+						>
+					</li>
+				</ul>
+			</footer>
+		</section>
+
+		<!-- Wrapper -->
+		<div id="wrapper">
+			<!-- Main -->
+			<div id="main">
+				<!-- Available Classes -->
+				<section id="one">
+					<div
+						class="image main"
+						data-position="center"
+					>
+						<img
+							src="alt_images/banner.jpg"
+							alt=""
+						/>
+					</div>
+					<div
+						id="available_classes"
+						class="container"
+					>
+						<!-- <header class="major">
+							<h2>Welcome back!</h2>
+							<p>Available Classes</p>
+						</header> -->
+
+						<h3>Available Classes</h3>
+
+						<!-- Filters -->
+
+						<div
+							id="class-filters"
+							class="filter-group"
+						>
+							<label for="filter-type">Class Type</label>
+							<select id="filter-type">
+								<option value="">All Types</option>
+								<option value="Strength & Conditioning">
+									Strength & Conditioning
+								</option>
+								<option value="HIIT Circuits">HIIT Circuits</option>
+								<option value="HIIT with Trish">HIIT with Trish</option>
+								<option value="LOVE2RUN 6/8/10km">LOVE2RUN 6/8/10km</option>
+								<option value="LOVE2RUN Couch 2 5km">
+									LOVE2RUN Couch 2 5km
+								</option>
+								<option value="LOVE2RUN Interval Training">
+									LOVE2RUN Interval Training
+								</option>
+								<option value="Pilates Mixed Level">Pilates Mixed Level</option>
+								<option value="Pilates Advanced">Pilates Advanced</option>
+								<option value="Pilates Mum & Baby">Pilates Mum & Baby</option>
+								<option value="Pilates Intermediate">
+									Pilates Intermediate
+								</option>
+								<option value="Calisthenics">Calisthenics</option>
+								<option value="Strong Yoga">Strong Yoga</option>
+								<option value="Strong Yoga (Vinyasa Mixed)">
+									Strong Yoga (Vinyasa Mixed)
+								</option>
+								<option value="Strong Yoga Saturday Movement">
+									Strong Yoga Saturday Movement
+								</option>
+								<option value="Parent & Child (5-12)">
+									Parent & Child (5-12)
+								</option>
+								<option value="Parent & Child (9-14 Years)">
+									Parent & Child (9-14 Years)
+								</option>
+								<option value="Kids Fundamentals">Kids Fundamentals</option>
+							</select>
+						</div>
+
+						<!-- Available Classes -->
+
+						<div class="class-container-wrapper">
+							<button
+								class="scroll-btn scroll-left"
+								aria-label="Previous Day"
+							>
+								&#10094;
+							</button>
+
+							<div
+								id="class-container"
+								class="class-container"
+							>
+								<!-- Day containers will be injected here by JS -->
+							</div>
+
+							<button
+								class="scroll-btn scroll-right"
+								aria-label="Next Day"
+							>
+								&#10095;
+							</button>
+						</div>
+					</div>
+				</section>
+
+				<!-- Two -->
+				<section id="two">
+					<div class="container">
+						<h3>Generate Schedule</h3>
+
+						<div
+							id="class-filters"
+							class="mt-6"
+						>
+							<label
+								for="filter-month"
+								class="block font-medium mb-1"
+								>Month</label
+							>
+							<select id="filter-month">
+								<option value="">Select Month</option>
+								<option value="0">January</option>
+								<option value="1">February</option>
+								<option value="2">March</option>
+								<option value="3">April</option>
+								<option value="4">May</option>
+								<option value="5">June</option>
+								<option value="6">July</option>
+								<option value="7">August</option>
+								<option value="8">September</option>
+								<option value="9">October</option>
+								<option value="10">November</option>
+								<option value="11">December</option>
+							</select>
+
+							<label
+								for="filter-year"
+								class="block font-medium mt-4 mb-1"
+								>Year</label
+							>
+							<select id="filter-year">
+								<option value="">Select Year</option>
+								<option value="2025">2025</option>
+								<option value="2026">2026</option>
+							</select>
+
+							<input
+								type="submit"
+								id="generate-schedule"
+								class="primary mt-4"
+								value="Generate Schedule"
+							/>
+
+							<div
+								id="schedule-status"
+								class="text-sm text-gray-700 mt-2"
+							></div>
+						</div>
+					</div>
+				</section>
+
+				<!-- Three -->
+				<section id="three">
+					<div class="container">
+						<h3>A Few Accomplishments</h3>
+						<p>
+							Integer eu ante ornare amet commetus vestibulum blandit integer in
+							curae ac faucibus integer non. Adipiscing cubilia elementum
+							integer. Integer eu ante ornare amet commetus.
+						</p>
+						<div class="features">
+							<article>
+								<a
+									href="#"
+									class="image"
+									><img
+										src="alt_images/pic01.jpg"
+										alt=""
+								/></a>
+								<div class="inner">
+									<h4>Pharetra fusce facilisis</h4>
+									<p>
+										Integer eu ante ornare amet commetus vestibulum blandit
+										integer in curae ac faucibus integer adipiscing ornare amet.
+									</p>
+								</div>
+							</article>
+							<article>
+								<a
+									href="#"
+									class="image"
+									><img
+										src="alt_images/pic02.jpg"
+										alt=""
+								/></a>
+								<div class="inner">
+									<h4>Condimentum mus ipsum orci</h4>
+									<p>
+										Integer eu ante ornare amet commetus vestibulum blandit
+										integer in curae ac faucibus integer adipiscing ornare amet.
+									</p>
+								</div>
+							</article>
+							<article>
+								<a
+									href="#"
+									class="image"
+									><img
+										src="alt_images/pic03.jpg"
+										alt=""
+								/></a>
+								<div class="inner">
+									<h4>Cubilia enim congue at cep amet</h4>
+									<p>
+										Integer eu ante ornare amet commetus vestibulum blandit
+										integer in curae ac faucibus integer adipiscing ornare amet.
+									</p>
+								</div>
+							</article>
+						</div>
+					</div>
+				</section>
+
+				<!-- Four -->
+				<section id="four">
+					<div class="container">
+						<h3>Contact Me</h3>
+						<p>
+							Integer eu ante ornare amet commetus vestibulum blandit integer in
+							curae ac faucibus integer non. Adipiscing cubilia elementum
+							integer. Integer eu ante ornare amet commetus.
+						</p>
+						<form
+							method="post"
+							action="#"
+						>
+							<div class="row gtr-uniform">
+								<div class="col-6 col-12-xsmall">
+									<input
+										type="text"
+										name="name"
+										id="name"
+										placeholder="Name"
+									/>
+								</div>
+								<div class="col-6 col-12-xsmall">
+									<input
+										type="email"
+										name="email"
+										id="email"
+										placeholder="Email"
+									/>
+								</div>
+								<div class="col-12">
+									<input
+										type="text"
+										name="subject"
+										id="subject"
+										placeholder="Subject"
+									/>
+								</div>
+								<div class="col-12">
+									<textarea
+										name="message"
+										id="message"
+										placeholder="Message"
+										rows="6"
+									></textarea>
+								</div>
+								<div class="col-12">
+									<ul class="actions">
+										<li>
+											<input
+												type="submit"
+												class="primary"
+												value="Send Message"
+											/>
+										</li>
+										<li>
+											<input
+												type="reset"
+												value="Reset Form"
+											/>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</form>
+					</div>
+				</section>
+			</div>
+
+			<!-- Footer -->
+			<section id="footer">
+				<div class="container">
+					<ul class="copyright">
+						<li>&copy; Untitled. All rights reserved.</li>
+					</ul>
+				</div>
+			</section>
+		</div>
+
+		<!-- Scripts -->
+
+		<script src="alt_assets/js/jquery.min.js"></script>
+		<script src="alt_assets/js/jquery.scrollex.min.js"></script>
+		<script src="alt_assets/js/jquery.scrolly.min.js"></script>
+		<script src="alt_assets/js/browser.min.js"></script>
+		<script src="alt_assets/js/breakpoints.min.js"></script>
+		<script src="alt_assets/js/util.js"></script>
+		<script src="alt_assets/js/main.js"></script>
+		<script
+			type="module"
+			src="assets/js/utils.js"
+		></script>
+		<script
+			type="module"
+			src="assets/js/classes.js"
+		></script>
+		<script
+			type="module"
+			src="assets/js/dashboard.js"
+		></script>
+		<script
+			type="module"
+			src="assets/js/admin.js"
+		></script>
+	</body>
+</html>

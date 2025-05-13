@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>Untitled</title>
+		<meta charset="utf-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, user-scalable=no"
+		/>
+		<link
+			rel="stylesheet"
+			href="assets/css/main.css"
+		/>
+	</head>
+	<body class="is-preload">
+		<!-- Header -->
+		<header id="header">
+			<h1>Fitness App</h1>
+			<p>A collaborative effort from Guillermo Garcia & ChatGPT</p>
+		</header>
+
+		<!-- Signup Form -->
+		<form
+			id="signup-form"
+			method="post"
+			action="#"
+		>
+			<input
+				class="email"
+				type="email"
+				name="email"
+				id="email"
+				placeholder="Email Address"
+			/>
+			<input
+				type="password"
+				name="password"
+				id="password"
+				placeholder="Password"
+			/>
+			<input
+				type="submit"
+				id="login-btn"
+				value="Log In"
+			/>
+			<input
+				class="transparent"
+				type="button"
+				id="signup-btn"
+				value="Sign Up"
+			/>
+		</form>
+
+		<!-- Signup Overlay -->
+		<div
+			id="signup-overlay"
+			style="display: none"
+		>
+			<h2>Sign Up Form</h2>
+			<form id="create-account-form">
+				<input
+					type="text"
+					id="signup-name"
+					placeholder="First Name"
+					required
+				/>
+				<input
+					type="text"
+					id="signup-surname"
+					placeholder="Surname"
+					required
+				/>
+				<input
+					type="email"
+					id="signup-email"
+					placeholder="Email Address"
+					required
+				/>
+				<input
+					type="password"
+					id="signup-password"
+					placeholder="Password"
+					required
+				/>
+				<input
+					type="submit"
+					value="Create Account"
+				/>
+			</form>
+			<a href="">Cancel</a>
+		</div>
+
+		<!-- Footer -->
+		<footer id="footer">
+			<ul class="icons">
+				<li>
+					<a
+						href="#"
+						class="icon brands fa-instagram"
+						><span class="label">Instagram</span></a
+					>
+				</li>
+
+				<li>
+					<a
+						href="#"
+						class="icon fa-envelope"
+						><span class="label">Email</span></a
+					>
+				</li>
+			</ul>
+		</footer>
+
+		<!-- Scripts -->
+		<script src="assets/js/main.js"></script>
+		<script
+			type="module"
+			src="assets/js/app.js"
+		></script>
+	</body>
+</html>
