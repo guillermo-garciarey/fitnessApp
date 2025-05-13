@@ -97,7 +97,14 @@ video {
 	font-size: 100%;
 	font: inherit;
 	vertical-align: baseline;
-	overflow-x: hidden;
+	
+}
+
+html,
+body {
+	overflow-x: clip !important; /* Better than 'hidden' for mobile */
+	width: 100%;
+	position: relative;
 }
 
 article,
