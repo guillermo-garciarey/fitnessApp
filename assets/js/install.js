@@ -1,35 +1,29 @@
 let deferredPrompt;
 const installBtn = document.getElementById("install-btn");
 
-// Hide the button by default
-if (installBtn) {
-  installBtn.style.display = "none";
-}
-
 window.addEventListener("beforeinstallprompt", (e) => {
   e.preventDefault(); // Stop automatic prompt
   deferredPrompt = e;
 
-  // Show the install button
-  if (installBtn) {
-    installBtn.style.display = "block";
-  }
+  // Optional: You can add a class here to visually highlight it if you want
+  console.log("Install prompt captured and ready.");
 });
 
-if (installBtn) {
-  installBtn.addEventListener("click", async () => {
-    if (!deferredPrompt) return;
+installBtn.addEventListener("click", async (e) => {
+  e.preventDefault(); // Prevent anchor behavior
+  if (!deferredPrompt) {
+    alert("Install prompt not available yet.");
+    return;
+  }
 
-    deferredPrompt.prompt();
+  deferredPrompt.prompt();
 
-    const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === "accepted") {
-      console.log("User accepted the install prompt");
-    } else {
-      console.log("User dismissed the install prompt");
-    }
+  const { outcome } = await deferredPrompt.userChoice;
+  if (outcome === "accepted") {
+    console.log("User accepted the install prompt");
+  } else {
+    console.log("User dismissed the install prompt");
+  }
 
-    deferredPrompt = null;
-    installBtn.style.display = "none";
-  });
-}
+  deferredPrompt = null;
+});
