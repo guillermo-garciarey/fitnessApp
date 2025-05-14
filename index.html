@@ -12,6 +12,14 @@
 			rel="stylesheet"
 			href="assets/css/main.css"
 		/>
+		<link
+			rel="manifest"
+			href="manifest.json"
+		/>
+		<meta
+			name="theme-color"
+			content="#222222"
+		/>
 	</head>
 	<body class="is-preload">
 		<!-- Header -->
@@ -110,21 +118,26 @@
 					>
 				</li>
 				<li>
-  <a
-    href="#"
-    id="install-btn"
-    class="icon fa-download"
-    onclick="event.preventDefault();"
-    ><span class="label">Install App</span></a
-  >
+					<a
+						href="#"
+						id="install-btn"
+						class="icon fa-download"
+						onclick="event.preventDefault();"
+						><span class="label">Install App</span></a
+					>
 				</li>
 			</ul>
 		</footer>
 
 		<!-- Scripts -->
 		<script src="assets/js/main.js"></script>
-	<script type="module" src="assets/js/app.js"></script>
-<script type="module" src="assets/js/install.js"></script>
-
+		<script
+			type="module"
+			src="assets/js/app.js"
+		></script>
+		<script
+			type="module"
+			src="assets/js/install.js"
+		></script>
 	</body>
 </html>
