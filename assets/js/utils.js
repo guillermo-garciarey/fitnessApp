@@ -133,15 +133,20 @@ export async function getUpcomingUserBookings(userId) {
 		.from("bookings")
 		.select("*, class:classes(*)")
 		.eq("user_id", userId)
-		.gte("class.date", today); // removed .order()
+		.gte("class.date", today);
 
 	if (error) {
 		console.error("getUpcomingUserBookings error:", error.message);
 		return [];
 	}
 
-	// Sort by class date manually
-	return data.sort((a, b) => {
+	// 🛑 Filter out bookings where related class is missing
+	const validBookings = data.filter(
+		(b) => b.class && b.class.date && b.class.time
+	);
+
+	// ✅ Sort by class date
+	return validBookings.sort((a, b) => {
 		const dateA = new Date(`${a.class.date}T${a.class.time}`);
 		const dateB = new Date(`${b.class.date}T${b.class.time}`);
 		return dateA - dateB;
