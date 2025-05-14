@@ -2823,7 +2823,7 @@ input[type="button"]:disabled,
 #header h4,
 #header h5,
 #header h6 {
-	color: var(--light1);
+	color: var(--light3);
 }
 
 #header h1 a,
@@ -2836,7 +2836,7 @@ input[type="button"]:disabled,
 }
 
 #header header p {
-	color: #b7eadc;
+	color: var(--light1);
 }
 
 #header a {
@@ -2844,7 +2844,7 @@ input[type="button"]:disabled,
 }
 
 #header a:hover {
-	color: var(--light2) !important;
+	color: var(--light3) !important;
 }
 
 #header > header {
@@ -2867,7 +2867,7 @@ input[type="button"]:disabled,
 }
 
 #header > header p {
-	color: #d2f2e9;
+	color: var(--light1);
 	font-style: italic;
 	margin: 1em 0 0 0;
 }
@@ -2888,7 +2888,7 @@ input[type="button"]:disabled,
 }
 
 #header > footer .icons li a {
-	color: #b7eadc;
+	color: var(--light1);
 }
 
 #header > nav {
@@ -3154,12 +3154,12 @@ input[type="button"]:disabled,
 		width: 100%;
 		z-index: 10001;
 		background: #222;
-		color: var(--dark2);
+		color: var(--light3);
 		min-width: 320px;
 	}
 
 	#titleBar .title {
-		color: var(--dark2);
+		color: var(--light3);
 		display: block;
 		font-weight: 700;
 		height: 44px;
