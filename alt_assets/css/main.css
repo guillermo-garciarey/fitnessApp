@@ -3456,6 +3456,7 @@ input[type="button"]:disabled,
 /* Classes */
 
 .scroll-btn {
+	position: absolute;
 	background: none;
 	border: none;
 	font-size: 2rem;
@@ -3463,7 +3464,17 @@ input[type="button"]:disabled,
 	z-index: 10;
 	padding: 0 0.5rem;
 	color: #555;
+	top: 50%;
+	transform: translateY(-50%);
 	display: none;
+}
+
+.scroll-left {
+	left: 0.5rem;
+}
+
+.scroll-right {
+	right: 0.5rem;
 }
 
 .scroll-btn:hover {
@@ -3518,7 +3529,7 @@ input[type="button"]:disabled,
 	width: 100%;
 
 	border-radius: 10px;
-	padding: 1rem;
+
 	background: var(--light3);
 	scroll-snap-align: start;
 }
@@ -3588,6 +3599,19 @@ input[type="button"]:disabled,
 	background-color: transparent !important;
 	text-align: center;
 	border: none !important;
+	width: 90% !important;
+	justify-content: center !important;
+	box-shadow: none !important;
+}
+
+.no-classes::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 4px;
+	height: 100%;
+	background-color: #2195f300 !important;
 }
 
 /* Modal popup styling (hidden by default) */
@@ -3633,6 +3657,7 @@ input[type="button"]:disabled,
 	justify-content: center;
 	gap: 2.5rem;
 	margin-bottom: 1rem;
+	display: none;
 }
 
 .day-scroll {
@@ -3897,6 +3922,9 @@ body.admin .admin-actions {
 
 #my-bookings-list {
 	margin-block: 50px;
+}
+
+#class-container-wrapper {
 }
 
 /* New Cards */
