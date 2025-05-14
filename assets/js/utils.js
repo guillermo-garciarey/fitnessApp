@@ -172,35 +172,43 @@ export async function renderUserBookings() {
 	bookingContainer.innerHTML = "";
 
 	bookings.forEach(({ class: cls }) => {
-		const div = document.createElement("div");
-		div.className = "class-slot confirmed-booking";
-		div.dataset.classId = cls.id;
-
 		const classDateTime = new Date(`${cls.date}T${cls.time}`);
-		const formattedTime = classDateTime.toLocaleTimeString([], {
+		const formattedTime = classDateTime.toLocaleTimeString("en-US", {
 			hour: "numeric",
 			minute: "2-digit",
 			hour12: true,
 		});
-		const formattedDate = new Date(cls.date).toLocaleDateString();
 
-		// // prettier-ignore
-		div.innerHTML = `
-			<div class="card-content">
-		<div class="card-info">
-			<div class="card-top">${cls.name}</div>
-            ${
-							cls.description
-								? `<div class="card-description">${cls.description}</div>`
-								: ""
-						}
-            <div class="card-bottom">${formattedDate} @ ${formattedTime}</div>
-		</div>
-	</div>
+		const wrapper = document.createElement("div");
+		wrapper.className = "class-slot confirmed-booking";
+		wrapper.dataset.classId = cls.id;
+
+		wrapper.innerHTML = `
+			
+				<div class="card-calendar-col">
+					<div class="calendar-month">${new Date(cls.date).toLocaleString("default", {
+						month: "short",
+					})}</div>
+					<div class="calendar-day">${new Date(cls.date).getDate()}</div>
+					<div class="calendar-weekday">${new Date(cls.date).toLocaleString("default", {
+						weekday: "short",
+					})}</div>
+				</div>
+				<div class="card-info-col">
+					<div class="class-name-row">
+	<span class="card-class-name">${cls.name}</span>
+	${
+		cls.description
+			? `<span class="card-class-description">${cls.description}</span>`
+			: ""
+	}
 </div>
+<div class="card-class-time">${formattedTime}</div>
+				</div>
+			
 		`;
 
-		bookingContainer.appendChild(div);
+		bookingContainer.appendChild(wrapper);
 	});
 }
 

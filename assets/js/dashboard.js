@@ -188,14 +188,29 @@ function renderGroupedClassColumns(allClasses) {
 
 				// prettier-ignore
 				slot.innerHTML = `
-                <div class="card-content ${isPast ? "past-class" : ""}">
-        <div class="card-info">
-            <div class="card-top">${cls.name}</div>
-			${cls.description ? `<div class="card-description">${cls.description}</div>` : ""}
-
-            <div class="card-bottom">${timeFormatted}</div>
-        </div>
-    </div>`;
+	
+		<div class="card-calendar-col">
+			<div class="calendar-month">${new Date(cls.date).toLocaleString("default", {
+				month: "short",
+			})}</div>
+			<div class="calendar-day">${new Date(cls.date).getDate()}</div>
+			<div class="calendar-weekday">${new Date(cls.date).toLocaleString("default", {
+				weekday: "short",
+			})}</div>
+		</div>
+		<div class="card-info-col ${isPast ? "past-class" : ""}">
+			<div class="class-name-row">
+				<span class="card-class-name">${cls.name}</span>
+				${
+					cls.description
+						? `<span class="card-class-description">${cls.description}</span>`
+						: ""
+				}
+			</div>
+			<div class="card-class-time">${timeFormatted}</div>
+		</div>
+	
+`;
 
 				dayContainer.appendChild(slot);
 			});

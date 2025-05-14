@@ -3530,23 +3530,6 @@ input[type="button"]:disabled,
 	text-align: left;
 }
 
-.class-slot {
-	position: relative;
-	border: 1px solid rgba(137, 137, 137, 0);
-	padding: 0.5rem;
-	margin-bottom: 10px;
-	background: rgba(255, 255, 255, 0.1); /* semi-transparent white */
-	backdrop-filter: blur(10px);
-	-webkit-backdrop-filter: blur(10px); /* for Safari */
-	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-	height: 120px;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	transition: background-color 0.2s ease, box-shadow 0.2s ease;
-	cursor: pointer;
-}
-
 /* @keyframes pulse-green {
 	0%,
 	100% {
@@ -3801,7 +3784,7 @@ body.admin .admin-actions {
 	content: "";
 	position: absolute;
 	top: 0;
-	left: 0;
+	right: 0;
 	width: 4px;
 	height: 100%;
 	background-color: #2196f3;
@@ -3812,7 +3795,7 @@ body.admin .admin-actions {
 	content: "";
 	position: absolute;
 	top: 0;
-	left: 0;
+	right: 0;
 	width: 4px;
 	height: 100%;
 	background-color: #4caf50;
@@ -3908,4 +3891,130 @@ body.admin .admin-actions {
 
 .toast.error {
 	background-color: #f44336;
+}
+
+/* Upcoming Bookings */
+
+#my-bookings-list {
+	margin-block: 50px;
+}
+
+/* New Cards */
+
+.class-slot {
+	position: relative;
+	display: flex;
+	border-radius: none;
+	border-bottom-left-radius: 4px;
+	border-top-left-radius: 4px;
+	cursor: pointer;
+	box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+	overflow: hidden;
+	background: white;
+	width: 100%;
+	max-width: 350px;
+	margin: 0.5rem auto;
+	font-family: "Inter", sans-serif;
+}
+
+/* Left Column: Calendar */
+.card-calendar-col {
+	width: 65px;
+	background-color: #3f5f54;
+	color: white;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 0.4rem 0.3rem;
+	text-align: center;
+	line-height: 1;
+}
+
+.calendar-month {
+	font-size: 0.6rem;
+	font-weight: 600;
+	margin-bottom: 0.2rem;
+	text-transform: uppercase;
+}
+
+.calendar-day {
+	font-size: 1.6rem;
+	font-weight: 700;
+	margin: 0;
+}
+
+.calendar-weekday {
+	font-size: 0.7rem;
+	font-weight: 500;
+	color: #c8ddd4;
+	margin-top: 0.2rem;
+}
+
+/* Right Column: Info */
+
+.card-info-col {
+	padding-block: 0.6rem;
+	padding-left: 1.1rem;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.card-info-col > * {
+	margin: 0;
+	line-height: 1.5;
+}
+
+/* Specific font sizing tweaks */
+.card-class-name {
+	font-size: 0.85rem;
+	font-weight: 500;
+	color: #222;
+}
+
+.card-class-description {
+	font-size: 0.85rem;
+	color: #555;
+	font-weight: 500;
+}
+
+.card-class-time {
+	font-size: 0.75rem;
+	font-weight: 500;
+	color: #333;
+}
+
+.card-info-col .class-name-row {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	gap: 0.5rem;
+	flex-wrap: wrap;
+	margin-bottom: 0.1rem;
+}
+
+.card-class-name {
+	font-size: 0.85rem;
+	font-weight: 600;
+	color: #222;
+	white-space: nowrap;
+}
+
+.card-class-description {
+	font-size: 0.85rem;
+	color: #555;
+	flex-grow: 1;
+	text-align: right;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.card-class-time {
+	font-size: 0.75rem;
+	font-weight: 500;
+	color: #333;
+	margin-top: 0.1rem;
 }
