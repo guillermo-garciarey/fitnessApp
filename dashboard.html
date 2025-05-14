@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>Untitled</title>
+		<meta charset="utf-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, user-scalable=no"
+		/>
+		<link
+			rel="stylesheet"
+			href="alt_assets/css/main.css"
+		/>
+		<script
+			src="https://kit.fontawesome.com/c7c54647d2.js"
+			crossorigin="anonymous"
+		></script>
+		<link
+			rel="icon"
+			href="data:,"
+		/>
+	</head>
+	<body class="is-preload">
+		<!-- Header & Sidebar -->
+		<section id="header">
+			<header>
+				<span class="image avatar"
+					><img
+						src="alt_images/avatar.jpg"
+						alt=""
+				/></span>
+				<h1 id="logo"><a href="#"></a></h1>
+				<p>Fitness Enthusiast</p>
+			</header>
+
+			<!-- Navigation Sidebar -->
+			<nav id="nav">
+				<ul>
+					<li>
+						<a
+							href="#one"
+							class="active"
+							>My Bookings</a
+						>
+					</li>
+					<li><a href="#two">Class Timetable</a></li>
+					<li><a href="#three">Admin Tools</a></li>
+					<li><a href="#four">Contact</a></li>
+				</ul>
+			</nav>
+
+			<!-- Footer ICONS -->
+			<footer>
+				<ul class="icons">
+					<li>
+						<a
+							href="#"
+							class="icon brands fa-twitter"
+							><span class="label">Twitter</span></a
+						>
+					</li>
+					<li>
+						<a
+							href="#"
+							class="icon brands fa-facebook-f"
+							><span class="label">Facebook</span></a
+						>
+					</li>
+					<li>
+						<a
+							href="#"
+							class="icon brands fa-instagram"
+							><span class="label">Instagram</span></a
+						>
+					</li>
+					<li>
+						<a
+							href="#"
+							class="icon brands fa-github"
+							><span class="label">Github</span></a
+						>
+					</li>
+					<li>
+						<a
+							href="#"
+							class="icon solid fa-envelope"
+							><span class="label">Email</span></a
+						>
+					</li>
+				</ul>
+			</footer>
+		</section>
+
+		<!-- Wrapper -->
+		<div id="wrapper">
+			<!-- Main -->
+			<div id="main">
+				<!-- My Bookings -->
+				<section id="one">
+					<div
+						class="image main"
+						data-position="center"
+					>
+						<img
+							src="alt_images/banner.jpg"
+							alt=""
+						/>
+					</div>
+					<div
+						id="toast"
+						class="toast hidden"
+					></div>
+					<div class="container bookings-view">
+						<h3>My Bookings</h3>
+						<div id="my-bookings">
+							<div id="my-bookings-list"></div>
+						</div>
+					</div>
+				</section>
+				<!-- Available Classes -->
+				<section id="two">
+					<div
+						id="available_classes"
+						class="container available-view"
+					>
+						<!-- <header class="major">
+							<h2>Welcome back!</h2>
+							<p>Available Classes</p>
+						</header> -->
+
+						<h3>Class Timetable</h3>
+
+						<!-- Filters -->
+
+						<!-- Available Classes -->
+
+						<div class="class-container-wrapper">
+							<button
+								class="scroll-btn scroll-left"
+								aria-label="Previous Day"
+							>
+								&#10094;
+							</button>
+
+							<div
+								id="class-container"
+								class="class-container"
+							>
+								<!-- Day containers will be injected here by JS -->
+							</div>
+
+							<button
+								class="scroll-btn scroll-right"
+								aria-label="Next Day"
+							>
+								&#10095;
+							</button>
+						</div>
+					</div>
+				</section>
+
+				<!-- Generate Schedule -->
+				<section id="three">
+					<div class="container">
+						<h3>Admin Stuff</h3>
+					</div>
+				</section>
+
+				<!-- Add Class Modal -->
+				<section id="four">
+					<div class="container">
+						<div
+							id="classModalOverlay"
+							class="modal-overlay"
+						></div>
+						<div
+							id="classModal"
+							class="class-modal"
+						>
+							<h2>Create New Class</h2>
+							<form id="classForm">
+								<input
+									type="text"
+									id="className"
+									placeholder="Class Name"
+									required
+								/>
+								<input
+									type="text"
+									id="classTrainer"
+									placeholder="Trainer"
+									required
+								/>
+								<input
+									type="time"
+									id="classTime"
+									placeholder="Time"
+									required
+								/>
+								<input
+									type="number"
+									id="classCapacity"
+									placeholder="Capacity"
+									min="1"
+									required
+								/>
+								<input
+									type="hidden"
+									id="classDate"
+								/>
+								<input
+									type="submit"
+									value="Create Class"
+								/>
+								<input
+									id="cancelModal"
+									type="reset"
+									value="Cancel"
+								/>
+							</form>
+						</div>
+					</div>
+				</section>
+			</div>
+
+			<!-- Page Footer -->
+			<section id="footer">
+				<div class="container">
+					<ul class="copyright">
+						<li>&copy; Guillermo Garcia. All rights reserved.</li>
+					</ul>
+				</div>
+			</section>
+		</div>
+
+		<!-- Scripts -->
+
+		<script src="alt_assets/js/jquery.min.js"></script>
+		<script src="alt_assets/js/jquery.scrollex.min.js"></script>
+		<script src="alt_assets/js/jquery.scrolly.min.js"></script>
+		<script src="alt_assets/js/browser.min.js"></script>
+		<script src="alt_assets/js/breakpoints.min.js"></script>
+		<script src="alt_assets/js/util.js"></script>
+		<script src="alt_assets/js/main.js"></script>
+		<script
+			type="module"
+			src="assets/js/utils.js"
+		></script>
+		<script
+			type="module"
+			src="assets/js/classes.js"
+		></script>
+		<script
+			type="module"
+			src="assets/js/dashboard.js"
+		></script>
+		<script
+			type="module"
+			src="assets/js/admin.js"
+		></script>
+		<script
+			type="module"
+			src="assets/js/bookings.js"
+		></script>
+	</body>
+</html>
