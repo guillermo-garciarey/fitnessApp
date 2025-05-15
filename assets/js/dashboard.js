@@ -372,6 +372,14 @@ document.addEventListener("click", async (e) => {
 
 		// alert("Booking successful!");
 
+		// Save current scroll position
+		const previousScrollY = window.scrollY;
+
+		await renderUserBookings();
+
+		// Restore it after DOM changes
+		window.scrollTo({ top: previousScrollY, behavior: "instant" });
+
 		await renderUserBookings();
 	}
 
