@@ -53,7 +53,7 @@
 						>
 					</li>
 					<li><a href="#two">Class Timetable</a></li>
-					<li><a href="admin_dashboard.html">Admin Tools</a></li>
+					<li><a href="#three">Admin Tools</a></li>
 				</ul>
 			</nav>
 
@@ -161,10 +161,41 @@
 				</section>
 
 				<!-- Admin Features -->
-				<section id="four"></section>
+				<section id="three">
+					<div class="container">
+						<h3>Admin Panel</h3>
+
+						<div class="class-container-wrapper">
+							<button class="scroll-btn scroll-left">&#10094;</button>
+
+							<!-- This is where JS injects day containers -->
+							<div
+								id="admin-class-container"
+								class="class-container"
+							></div>
+
+							<button class="scroll-btn scroll-right">&#10095;</button>
+						</div>
+					</div>
+
+					<!-- Admin Panel Modal -->
+					<div
+						id="admin-modal"
+						class="admin-modal-overlay"
+						style="display: none"
+					>
+						<div
+							id="admin-modal-content"
+							class="admin-modal-content"
+						>
+							<button class="close-modal">Close</button>
+							<div id="admin-modal-body"><!-- dynamic content here --></div>
+						</div>
+					</div>
+				</section>
 
 				<!-- Add Class Modal -->
-				<section id="four">
+				<section id="five">
 					<div class="container">
 						<div
 							id="classModalOverlay"
