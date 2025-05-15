@@ -87,6 +87,7 @@ const container = document.getElementById("class-container");
 	// 🔥 THIS is what was missing
 	renderUserBookings();
 })();
+
 function renderGroupedClassColumns(allClasses) {
 	container.innerHTML = "";
 
@@ -188,32 +189,51 @@ function renderGroupedClassColumns(allClasses) {
 
 				// prettier-ignore
 				slot.innerHTML = `
-	
-		<div class="card-calendar-col">
-			<div class="calendar-month">${new Date(cls.date).toLocaleString("default", {
-				month: "short",
-			})}</div>
-			<div class="calendar-day">${new Date(cls.date).getDate()}</div>
-			<div class="calendar-weekday">${new Date(cls.date).toLocaleString("default", {
-				weekday: "short",
-			})}</div>
-		</div>
-		<div class="card-info-col ${isPast ? "past-class" : ""}">
-			<div class="class-name-row">
-				<span class="card-class-name">${cls.name}</span>
-				${
-					cls.description
-						? `<span class="card-class-description">${cls.description}</span>`
-						: ""
-				}
-			</div>
-			<div class="card-class-time">${timeFormatted}</div>
-		</div>
-	
+    
+        <div class="card-calendar-col">
+            <div class="calendar-month">${new Date(cls.date).toLocaleString("default", {
+                month: "short",
+            })}</div>
+            <div class="calendar-day">${new Date(cls.date).getDate()}</div>
+            <div class="calendar-weekday">${new Date(cls.date).toLocaleString("default", {
+                weekday: "short",
+            })}</div>
+        </div>
+        <div class="card-info-col ${isPast ? "past-class" : ""}">
+            <div class="class-name-row">
+                <span class="card-class-name">${cls.name}</span>
+                ${
+                    cls.description
+                        ? `<span class="card-class-description">${cls.description}</span>`
+                        : ""
+                }
+            </div>
+            <div class="card-class-time">${timeFormatted}</div>
+        </div>
+    
 `;
 
 				dayContainer.appendChild(slot);
 			});
+		}
+
+		// 🟧 Add placeholder slots if needed
+		const numPlaceholders = 7 - dayClasses.length;
+		for (let i = 0; i < numPlaceholders; i++) {
+			const placeholder = document.createElement("div");
+			placeholder.className = "admin-class-slot admin-slot-placeholder";
+			placeholder.innerHTML = `
+        <div class="admin-card-calendar-col">
+            <div class="admin-calendar-month">${monthName}</div>
+            <div class="admin-calendar-day">${dayNum}</div>
+            <div class="admin-calendar-weekday">${dayName}</div>
+        </div>
+        <div class="admin-card-info-col">
+            <div class="admin-card-class-name placeholder-text">Open Slot</div>
+            <div class="admin-card-time placeholder-text">Placeholder text</div>
+        </div>
+    `;
+			dayContainer.appendChild(placeholder);
 		}
 
 		container.appendChild(dayContainer);
@@ -679,6 +699,25 @@ export async function renderAdminClassColumns(allClasses) {
 
 			dayContainer.appendChild(slot);
 		});
+
+		// 🟧 Add placeholder slots if needed
+		const numPlaceholders = 7 - dayClasses.length;
+		for (let i = 0; i < numPlaceholders; i++) {
+			const placeholder = document.createElement("div");
+			placeholder.className = "admin-class-slot admin-slot-placeholder";
+			placeholder.innerHTML = `
+		<div class="admin-card-calendar-col">
+			<div class="admin-calendar-month">${monthName}</div>
+			<div class="admin-calendar-day">${dayNum}</div>
+			<div class="admin-calendar-weekday">${dayName}</div>
+		</div>
+		<div class="admin-card-info-col">
+			<div class="admin-card-class-name placeholder-text">Open Slot</div>
+			<div class="admin-card-time placeholder-text">Placeholder text</div>
+		</div>
+	`;
+			dayContainer.appendChild(placeholder);
+		}
 
 		container.appendChild(dayContainer);
 		requestAnimationFrame(() => {

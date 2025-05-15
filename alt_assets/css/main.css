@@ -3718,7 +3718,6 @@ input[type="button"]:disabled,
 
 .past-class {
 	opacity: 0.4;
-	cursor: pointer;
 }
 
 /* Admin Panel Delete Day Button */
@@ -4226,4 +4225,22 @@ body.admin .admin-actions {
 .collapsible-section h3 {
 	cursor: pointer;
 	width: fit-content;
+}
+
+/* Placeholder Cards */
+
+/* Placeholder / Inactive slot style */
+.admin-slot-placeholder {
+	opacity: 0.6;
+	pointer-events: none;
+	filter: grayscale(20%);
+	background: #f9f9f9;
+	box-shadow: none;
+	border: 1px dashed #ccc;
+}
+
+/* Optional: dimmed text appearance */
+.placeholder-text {
+	color: #999 !important;
+	font-style: italic;
 }
