@@ -8,6 +8,7 @@ import {
 	getUpcomingUserBookings,
 	renderUserBookings,
 	showToast,
+	showConfirmation,
 } from "../../assets/js/utils.js";
 
 export async function refreshAvailableClasses() {
@@ -171,6 +172,8 @@ function renderGroupedClassColumns(allClasses) {
 				const slot = document.createElement("div");
 				slot.className = "class-slot";
 				slot.dataset.classId = cls.id; // 👈 moved data-class-id to the card itself
+				slot.dataset.classDate = cls.date; // Add this line
+				slot.dataset.classTime = cls.time; // Add this line
 
 				const classDateTime = new Date(`${cls.date}T${cls.time}`);
 				const now = new Date();
@@ -354,6 +357,12 @@ document.addEventListener("click", async (e) => {
 	const slot = e.target.closest(".class-slot");
 	if (!slot || !slot.dataset.classId) return;
 
+	// ❌ Prevent interaction if it's a past class
+	if (slot.classList.contains("past-class")) {
+		showToast("You cannot interact with a past class.", "error");
+		return;
+	}
+
 	const classId = slot.dataset.classId;
 
 	const inAvailableView = !!slot.closest(".available-view");
@@ -369,73 +378,83 @@ document.addEventListener("click", async (e) => {
 
 	// 🟦 Booking Flow (Available View)
 	if (inAvailableView) {
-		const { error: bookingError } = await supabase
-			.from("bookings")
-			.insert([{ user_id: userId, class_id: classId }]);
+		const classDateTime = new Date(
+			`${slot.dataset.classDate}T${slot.dataset.classTime}`
+		);
+		const now = new Date();
 
-		if (bookingError) {
-			showToast("Booking failed: " + bookingError.message, "error");
+		if (classDateTime < now) {
+			showToast("You cannot book a past class.", "error");
 			return;
 		}
+		showConfirmation("Book class?", async () => {
+			const { error: bookingError } = await supabase
+				.from("bookings")
+				.insert([{ user_id: userId, class_id: classId }]);
 
-		await supabase.from("payments").insert([
-			{
-				user_id: userId,
-				date: new Date().toISOString().split("T")[0],
-				credits: -1,
-				reason: "Class Booking",
-			},
-		]);
-		slot.classList.add("confirmed-booking");
-		showToast("Booking successful!");
-		slot.classList.add("pulse-once");
+			if (bookingError) {
+				showToast("Booking failed: " + bookingError.message, "error");
+				return;
+			}
 
-		// alert("Booking successful!");
+			await supabase.from("payments").insert([
+				{
+					user_id: userId,
+					date: new Date().toISOString().split("T")[0],
+					credits: -1,
+					reason: "Class Booking",
+				},
+			]);
 
-		// Save current scroll position
-		const previousScrollY = window.scrollY;
+			slot.classList.add("confirmed-booking");
+			slot.classList.add("pulse-once");
+			showToast("Booking successful!");
 
-		await renderUserBookings();
+			const previousScrollY = window.scrollY;
 
-		// Restore it after DOM changes
-		window.scrollTo({ top: previousScrollY, behavior: "instant" });
-
-		await renderUserBookings();
+			await renderUserBookings();
+			window.scrollTo({ top: previousScrollY, behavior: "instant" });
+		});
 	}
 
 	// 🟥 Cancel Flow (Bookings View)
 	if (inBookingsView) {
-		const { error: deleteError } = await supabase
-			.from("bookings")
-			.delete()
-			.eq("user_id", userId)
-			.eq("class_id", classId);
+		showConfirmation("Cancel booking?", async () => {
+			const { error: deleteError } = await supabase
+				.from("bookings")
+				.delete()
+				.eq("user_id", userId)
+				.eq("class_id", classId);
 
-		if (deleteError) {
-			alert("Failed to cancel booking: " + deleteError.message);
-			return;
-		}
+			if (deleteError) {
+				showToast("Failed to cancel booking: " + deleteError.message, "error");
+				return;
+			}
 
-		const { error: creditError } = await supabase.from("payments").insert([
-			{
-				user_id: userId,
-				credits: 1,
-				reason: "Cancelled booking",
-			},
-		]);
+			const { error: creditError } = await supabase.from("payments").insert([
+				{
+					user_id: userId,
+					credits: 1,
+					reason: "Cancelled booking",
+				},
+			]);
 
-		if (creditError) {
-			alert("Booking cancelled, but refund failed: " + creditError.message);
-		} else {
-			// alert("Booking cancelled successfully!");
-		}
+			if (creditError) {
+				showToast(
+					"Booking cancelled, but refund failed: " + creditError.message,
+					"error"
+				);
+			} else {
+				showToast("Booking cancelled successfully!");
+			}
 
-		await renderUserBookings();
+			await renderUserBookings();
 
-		const session2 = await getSession(); // in case logout
-		const uid = session2?.user?.id;
-		const updatedClasses = await getAvailableClasses({}, uid);
-		renderGroupedClassColumns(updatedClasses);
+			const session2 = await getSession(); // in case logout
+			const uid = session2?.user?.id;
+			const updatedClasses = await getAvailableClasses({}, uid);
+			renderGroupedClassColumns(updatedClasses);
+		});
 	}
 });
 

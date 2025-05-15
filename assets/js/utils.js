@@ -270,3 +270,28 @@ export function showToast(message, type = "success") {
 		toast.classList.remove("show");
 	}, duration);
 }
+
+export function showConfirmation(message, onConfirm, onCancel = () => {}) {
+	const toast = document.getElementById("confirmation-toast");
+	const messageElem = document.getElementById("confirmation-message");
+	const yesBtn = document.getElementById("confirm-yes");
+	const noBtn = document.getElementById("confirm-no");
+
+	messageElem.textContent = message;
+	toast.style.display = "flex";
+
+	// Clear old listeners
+	const newYes = yesBtn.cloneNode(true);
+	const newNo = noBtn.cloneNode(true);
+	yesBtn.parentNode.replaceChild(newYes, yesBtn);
+	noBtn.parentNode.replaceChild(newNo, noBtn);
+
+	newYes.addEventListener("click", () => {
+		toast.style.display = "none";
+		onConfirm();
+	});
+	newNo.addEventListener("click", () => {
+		toast.style.display = "none";
+		onCancel();
+	});
+}

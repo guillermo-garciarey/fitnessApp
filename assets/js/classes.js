@@ -3,6 +3,7 @@ import {
 	createUserBooking,
 	getSession,
 	formatPrettyDate,
+	showConfirmation,
 } from "../../assets/js/utils.js";
 
 document.addEventListener("DOMContentLoaded", () => {

@@ -4,6 +4,7 @@ import {
 	createUserBooking,
 	getSession,
 	formatPrettyDate,
+	showConfirmation,
 } from "../../assets/js/utils.js";
 
 // ✅ Trigger from calendar icon

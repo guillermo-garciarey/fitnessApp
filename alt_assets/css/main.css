@@ -3813,7 +3813,7 @@ body.admin .admin-actions {
 	position: absolute;
 	top: 0;
 	right: 0;
-	width: 4px;
+	width: 5px;
 	height: 100%;
 	background-color: #2196f3;
 }
@@ -3824,7 +3824,7 @@ body.admin .admin-actions {
 	position: absolute;
 	top: 0;
 	right: 0;
-	width: 4px;
+	width: 5px;
 	height: 100%;
 	background-color: #4caf50;
 }
@@ -3835,9 +3835,9 @@ body.admin .admin-actions {
 	position: absolute;
 	top: 0;
 	right: 0;
-	width: 4px;
+	width: 5px;
 	height: 100%;
-	background-color: red;
+	background-color: #4caf50;
 }
 
 /* New Card Styling */
@@ -3909,6 +3909,8 @@ body.admin .admin-actions {
 	pointer-events: none;
 	transition: opacity 0.3s ease, transform 0.3s ease;
 	z-index: 9999;
+	width: fit-content;
+	text-align: center;
 }
 
 .toast.show {
@@ -4243,4 +4245,63 @@ body.admin .admin-actions {
 .placeholder-text {
 	color: #999 !important;
 	font-style: italic;
+}
+
+/* Confirmation Modal */
+
+.confirmation-toast {
+	position: fixed;
+	text-align: center;
+	bottom: 40%;
+	left: 50%;
+	transform: translateX(-50%);
+	background-color: var(--dark2);
+	color: var(--light2);
+	padding: 16px 20px;
+	border-radius: 6px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+	font-size: 0.95rem;
+	z-index: 9999;
+	display: none;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	animation: fadeIn 0.5s ease-out;
+}
+
+.confirmation-buttons {
+	display: flex;
+	gap: 12px;
+	justify-content: center;
+}
+
+.confirmation-buttons button {
+	width: 100%;
+	padding: 6px 14px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-weight: 600;
+}
+
+#confirm-yes {
+	background-color: #4caf50;
+	color: var(--light2);
+}
+
+#confirm-no {
+	background-color: #f44336;
+	color: var(--light2);
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translate(-50%, 20px);
+	}
+	to {
+		opacity: 1;
+		transform: translate(-50%, 0);
+	}
 }
