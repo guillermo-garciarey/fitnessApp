@@ -354,7 +354,7 @@ document.addEventListener("click", async (e) => {
 			.insert([{ user_id: userId, class_id: classId }]);
 
 		if (bookingError) {
-			alert("Booking failed: " + bookingError.message);
+			showToast("Booking failed: " + bookingError.message, "error");
 			return;
 		}
 

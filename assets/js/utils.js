@@ -219,7 +219,10 @@ export function showToast(message, type = "success") {
 	toast.textContent = message;
 	toast.className = `toast show ${type === "error" ? "error" : ""}`;
 
+	// Longer duration for errors (e.g., 5s), default is 3s
+	const duration = type === "error" ? 5000 : 3000;
+
 	setTimeout(() => {
 		toast.classList.remove("show");
-	}, 3000); // Auto-hide after 3 seconds
+	}, duration);
 }
