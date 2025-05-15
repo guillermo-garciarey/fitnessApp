@@ -468,29 +468,38 @@ async function openAdminModal(cls) {
 		.from("profiles")
 		.select("id, name, surname");
 
-	// Build modal HTML (fast and lightweight)
+	// Build modal content
 	let html = `<h2>${className}</h2><p>${classDate}</p><ul>`;
 	bookings.forEach((b) => {
 		html += `<li>${b.profiles.name} ${b.profiles.surname}
-      <i class="fa fa-trash remove-user" data-booking-id="${b.id}" data-user-id="${b.user_id}"></i></li>`;
+			<i class="fa fa-trash remove-user" data-booking-id="${b.id}" data-user-id="${b.user_id}"></i></li>`;
 	});
-	html += `</ul>
-    <select id="user-select">
-      <option value="">Select User</option>
-      ${users
-				.map((u) => `<option value="${u.id}">${u.name} ${u.surname}</option>`)
-				.join("")}
-    </select>
-    <button id="add-user-to-class" data-class-id="${classId}">Add to class</button>`;
+	html += `</ul>`;
+
+	// User dropdown and add button
+	html += `
+	<select id="user-select">
+		<option value="">Select User</option>
+		${users
+			.map((u) => `<option value="${u.id}">${u.name} ${u.surname}</option>`)
+			.join("")}
+	</select>
+	<button id="add-user-to-class" data-class-id="${classId}">Add to class</button>`;
+
+	// 🔥 Cancel Class Button
+	html += `
+	<hr>
+	<button id="cancel-class" data-class-id="${classId}" style="margin-top: 1rem; background-color: #f44336; color: white;">
+		Cancel Class
+	</button>`;
 
 	modalContent.innerHTML = html;
 
-	// ✅ Now show the modal after DOM is ready
+	// Animate and show modal
 	modal.classList.remove("modal-animate-out");
 	modal.style.display = "flex";
 
 	requestAnimationFrame(() => {
-		// this ensures layout has calculated before animating
 		modal.classList.add("modal-animate-in");
 	});
 }
