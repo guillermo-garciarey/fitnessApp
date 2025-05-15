@@ -2945,7 +2945,7 @@ input[type="button"]:disabled,
 }
 
 #main > section > .container {
-	padding: 6em 0 4em 0;
+	/* padding: 6em 0 4em 0; */
 }
 
 #main > section:first-child {
@@ -3021,7 +3021,7 @@ input[type="button"]:disabled,
 	/* Main */
 
 	#main > section > .container {
-		padding: 4em 0 2em 0;
+		/* padding: 4em 0 2em 0; */
 	}
 }
 
@@ -3339,7 +3339,7 @@ input[type="button"]:disabled,
 	/* Main */
 
 	#main > section > .container {
-		padding: 2em 0 0 0;
+		/* padding: 2em 0 0 0; */
 	}
 
 	/* Footer */
@@ -3527,7 +3527,7 @@ input[type="button"]:disabled,
 	align-items: stretch;
 	min-width: 90%;
 	width: 100%;
-
+	margin-block: 50px;
 	border-radius: 10px;
 
 	background: var(--light3);
@@ -3657,7 +3657,6 @@ input[type="button"]:disabled,
 	justify-content: center;
 	gap: 2.5rem;
 	margin-bottom: 1rem;
-	display: none;
 }
 
 .day-scroll {
@@ -3685,7 +3684,7 @@ input[type="button"]:disabled,
 }
 
 .calendar-box .month {
-	background: var(--accent2);
+	background: #f32121;
 	color: white;
 	padding: 4px 8px;
 	font-size: 0.9rem;
@@ -3732,7 +3731,7 @@ input[type="button"]:disabled,
 }
 
 body.admin .admin-actions {
-	display: block;
+	display: none;
 }
 
 .admin-icon {
@@ -4208,4 +4207,23 @@ body.admin .admin-actions {
 	font-weight: 500;
 	color: #333;
 	margin-top: 0.1rem;
+}
+
+/* Collapsible Section */
+
+.collapsible-section {
+	max-height: 100px;
+	overflow: hidden;
+	transition: max-height 0.5s ease;
+	padding-block: 1em !important;
+}
+
+/* Enough to cover full content height */
+.collapsible-section.expanded {
+	max-height: 1000px;
+}
+
+.collapsible-section h3 {
+	cursor: pointer;
+	width: fit-content;
 }

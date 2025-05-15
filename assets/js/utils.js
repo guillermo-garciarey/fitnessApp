@@ -7,6 +7,50 @@ export const supabase = createClient(
 	"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpiY3JkeWpvZ2dyc2Rpd2tpcGRhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY5NzY2ODksImV4cCI6MjA2MjU1MjY4OX0.Pa1rIyOnmM00fJTqRXj-IUHyLFCas1qBiMjBL4FFJFE"
 );
 
+// Collapsible Sections
+
+document.querySelectorAll(".collapsible-section").forEach((section) => {
+	section.addEventListener("click", () => {
+		// Only proceed if the clicked section is not already expanded
+		if (!section.classList.contains("expanded")) {
+			document.querySelectorAll(".collapsible-section").forEach((s) => {
+				s.classList.remove("expanded");
+			});
+			section.classList.add("expanded");
+		}
+	});
+});
+
+// Links
+
+document.querySelectorAll('a[href^="#"]').forEach((link) => {
+	link.addEventListener("click", (e) => {
+		const targetId = link.getAttribute("href");
+		const targetSection = document.querySelector(targetId);
+
+		if (
+			targetSection &&
+			targetSection.classList.contains("collapsible-section")
+		) {
+			// Prevent default scroll so we can do smooth scroll after expand
+			e.preventDefault();
+
+			// Collapse all sections
+			document.querySelectorAll(".collapsible-section").forEach((section) => {
+				section.classList.remove("expanded");
+			});
+
+			// Expand target section
+			targetSection.classList.add("expanded");
+
+			// Scroll to the section after it's expanded
+			setTimeout(() => {
+				targetSection.scrollIntoView({ behavior: "smooth", block: "start" });
+			}, 100); // Delay matches CSS transition timing
+		}
+	});
+});
+
 // Capitalize helper
 export function capitalize(str) {
 	return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
