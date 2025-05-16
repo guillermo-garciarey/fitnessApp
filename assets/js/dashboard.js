@@ -75,21 +75,16 @@ const container = document.getElementById("class-container");
 	const allClasses = await getAvailableClasses();
 	const bookedClassIds = await getUserBookings(userId);
 
-	const filteredClasses = allClasses.filter(
-		(cls) => !bookedClassIds.includes(cls.id)
-	);
-
-	if (!filteredClasses || filteredClasses.length === 0) {
+	if (!allClasses || allClasses.length === 0) {
 		container.innerHTML = "<p>Unable to load classes right now.</p>";
 	} else {
-		renderGroupedClassColumns(filteredClasses);
+		renderGroupedClassColumns(allClasses, bookedClassIds);
 	}
 
-	// 🔥 THIS is what was missing
 	renderUserBookings();
 })();
 
-function renderGroupedClassColumns(allClasses) {
+function renderGroupedClassColumns(allClasses, bookedClassIds = []) {
 	container.innerHTML = "";
 
 	const today = new Date();
@@ -129,34 +124,23 @@ function renderGroupedClassColumns(allClasses) {
 		dayContainer.setAttribute("data-date", date);
 
 		dayContainer.innerHTML = `
-        <div class="calendar-header-wrapper">
-            <button class="day-scroll scroll-left">&#10094;</button>
-            <div class="day-header calendar-box ${isToday ? "today-box" : ""}">
-                <div class="month">${monthName}</div>
-                <div class="day-number">${dayNum}</div>
-                <div class="weekday">${dayName}</div>
-            </div>
-            <button class="day-scroll scroll-right">&#10095;</button>
-        </div>
-
-		<div class="inner">
-      <ul class="legend">
-        
-<li class="legend-blue">This class has available spots. </li>
-<li class="legend-green">You have successfully booked this class.</li>
-<li class="legend-black">Class is no longer available.</li>
-
-
-      </ul>
-    </div>
-        ${
-					userRole === "admin"
-						? `
-
-
-       `
-						: ""
-				}`;
+			<div class="calendar-header-wrapper">
+				<button class="day-scroll scroll-left">&#10094;</button>
+				<div class="day-header calendar-box ${isToday ? "today-box" : ""}">
+					<div class="month">${monthName}</div>
+					<div class="day-number">${dayNum}</div>
+					<div class="weekday">${dayName}</div>
+				</div>
+				<button class="day-scroll scroll-right">&#10095;</button>
+			</div>
+			<div class="inner">
+				<ul class="legend">
+					<li class="legend-blue">This class has available spots.</li>
+					<li class="legend-green">You have successfully booked this class.</li>
+					<li class="legend-black">Class is no longer available.</li>
+				</ul>
+			</div>
+			${userRole === "admin" ? `` : ``}`;
 
 		const dayClasses = (grouped[date] || []).sort((a, b) =>
 			a.time.localeCompare(b.time)
@@ -171,20 +155,22 @@ function renderGroupedClassColumns(allClasses) {
 			for (let i = 1; i < 6; i++) {
 				const slot = document.createElement("div");
 				slot.className = "empty-slot";
-
 				dayContainer.appendChild(slot);
 			}
 		} else {
 			dayClasses.forEach((cls) => {
-				const slot = document.createElement("div");
-				slot.className = "class-slot";
-				slot.dataset.classId = cls.id; // 👈 moved data-class-id to the card itself
-				slot.dataset.classDate = cls.date; // Add this line
-				slot.dataset.classTime = cls.time; // Add this line
-
 				const classDateTime = new Date(`${cls.date}T${cls.time}`);
 				const now = new Date();
 				const isPast = classDateTime.getTime() < now.getTime();
+				const isConfirmed = bookedClassIds.includes(cls.id);
+
+				const slot = document.createElement("div");
+				slot.className = `class-slot ${isPast ? "past-class" : ""} ${
+					isConfirmed ? "confirmed-booking" : ""
+				}`;
+				slot.dataset.classId = cls.id;
+				slot.dataset.classDate = cls.date;
+				slot.dataset.classTime = cls.time;
 
 				const [hour, minute] = cls.time.split(":");
 				const timeObj = new Date();
@@ -195,55 +181,47 @@ function renderGroupedClassColumns(allClasses) {
 					hour12: true,
 				});
 
-				console.log("Class object:", cls);
-
-				// prettier-ignore
 				slot.innerHTML = `
-    
-        <div class="card-calendar-col">
-            <div class="calendar-month">${new Date(cls.date).toLocaleString("default", {
-                month: "short",
-            })}</div>
-            <div class="calendar-day">${new Date(cls.date).getDate()}</div>
-            <div class="calendar-weekday">${new Date(cls.date).toLocaleString("default", {
-                weekday: "short",
-            })}</div>
-        </div>
-        <div class="card-info-col ${isPast ? "past-class" : ""}">
-            <div class="class-name-row">
-                <span class="card-class-name">${cls.name}</span>
-                ${
-                    cls.description
-                        ? `<span class="card-class-description">${cls.description}</span>`
-                        : ""
-                }
-            </div>
-            <div class="card-class-time">${timeFormatted}</div>
-        </div>
-    
-`;
+					<div class="card-calendar-col">
+						<div class="calendar-month">${new Date(cls.date).toLocaleString("default", {
+							month: "short",
+						})}</div>
+						<div class="calendar-day">${new Date(cls.date).getDate()}</div>
+						<div class="calendar-weekday">${new Date(cls.date).toLocaleString("default", {
+							weekday: "short",
+						})}</div>
+					</div>
+					<div class="card-info-col ${isPast ? "past-class" : ""}">
+						<div class="class-name-row">
+							<span class="card-class-name">${cls.name}</span>
+							${
+								cls.description
+									? `<span class="card-class-description">${cls.description}</span>`
+									: ""
+							}
+						</div>
+						<div class="card-class-time">${timeFormatted}</div>
+					</div>`;
 
 				dayContainer.appendChild(slot);
 			});
 		}
 
-		// 🟧 Add placeholder slots only if there are some real classes
 		if (dayClasses.length > 0) {
 			const numPlaceholders = 7 - dayClasses.length;
 			for (let i = 0; i < numPlaceholders; i++) {
 				const placeholder = document.createElement("div");
 				placeholder.className = "admin-class-slot admin-slot-placeholder";
 				placeholder.innerHTML = `
-      <div class="admin-card-calendar-col">
-          <div class="admin-calendar-month">${monthName}</div>
-          <div class="admin-calendar-day">${dayNum}</div>
-          <div class="admin-calendar-weekday">${dayName}</div>
-      </div>
-      <div class="admin-card-info-col">
-          <div class="admin-card-class-name placeholder-text">Open Slot</div>
-          <div class="admin-card-time placeholder-text">Placeholder text</div>
-      </div>
-    `;
+					<div class="admin-card-calendar-col">
+						<div class="admin-calendar-month">${monthName}</div>
+						<div class="admin-calendar-day">${dayNum}</div>
+						<div class="admin-calendar-weekday">${dayName}</div>
+					</div>
+					<div class="admin-card-info-col">
+						<div class="admin-card-class-name placeholder-text">Open Slot</div>
+						<div class="admin-card-time placeholder-text">Placeholder text</div>
+					</div>`;
 				dayContainer.appendChild(placeholder);
 			}
 		}
@@ -368,7 +346,7 @@ document.addEventListener("click", async (e) => {
 
 	// ❌ Prevent interaction if it's a past class
 	if (slot.classList.contains("past-class")) {
-		showToast("You cannot interact with a past class.", "error");
+		showToast("Class is no longer available.", "error");
 		return;
 	}
 

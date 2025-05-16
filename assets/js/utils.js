@@ -251,6 +251,7 @@ export async function renderUserBookings() {
 </div>
 <div class="card-class-time">${formattedTime}</div>
 				</div>
+				<i class="fa-solid fa-trash booking-trash-icon"></i>
 			
 		`;
 

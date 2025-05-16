@@ -3714,8 +3714,9 @@ input[type="button"]:disabled,
 
 /* Past classes */
 
-.past-class {
+.past-class .card-info-col {
 	opacity: 0.4;
+	text-decoration: line-through;
 }
 
 /* Admin Panel Delete Day Button */
@@ -3806,6 +3807,7 @@ body.admin .admin-actions {
 }
 
 /* /* Available view */
+
 .available-view .class-slot::before {
 	content: "";
 	position: absolute;
@@ -3827,8 +3829,20 @@ body.admin .admin-actions {
 	background-color: #4caf50;
 }
 
-/* RED right bar for confirmed bookings in the bookings-view */
-.bookings-view .confirmed-booking::before {
+/* GREEN left bar for confirmed bookings in the available-view */
+
+.available-view .past-class::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 5px;
+	height: 100%;
+	background-color: #ffa20000;
+}
+
+/* GREEN right bar for confirmed bookings in the bookings-view */
+/* .bookings-view .confirmed-booking::before {
 	content: "";
 	position: absolute;
 	top: 0;
@@ -3836,6 +3850,20 @@ body.admin .admin-actions {
 	width: 5px;
 	height: 100%;
 	background-color: #4caf50;
+} */
+
+/* Trash can Icon */
+
+.booking-trash-icon {
+	color: var(--dark4);
+	font-size: 1rem;
+	cursor: pointer;
+	z-index: 2;
+	align-self: center;
+	justify-content: end;
+	flex: 1;
+	display: flex !important;
+	padding-right: 1em;
 }
 
 /* New Card Styling */
@@ -4005,12 +4033,6 @@ body.admin .admin-actions {
 	color: #222;
 }
 
-.card-class-description {
-	font-size: 0.85rem;
-	color: #555;
-	font-weight: 500;
-}
-
 .card-class-time {
 	font-size: 0.75rem;
 	font-weight: 500;
@@ -4041,6 +4063,9 @@ body.admin .admin-actions {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	font-size: 0.85rem;
+	color: #555;
+	font-weight: 500;
 }
 
 .card-class-time {
@@ -4199,6 +4224,9 @@ body.admin .admin-actions {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	font-size: 0.85rem;
+	color: #555;
+	font-weight: 500;
 }
 
 .admin-card-time {
