@@ -3708,8 +3708,6 @@ input[type="button"]:disabled,
 }
 
 .today-box {
-	border: 2px solid var(--accent2);
-
 	box-shadow: 0 0 10px var(--accent2);
 	background-color: #fff;
 }
@@ -4221,7 +4219,7 @@ body.admin .admin-actions {
 
 /* Enough to cover full content height */
 .collapsible-section.expanded {
-	max-height: 1000px;
+	max-height: 2000px;
 }
 
 .collapsible-section h3 {

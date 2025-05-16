@@ -171,7 +171,7 @@ function renderGroupedClassColumns(allClasses) {
 			for (let i = 1; i < 6; i++) {
 				const slot = document.createElement("div");
 				slot.className = "empty-slot";
-				slot.style.height = "60px";
+
 				dayContainer.appendChild(slot);
 			}
 		} else {
@@ -227,23 +227,25 @@ function renderGroupedClassColumns(allClasses) {
 			});
 		}
 
-		// 🟧 Add placeholder slots if needed
-		const numPlaceholders = 7 - dayClasses.length;
-		for (let i = 0; i < numPlaceholders; i++) {
-			const placeholder = document.createElement("div");
-			placeholder.className = "admin-class-slot admin-slot-placeholder";
-			placeholder.innerHTML = `
-        <div class="admin-card-calendar-col">
-            <div class="admin-calendar-month">${monthName}</div>
-            <div class="admin-calendar-day">${dayNum}</div>
-            <div class="admin-calendar-weekday">${dayName}</div>
-        </div>
-        <div class="admin-card-info-col">
-            <div class="admin-card-class-name placeholder-text">Open Slot</div>
-            <div class="admin-card-time placeholder-text">Placeholder text</div>
-        </div>
+		// 🟧 Add placeholder slots only if there are some real classes
+		if (dayClasses.length > 0) {
+			const numPlaceholders = 7 - dayClasses.length;
+			for (let i = 0; i < numPlaceholders; i++) {
+				const placeholder = document.createElement("div");
+				placeholder.className = "admin-class-slot admin-slot-placeholder";
+				placeholder.innerHTML = `
+      <div class="admin-card-calendar-col">
+          <div class="admin-calendar-month">${monthName}</div>
+          <div class="admin-calendar-day">${dayNum}</div>
+          <div class="admin-calendar-weekday">${dayName}</div>
+      </div>
+      <div class="admin-card-info-col">
+          <div class="admin-card-class-name placeholder-text">Open Slot</div>
+          <div class="admin-card-time placeholder-text">Placeholder text</div>
+      </div>
     `;
-			dayContainer.appendChild(placeholder);
+				dayContainer.appendChild(placeholder);
+			}
 		}
 
 		container.appendChild(dayContainer);
