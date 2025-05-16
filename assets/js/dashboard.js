@@ -138,15 +138,22 @@ function renderGroupedClassColumns(allClasses) {
             </div>
             <button class="day-scroll scroll-right">&#10095;</button>
         </div>
+
+		<div class="inner">
+      <ul class="legend">
+        
+<li class="legend-blue">This class has available spots. </li>
+<li class="legend-green">You have successfully booked this class.</li>
+<li class="legend-black">Class is no longer available.</li>
+
+
+      </ul>
+    </div>
         ${
 					userRole === "admin"
 						? `
 
-                        <div class="admin-actions" data-date="${date}">
-    <i class="fa-solid fa-circle-plus day-add admin-icon" data-date="${date}" title="Add new class to this day"></i>
-    <i class="fa-solid fa-calendar-plus month-generate admin-icon" data-date="${date}" title="Generate schedule for this month"></i>
-    <i class="fa-solid fa-trash day-delete admin-icon" data-date="${date}" title="Delete all classes on this day"></i>
-</div>
+
        `
 						: ""
 				}`;

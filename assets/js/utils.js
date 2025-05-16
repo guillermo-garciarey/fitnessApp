@@ -228,6 +228,8 @@ export async function renderUserBookings() {
 		wrapper.dataset.classId = cls.id;
 
 		wrapper.innerHTML = `
+
+		
 			
 				<div class="card-calendar-col">
 					<div class="calendar-month">${new Date(cls.date).toLocaleString("default", {
