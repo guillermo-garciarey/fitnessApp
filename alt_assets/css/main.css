@@ -41,6 +41,51 @@
 	--forest-muted-300: #aebcb6;
 	--forest-muted-400: #768d84;
 	--forest-muted-500: #4b5d54;
+
+	/* 🔴 RED - Error, Destructive */
+	--color-red-100: #fdecea;
+	--color-red-200: #f8c1bd;
+	--color-red-300: #e85c50;
+	--color-red-400: #c0392b;
+
+	/* 🟠 AMBER - Warning, Attention */
+	--color-amber-100: #fff8e1;
+	--color-amber-200: #ffe082;
+	--color-amber-300: #ffca28;
+	--color-amber-400: #ffa000;
+
+	/* 🟢 GREEN - Success, Confirmation */
+	--color-green-100: #e6f4ea;
+	--color-green-200: #a5d6a7;
+	--color-green-300: #66bb6a;
+	--color-green-400: #388e3c;
+
+	/* Grayscale — inspired by Slack's UI background, sidebar, modals */
+
+	--slack-gray-50: #f8f8f8;
+	--slack-gray-100: #f3f3f3;
+	--slack-gray-200: #e8e8e8;
+	--slack-gray-300: #d5d5d5;
+	--slack-gray-400: #b3b3b3;
+	--slack-gray-500: #8a8a8a;
+	--slack-gray-600: #6b6b6b;
+	--slack-gray-700: #4a4a4a;
+	--slack-gray-800: #2e2e2e;
+	--slack-gray-900: #1a1a1a;
+
+	/* Primary — Slack’s branding purple-indigo */
+	--slack-primary-100: #eae6ff;
+	--slack-primary-200: #c5baff;
+	--slack-primary-300: #8e7dff;
+	--slack-primary-400: #6e5dc6;
+	--slack-primary-500: #4a154b;
+
+	/* Accent — Slack’s teal/cyan UI highlights */
+	--slack-accent-100: #e0f7f7;
+	--slack-accent-200: #b2ebf2;
+	--slack-accent-300: #4dd0e1;
+	--slack-accent-400: #26c6da;
+	--slack-accent-500: #007a78;
 }
 
 /*
@@ -3515,10 +3560,14 @@ input[type="button"]:disabled,
 /* Booking Calendar */
 
 .calendar-container {
-	margin: auto;
-	padding: 1rem;
+	margin: 0 0 2.25em 0;
+}
 
-	border-radius: 4px;
+#month-label {
+	color: var(--cream-200);
+	text-transform: uppercase;
+	letter-spacing: 0.25em;
+	font-weight: 600;
 }
 
 .calendar-header {
@@ -3541,32 +3590,78 @@ input[type="button"]:disabled,
 	text-align: center;
 	font-weight: bold;
 	padding-bottom: 0.5rem;
+	color: var(--cream-200);
 }
 
 .day-cell {
-	background: transparent;
-
-	border-radius: 4px;
-	padding: 0.25rem;
 	position: relative;
+	aspect-ratio: 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	border-radius: 4px;
+	background: transparent;
 	text-align: center;
 }
 
-.day-cell.selected {
-	background-color: #222;
-	color: #fff;
+.day-cell:hover {
+	background-color: var(--gray-100);
+	cursor: pointer;
+	border-radius: 4px;
+	transition: background-color 0.2s ease;
 }
 
 .day-number {
-	font-weight: bold;
+	font-size: 0.95rem;
+	aspect-ratio: 1;
+	font-size: 0.95rem;
+	line-height: 1;
+}
+
+.day-cell.selected {
+	background-color: var(--color-amber-400);
+	border-radius: 50%;
+}
+
+.day-cell.selected .day-number {
+	color: var(--gray-50) !important;
+}
+
+.day-cell.no-classes {
+	opacity: 0.75;
+	color: var(--gray-400);
+	color: var(--color-red-300);
 }
 
 .dot {
 	width: 4px;
 	height: 4px;
 	border-radius: 50%;
-	background: var(--cream-300);
 	position: absolute;
 	left: 50%;
+	bottom: 0;
 	transform: translateX(-50%);
+	transition: transform 0.2s ease;
+}
+
+.day-cell:hover .dot {
+	transform: scale(1.2) translateX(-50%);
+}
+
+.green-dot {
+	background-color: var(--forest-400);
+	background-color: limegreen;
+
+	z-index: 2;
+}
+
+.amber-dot {
+	background-color: transparent;
+
+	z-index: 1;
+}
+
+.day-cell.selected .dot {
+	background-color: transparent;
 }

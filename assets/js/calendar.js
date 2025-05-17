@@ -1,11 +1,19 @@
 // calendar.js
 
-import { groupClassesByDate, getAvailableClasses } from "./utils.js";
+import {
+	getSession,
+	getUserProfile,
+	getUserBookings,
+	getAvailableClasses,
+	isClassBooked,
+	groupClassesByDate,
+} from "./utils.js";
 
 let viewDate = new Date();
 let selectedDate = null;
 let allClasses = [];
 let groupedByDate = {};
+let userBookings = [];
 
 const calendarBody = document.getElementById("calendar");
 const monthLabel = document.getElementById("month-label");
@@ -43,15 +51,42 @@ function renderCalendar() {
 		const dateObj = new Date(year, month, day);
 		const dateStr = formatDate(dateObj);
 
-		cell.innerHTML = `<div class="day-number">${day}</div>`;
+		const number = document.createElement("div");
+		number.className = "day-number";
+		number.textContent = day;
+		cell.appendChild(number);
 
 		const classes = groupedByDate[dateStr] || [];
+
+		let hasBooking = false;
+		let hasOtherClass = false;
+
+		// Sets a flag for user bookings, filter classes or no classes
+		if (classes.length === 0) {
+			cell.classList.add("no-classes");
+		}
 		classes.forEach((cls) => {
-			const dot = document.createElement("div");
-			dot.className = "dot";
-			dot.title = `${cls.name} @ ${cls.time}`;
-			cell.appendChild(dot);
+			if (userBookings.includes(cls.id)) {
+				hasBooking = true;
+			} else {
+				hasOtherClass = true;
+			}
 		});
+
+		// First, green dot for booking
+
+		if (hasOtherClass) {
+			console.log("No bookings on", dateStr); // ✅ check this
+			const amberDot = document.createElement("div");
+			amberDot.classList.add("dot", "amber-dot");
+			cell.appendChild(amberDot);
+		}
+		if (hasBooking) {
+			console.log("Booking on", dateStr); // ✅ check this
+			const greenDot = document.createElement("div");
+			greenDot.classList.add("dot", "green-dot");
+			cell.appendChild(greenDot);
+		}
 
 		cell.addEventListener("click", () => {
 			selectedDate = dateStr;
@@ -65,26 +100,10 @@ function renderCalendar() {
 	}
 }
 
-// Connect buttons to navigation
-document.getElementById("next-month").addEventListener("click", goToNextMonth);
-document.getElementById("prev-month").addEventListener("click", goToPrevMonth);
-// Optional: today button
-// document.getElementById("today-btn").addEventListener("click", goToToday);
-
-// Load calendar with class data
-(async () => {
-	const classes = await getAvailableClasses();
-
-	// Make sure your classes include a .date (YYYY-MM-DD) and .time field
-	// Optional: sort them if needed
-	const sorted = classes.sort((a, b) => a.date.localeCompare(b.date));
-
-	loadCalendar(sorted);
-})();
-
-export async function loadCalendar(classes) {
+export async function loadCalendar(classes, bookings = []) {
 	allClasses = classes;
 	groupedByDate = groupClassesByDate(allClasses);
+	userBookings = bookings;
 	updateMonthLabel();
 	renderCalendar();
 }
@@ -101,9 +120,22 @@ export function goToPrevMonth() {
 	renderCalendar();
 }
 
-export function goToToday() {
-	viewDate = new Date();
-	selectedDate = formatDate(viewDate);
-	updateMonthLabel();
-	renderCalendar();
-}
+// Connect buttons to navigation
+document.getElementById("next-month").addEventListener("click", goToNextMonth);
+document.getElementById("prev-month").addEventListener("click", goToPrevMonth);
+
+// Load calendar with class data
+(async () => {
+	const session = await getSession();
+	const userId = session?.user?.id;
+
+	const bookings = userId ? await getUserBookings(userId) : [];
+	console.log("Bookings:", bookings); // should be array of class IDs
+
+	const classes = await getAvailableClasses();
+	console.log("Classes:", classes); // should include { id, date, time, etc. }
+
+	const sorted = classes.sort((a, b) => a.date.localeCompare(b.date));
+
+	loadCalendar(sorted, bookings);
+})();
