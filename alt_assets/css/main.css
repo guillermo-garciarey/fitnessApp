@@ -3600,7 +3600,7 @@ input[type="button"]:disabled,
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
-	border-radius: 4px;
+	border-radius: 50%;
 	background: transparent;
 	text-align: center;
 }
@@ -3608,7 +3608,7 @@ input[type="button"]:disabled,
 .day-cell:hover {
 	background-color: var(--gray-100);
 	cursor: pointer;
-	border-radius: 4px;
+
 	transition: background-color 0.2s ease;
 }
 
@@ -3625,7 +3625,7 @@ input[type="button"]:disabled,
 }
 
 .day-cell.selected .day-number {
-	color: var(--gray-50) !important;
+	color: var(--cream-100) !important;
 }
 
 .day-cell.no-classes {
@@ -3650,8 +3650,7 @@ input[type="button"]:disabled,
 }
 
 .green-dot {
-	background-color: var(--forest-400);
-	background-color: limegreen;
+	background-color: var(--color-amber-400);
 
 	z-index: 2;
 }
@@ -3664,4 +3663,19 @@ input[type="button"]:disabled,
 
 .day-cell.selected .dot {
 	background-color: transparent;
+}
+
+.calendar-filter {
+	text-align: center;
+	margin-bottom: 1rem;
+}
+
+#class-filter {
+	padding: 0.4rem 0.6rem;
+	border-radius: 4px;
+	border: 0.5px solid;
+	background-color: transparent;
+	text-align: center;
+	font-weight: 500;
+	appearance: none;
 }
