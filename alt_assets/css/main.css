@@ -3011,7 +3011,7 @@ input[type="button"]:disabled,
 /* Footer */
 
 #footer {
-	background: #fafafa;
+	background: var(--gray-1100);
 	border-top: 0;
 	color: #c0c0c0;
 	overflow: hidden;
