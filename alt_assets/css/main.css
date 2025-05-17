@@ -2517,7 +2517,7 @@ ul.feature-icons {
 }
 
 ul.feature-icons li {
-	text-decoration: none;
+	text-decoration: underline dotted;
 	display: inline-block;
 	margin: 0 0 1.6875em 0;
 	padding: 0.35em 0 0 3.5em;
@@ -2540,9 +2540,9 @@ ul.feature-icons li:before {
 }
 
 ul.feature-icons li:before {
-	background: var(--cream-300);
+	/* background: var(--gray-1000); */
 	border-radius: 100%;
-	color: var(--gray-1000);
+	color: var(--cream-300);
 	display: block;
 	height: 2.5em;
 	left: 0;
@@ -2552,29 +2552,6 @@ ul.feature-icons li:before {
 	top: 0;
 	width: 2.5em;
 }
-
-/* ul.feature-icons li:before {
-	-moz-osx-font-smoothing: grayscale;
-	-webkit-font-smoothing: antialiased;
-	display: block;
-	font-style: normal;
-	font-variant: normal;
-	text-rendering: auto;
-	text-transform: none !important;
-
-	font-weight: 900;
-
-	background: var(--cream-300);
-	border-radius: 100%;
-	color: var(--gray-1000);
-	height: 2.5em;
-	width: 2.5em;
-	line-height: 2.5em;
-	position: absolute;
-	left: 0;
-	top: 0;
-	text-align: center;
-} */
 
 /* Icons */
 
