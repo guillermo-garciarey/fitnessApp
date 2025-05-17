@@ -16,13 +16,13 @@ import { getSession, getUserProfile } from "./utils.js";
 	const surname = profile?.surname || "Surname";
 	const avatarUrl = profile?.avatar_url || "alt_images/default-avatar.jpg";
 
-	// ✅ Set avatar image
+	// Set avatar image
 	const avatarImg = document.getElementById("avatar-preview");
 	if (avatarImg) {
 		avatarImg.src = avatarUrl;
 	}
 
-	// ✅ Set name in both logo and titleBar
+	// Set name in both logo and titleBar
 	const logoLink = document.querySelector("#logo a");
 	const titleName = document.querySelector("#titleBar .title");
 	if (logoLink) logoLink.textContent = name + " " + surname;
