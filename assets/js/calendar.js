@@ -57,7 +57,7 @@ function renderCalendar() {
 	const firstDay = new Date(year, month, 1);
 	const daysInMonth = new Date(year, month + 1, 0).getDate();
 	const rawOffset = firstDay.getDay();
-	const startOffset = (rawOffset + 5) % 7;
+	const startOffset = (rawOffset + 6) % 7;
 
 	for (let i = 0; i < startOffset; i++) {
 		const empty = document.createElement("div");
@@ -78,6 +78,9 @@ function renderCalendar() {
 		cell.appendChild(number);
 
 		const classes = groupedByDate[dateStr] || [];
+		if (classes.length === 0) {
+			cell.classList.add("no-classes");
+		}
 
 		const selectedFilter = document.getElementById("class-filter").value;
 
