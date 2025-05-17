@@ -80,3 +80,28 @@ export async function getAllBookings() {
 
 	return data;
 }
+
+// Group classes by date (e.g., '2024-05-10')
+export function groupClassesByDate(classes) {
+	const grouped = {};
+	classes.forEach((cls) => {
+		const dateKey = cls.date.split("T")[0];
+		if (!grouped[dateKey]) grouped[dateKey] = [];
+		grouped[dateKey].push(cls);
+	});
+	return grouped;
+}
+
+// Check if a class is booked by the user
+export function isClassBooked(classId, userBookings) {
+	return userBookings.includes(classId);
+}
+
+// Get unique class types from all classes (useful for filters)
+export function getUniqueClassTypes(classes) {
+	const types = new Set();
+	classes.forEach((cls) => {
+		if (cls.type) types.add(cls.type);
+	});
+	return Array.from(types);
+}

@@ -3511,3 +3511,62 @@ input[type="button"]:disabled,
 	border-radius: 50%;
 	object-fit: cover;
 }
+
+/* Booking Calendar */
+
+.calendar-container {
+	margin: auto;
+	padding: 1rem;
+
+	border-radius: 4px;
+}
+
+.calendar-header {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
+	font-size: 1.25rem;
+	margin-bottom: 1rem;
+}
+
+.calendar-header-row,
+.calendar-body {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	gap: 0.5rem;
+}
+
+.day-header {
+	text-align: center;
+	font-weight: bold;
+	padding-bottom: 0.5rem;
+}
+
+.day-cell {
+	background: transparent;
+
+	border-radius: 4px;
+	padding: 0.25rem;
+	position: relative;
+	text-align: center;
+}
+
+.day-cell.selected {
+	background-color: #222;
+	color: #fff;
+}
+
+.day-number {
+	font-weight: bold;
+}
+
+.dot {
+	width: 4px;
+	height: 4px;
+	border-radius: 50%;
+	background: var(--cream-300);
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+}

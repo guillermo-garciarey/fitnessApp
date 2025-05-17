@@ -1,5 +1,12 @@
 import { supabase } from "./supabaseClient.js";
-import { getSession, getUserProfile } from "./utils.js";
+import {
+	getSession,
+	getUserProfile,
+	getUserBookings,
+	getAvailableClasses,
+	isClassBooked,
+	groupClassesByDate,
+} from "./utils.js";
 
 // Check for user login & set up profile information (name & avatar)
 (async () => {
