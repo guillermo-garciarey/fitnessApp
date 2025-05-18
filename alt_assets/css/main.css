@@ -3852,7 +3852,7 @@ input[type="button"]:disabled,
 .fade-down {
 	position: fixed;
 	bottom: 10vh;
-	height: 10vh;
+	height: 50vh;
 	width: 100%;
 	pointer-events: none;
 	z-index: 997;
