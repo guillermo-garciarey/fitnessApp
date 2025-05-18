@@ -211,6 +211,72 @@
 						</ul>
 					</div>
 				</section>
+				<section id="">
+					<div class="container">
+						<h3>Transactions</h3>
+						<p>
+							Users with a negative balance are visible by default. Searching
+							allows for all users regardless of balance to appear.
+						</p>
+
+						<div class="balance-table-container">
+							<div class="table-search-bar">
+								<input
+									type="text"
+									id="userSearch"
+									placeholder="Search users..."
+								/>
+								<i class="fa-solid fa-magnifying-glass"></i>
+							</div>
+
+							<table class="balance-table">
+								<thead>
+									<tr>
+										<th>Avatar</th>
+										<th>Name</th>
+										<th>Balance</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody id="balance-table-body">
+									<!-- Example row -->
+									<tr
+										data-name="alice murphy"
+										data-credit="3"
+									>
+										<td>
+											<div
+												class="table_avatar"
+												style="background: #6c63ff"
+											>
+												A
+											</div>
+										</td>
+										<td>Alice M.</td>
+										<td class="balance">3</td>
+										<td><span class="placeholder-icon">⚙️</span></td>
+									</tr>
+									<tr
+										data-name="john smith"
+										data-credit="-2"
+									>
+										<td>
+											<div
+												class="table_avatar"
+												style="background: #ff6f61"
+											>
+												J
+											</div>
+										</td>
+										<td>John S.</td>
+										<td class="balance negative">-2</td>
+										<td><span class="placeholder-icon">⚙️</span></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</section>
 
 				<!-- Three -->
 				<section id="three">
@@ -391,6 +457,10 @@
 		<script
 			type="module"
 			src="assets/js/agenda.js"
+		></script>
+		<script
+			src="assets/js/transactions.js"
+			type="module"
 		></script>
 	</body>
 </html>
