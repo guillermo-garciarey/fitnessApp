@@ -55,7 +55,7 @@ function populateClassFilter(classList) {
 	});
 }
 
-function renderCalendar() {
+export function renderCalendar() {
 	calendarBody.innerHTML = "";
 
 	const year = viewDate.getFullYear();

@@ -7,7 +7,10 @@ import {
 	getUserBookings,
 	showToast,
 	confirmAction,
+	getAvailableClasses,
 } from "./utils.js";
+
+import { loadCalendar, renderCalendar } from "./calendar.js";
 
 let allClasses = [];
 let userBookings = [];
@@ -164,6 +167,7 @@ export function renderAgenda(dateStr) {
 
 			// 🔄 Re-render agenda
 			renderAgenda(selectedDate);
+			loadCalendar(allClasses, userBookings);
 			console.log("📨 Booking triggered for", classId, "at", Date.now());
 		});
 		agendaClickListenerAttached = true;
@@ -280,6 +284,7 @@ export async function bookClass(classId) {
 
 		// ✅ Done
 		showToast("Class booked successfully!", "success");
+		loadCalendar(allClasses, userBookings);
 		renderAgenda(selectedDate); // Refresh agenda UI
 	} catch (err) {
 		showToast("Something went wrong.", "error");
@@ -354,7 +359,7 @@ export async function cancelBooking(classId) {
 			return;
 		}
 
-		// 4. Decrease class's booked_slots
+		// 4. Update class's booked_slots
 		const { data: classData, error: fetchError } = await supabase
 			.from("classes")
 			.select("booked_slots")
@@ -367,22 +372,24 @@ export async function cancelBooking(classId) {
 			return;
 		}
 
-		const newBookedCount = Math.max((classData.booked_slots || 1) - 1, 0);
+		const newCount = Math.max(data.booked_slots - 1, 0);
 
 		const { error: updateError } = await supabase
 			.from("classes")
-			.update({ booked_slots: newBookedCount })
+			.update({ booked_slots: newCount })
 			.eq("id", classId);
 
 		if (updateError) {
-			showToast("Cancellation failed while updating class.", "error");
-			console.error("❌ Class update failed:", updateError.message);
-			return;
+			console.error("❌ Failed to update booked_slots:", updateError.message);
+			showToast("Failed to update booked_slots.", "error");
+		} else {
+			console.log("✅ booked_slots updated to:", newCount);
 		}
 
 		// ✅ Done
 		showToast("Booking cancelled and credit refunded!", "success");
-		renderAgenda(selectedDate);
+		loadCalendar(allClasses, userBookings);
+		renderAgenda(selectedDate); // Refresh agenda UI
 	} catch (err) {
 		showToast("Something went wrong during cancellation.", "error");
 		console.error("❌ Unexpected cancel error:", err.message);
@@ -393,12 +400,24 @@ export async function cancelBooking(classId) {
 
 // Admin Modal
 
-// Close Modal
-document.getElementById("admin-modal-close").addEventListener("click", () => {
-	document.getElementById("admin-modal").classList.add("hidden");
-	renderAgenda(selectedDate); // ✅ re-render day after closing modal
-	loadCalendar(allClasses, userBookings); // 🔁 Refresh calendar view (dots, etc.)
-});
+document
+	.getElementById("admin-modal-close")
+	.addEventListener("click", async () => {
+		document.getElementById("admin-modal").classList.add("hidden");
+
+		// 🔄 Re-fetch latest bookings and classes
+		const session = await getSession();
+		const userId = session?.user?.id;
+
+		if (!userId) return;
+
+		allClasses = await getAvailableClasses();
+		userBookings = await getUserBookings(userId);
+
+		// 🔁 Refresh views with fresh data
+		renderAgenda(selectedDate);
+		loadCalendar(allClasses, userBookings);
+	});
 
 export let currentClassId = null;
 
@@ -503,6 +522,22 @@ document
 				delta: 1,
 			});
 
+			// 4. Decrement booked_slots
+			const { data: classData, error: fetchError } = await supabase
+				.from("classes")
+				.select("booked_slots")
+				.eq("id", currentClassId)
+				.single();
+
+			if (!fetchError && classData) {
+				const newBookedCount = Math.max((classData.booked_slots || 0) - 1, 0);
+
+				await supabase
+					.from("classes")
+					.update({ booked_slots: newBookedCount })
+					.eq("id", currentClassId);
+			}
+
 			showToast("User removed and refunded.", "success");
 
 			// 🔁 Refresh modal content
@@ -510,5 +545,69 @@ document
 		} catch (err) {
 			console.error("❌ Failed to remove user:", err.message);
 			showToast("Error removing user.", "error");
+		}
+	});
+
+// Add user to class (Admin only)
+
+document
+	.getElementById("admin-add-user")
+	.addEventListener("click", async () => {
+		const userId = document.getElementById("admin-user-select").value;
+
+		if (!userId) {
+			showToast?.("Please select a user to add.", "warning");
+			return;
+		}
+
+		const confirmed = await confirmAction(
+			"Add this user to the class and deduct 1 credit?"
+		);
+		if (!confirmed) return;
+
+		try {
+			// 1. Add booking
+			await supabase.from("bookings").insert({
+				user_id: userId,
+				class_id: currentClassId,
+			});
+
+			// 2. Subtract 1 credit in payments
+			await supabase.from("payments").insert({
+				user_id: userId,
+				credits: -1,
+				reason: "Admin booking",
+				date: new Date().toISOString().split("T")[0],
+			});
+
+			// 3. Update profile credit
+			await supabase.rpc("adjust_user_credits", {
+				uid: userId,
+				delta: -1,
+			});
+
+			// 4. Increment class booked_slots
+			const { data: classData, error: fetchError } = await supabase
+				.from("classes")
+				.select("booked_slots")
+				.eq("id", currentClassId)
+				.single();
+
+			if (fetchError) throw new Error(fetchError.message);
+
+			const newBookedCount = (classData.booked_slots || 0) + 1;
+
+			await supabase
+				.from("classes")
+				.update({ booked_slots: newBookedCount })
+				.eq("id", currentClassId);
+
+			showToast("User added and charged 1 credit.", "success");
+
+			// 🔁 Refresh modal content
+			openAdminModal(currentClassId);
+		} catch (err) {
+			console.error("❌ Error adding user to class:", err.message);
+			showToast("Failed to add user to class.", "error");
 		}
 	});
