@@ -3758,7 +3758,7 @@ input[type="button"]:disabled,
 
 #toast-container {
 	position: fixed;
-	bottom: 5rem;
+	bottom: 15rem;
 	left: 50%;
 	transform: translateX(-50%);
 	z-index: 9999;
@@ -3854,7 +3854,16 @@ input[type="button"]:disabled,
 	height: 15vh;
 	width: 100%;
 	pointer-events: none;
-	z-index: 997;
+}
+
+.fade-down::after {
+	content: "";
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 15vh;
+	pointer-events: none;
 	background: linear-gradient(
 		to bottom,
 		rgba(var(--gray-1100-rgb), 0) 0%,
