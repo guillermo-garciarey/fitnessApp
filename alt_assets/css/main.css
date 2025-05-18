@@ -3561,11 +3561,6 @@ input[type="button"]:disabled,
 
 .calendar-container {
 	margin: 0 0 2.25em 0;
-	justify-self: center;
-	display: flex;
-	flex-wrap: nowrap;
-	flex-direction: column;
-	align-items: center;
 }
 
 #month-label {
@@ -3689,7 +3684,6 @@ input[type="button"]:disabled,
 	border-top: solid 3px #f4f4f4;
 	padding-top: 2.25em;
 	margin: 0 0 2.25em 0;
-	justify-self: center;
 }
 
 .agenda-card {
@@ -3756,37 +3750,3 @@ input[type="button"]:disabled,
 }
 
 /* Dashboard Container Mobile & Desktop */
-
-@media screen and (min-width: 736px) {
-	.dashboard_wrapper {
-		/* display: flex;
-		flex-direction: row;
-		gap: 2.25em; */
-	}
-
-	.agenda-container {
-		width: 50%;
-
-		/* padding-top: 0; */
-	}
-
-	.agenda-card {
-		/* padding: 0.5rem;
-		margin-bottom: 0.5rem; */
-	}
-
-	.agenda-participants {
-		/* display: none; */
-	}
-
-	.agenda-description {
-		/* margin-left: 1rem;
-		margin-bottom: 0; */
-		/* display: none; */
-	}
-
-	.calendar-container {
-		width: 50%;
-		/* justify-self: center; */
-	}
-}
