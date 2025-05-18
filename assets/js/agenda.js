@@ -199,6 +199,24 @@ export async function bookClass(classId) {
 			return;
 		}
 
+		// 2.5 Update profile credits (add -1)
+		const { error: creditUpdateError } = await supabase.rpc(
+			"adjust_user_credits",
+			{
+				uid: userId,
+				delta: -1,
+			}
+		);
+
+		if (creditUpdateError) {
+			showToast("Booking failed while updating credits.", "error");
+			console.error(
+				"❌ Failed to update profile credits:",
+				creditUpdateError.message
+			);
+			return;
+		}
+
 		// 3. Fetch current class booked_slots
 		const { data: classData, error: fetchError } = await supabase
 			.from("classes")
@@ -240,17 +258,24 @@ export async function bookClass(classId) {
 	}
 }
 
-// Cancel Booking Function
+// Cancellation
 
-let cancelInProgress = new Set();
+let cancelInProgress = new Set(); // Optional safety guard
 
 export async function cancelBooking(classId) {
+	if (cancelInProgress.has(classId)) {
+		console.log("🚫 Cancellation already in progress for", classId);
+		return;
+	}
+
+	cancelInProgress.add(classId);
+
 	try {
 		const session = await getSession();
 		const userId = session?.user?.id;
 		if (!userId) throw new Error("Not logged in");
 
-		// 1. Remove booking row
+		// 1. Remove the booking
 		const { error: deleteError } = await supabase
 			.from("bookings")
 			.delete()
@@ -258,41 +283,59 @@ export async function cancelBooking(classId) {
 			.eq("class_id", classId);
 
 		if (deleteError) {
+			showToast("Cancellation failed.", "error");
 			console.error("❌ Booking delete failed:", deleteError.message);
-			showToast("Cancel failed.", "error");
 			return;
 		}
 
-		// 2. Add payment (+1 credit)
+		// 2. Insert positive payment row
 		const { error: paymentError } = await supabase.from("payments").insert([
 			{
 				user_id: userId,
 				credits: 1,
-				reason: "Cancelled Booking",
+				reason: "Booking Cancelled",
 				date: new Date().toISOString().split("T")[0],
 			},
 		]);
 
 		if (paymentError) {
+			showToast("Cancellation failed during refund.", "error");
 			console.error("❌ Payment insert failed:", paymentError.message);
-			showToast("Cancel failed (payment error).", "error");
 			return;
 		}
 
-		// 3. Decrement booked_slots
+		// 3. Update profile credits (+1)
+		const { error: creditUpdateError } = await supabase.rpc(
+			"adjust_user_credits",
+			{
+				uid: userId,
+				delta: 1,
+			}
+		);
+
+		if (creditUpdateError) {
+			showToast("Cancellation failed while updating credits.", "error");
+			console.error(
+				"❌ Failed to update profile credits:",
+				creditUpdateError.message
+			);
+			return;
+		}
+
+		// 4. Decrease class's booked_slots
 		const { data: classData, error: fetchError } = await supabase
 			.from("classes")
 			.select("booked_slots")
 			.eq("id", classId)
 			.single();
 
-		if (fetchError) {
-			console.error("❌ Fetch class failed:", fetchError.message);
-			showToast("Cancel failed (class fetch).", "error");
+		if (fetchError || !classData) {
+			showToast("Cancellation failed while syncing class slots.", "error");
+			console.error("❌ Could not fetch class:", fetchError?.message);
 			return;
 		}
 
-		const newBookedCount = Math.max((classData?.booked_slots || 1) - 1, 0);
+		const newBookedCount = Math.max((classData.booked_slots || 1) - 1, 0);
 
 		const { error: updateError } = await supabase
 			.from("classes")
@@ -300,17 +343,18 @@ export async function cancelBooking(classId) {
 			.eq("id", classId);
 
 		if (updateError) {
+			showToast("Cancellation failed while updating class.", "error");
 			console.error("❌ Class update failed:", updateError.message);
-			showToast("Cancel failed (class update).", "error");
 			return;
 		}
 
-		showToast("Booking cancelled.");
+		// ✅ Done
+		showToast("Booking cancelled and credit refunded!", "success");
 		renderAgenda(selectedDate);
 	} catch (err) {
-		console.error("❌ Unexpected cancel error:", err);
-		showToast("Something went wrong.", "error");
+		showToast("Something went wrong during cancellation.", "error");
+		console.error("❌ Unexpected cancel error:", err.message);
 	} finally {
-		cancelInProgress.delete(classId); // Always release lock
+		cancelInProgress.delete(classId);
 	}
 }

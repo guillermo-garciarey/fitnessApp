@@ -2623,7 +2623,7 @@ ul.icons li .icon:before {
 
 /* Table */
 
-.table-wrapper {
+/* .table-wrapper {
 	-webkit-overflow-scrolling: touch;
 	overflow-x: auto;
 }
@@ -2687,7 +2687,7 @@ table.alt thead {
 
 table.alt tfoot {
 	border-top: 0;
-}
+} */
 
 /* Button */
 
@@ -3877,69 +3877,95 @@ input[type="button"]:disabled,
 
 /* Transactions */
 
-.balance-table-container {
-	margin: auto;
+.user-row {
+	display: grid;
+	grid-template-columns: 40px 1fr 32px;
+	align-items: center;
+	gap: 0.75rem;
+	padding: 0.75rem 0;
+	border-bottom: 1px solid #333;
+	text-align: center;
 }
 
-.table-search-bar {
+.user-avatar .table_avatar {
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	background: #6c63ff;
+	color: white;
+	font-weight: bold;
+	font-size: 1rem;
 	display: flex;
 	align-items: center;
-	background: #2b2b2b;
-	padding: 0.5rem;
-	border-radius: 8px;
-	margin-bottom: 1rem;
-	gap: 0.5rem;
+	justify-content: center;
+	text-transform: uppercase;
 }
 
-.table-search-bar input {
+.user-info {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	font-size: 0.9rem;
+}
+
+.status-dot {
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	margin-top: 4px;
+}
+
+.status-dot.negative {
+	background: var(--color-amber-400);
+}
+
+.status-dot.positive {
+	background: var(--color-green-300);
+}
+
+.user-icon {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.user-icon i {
+	color: #888;
+}
+
+/* Container wrapping the search bar */
+.table-search-bar {
+	display: flex;
+	flex-direction: row-reverse;
+	align-items: center;
+	background: #2b2b2b;
+	padding-inline: 1em;
+	border-radius: 4px;
+
+	margin-bottom: 1rem;
+	border: 1px solid #444;
+}
+
+/* Input styling */
+.table-search-bar input[type="text"] {
 	flex: 1;
 	background: transparent;
 	border: none;
 	color: white;
 	font-size: 1rem;
 	outline: none;
+	font-family: inherit;
 }
 
-.search-icon {
-	font-size: 1.2rem;
-	color: white;
+/* Search icon styling */
+.table-search-bar i {
+	color: #ccc;
 }
 
-.balance-table {
-	width: 100%;
-	border-collapse: collapse;
-	background: #212121;
-	color: white;
-	border-radius: 8px;
-	overflow: hidden;
-}
-
-.balance-table th,
-.balance-table td {
-	padding: 0.75rem;
-	text-align: left;
-	border-bottom: 1px solid #333;
-}
-
-.table_avatar {
-	width: 36px;
-	height: 36px;
-	border-radius: 50%;
-	color: white;
-	font-weight: bold;
+/* User list container (where rows go) */
+.user-list-container {
 	display: flex;
-	align-items: center;
-	justify-content: center;
-	text-transform: uppercase;
-	font-size: 1rem;
-}
-
-.balance.negative {
-	color: var(--color-red-300);
-	font-weight: bold;
-}
-
-.placeholder-icon {
-	font-size: 1.2rem;
-	color: #888;
+	flex-direction: column;
+	gap: 0.5rem;
+	margin: 0 0 2.25em 0;
 }
