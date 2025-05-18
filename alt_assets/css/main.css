@@ -3225,13 +3225,13 @@ input[type="button"]:disabled,
 		-ms-transition: -ms-transform 0.5s ease;
 		transition: transform 0.5s ease;
 		display: block;
-		height: 44px;
+		height: 10vh;
 		left: 0;
 		position: fixed;
 		bottom: 0;
 		width: 100%;
 		z-index: 10001;
-		background: var(--gray-1200);
+		background: var(--gray-1100);
 		color: var(--gray-1100);
 		min-width: 320px;
 	}
@@ -3240,8 +3240,8 @@ input[type="button"]:disabled,
 		color: var(--gray-100);
 		display: block;
 		font-weight: 700;
-		height: 44px;
-		line-height: 44px;
+		height: 10vh;
+		line-height: 10vh;
 		padding: 0 1em;
 		width: 100%;
 		text-align: left;
@@ -3277,13 +3277,13 @@ input[type="button"]:disabled,
 	}
 
 	#titleBar .toggle:before {
-		background: var(--cream-300);
-		color: var(--gray-1000);
+		background: var(--gray-1100);
+		color: var(--cream-300);
 		content: "\f0c9";
 		display: block;
 		font-size: 18px;
-		height: 44px;
-		line-height: 44px;
+		height: 10vh;
+		line-height: 10vh;
 		position: absolute;
 		text-align: center;
 		top: 0;
@@ -3756,7 +3756,7 @@ input[type="button"]:disabled,
 
 #toast-container {
 	position: fixed;
-	bottom: 2rem;
+	bottom: 5rem;
 	left: 50%;
 	transform: translateX(-50%);
 	z-index: 9999;
@@ -3842,4 +3842,21 @@ input[type="button"]:disabled,
 	display: flex;
 	justify-content: center;
 	gap: 1rem;
+}
+
+/* Fade Down Overlay */
+
+/* FADE-DOWN: 15–30vh, fades in from transparent to opaque */
+.fade-down {
+	position: fixed;
+	bottom: 10vh;
+	height: 55vh;
+	width: 100%;
+	pointer-events: none;
+	z-index: 997;
+	background: linear-gradient(
+		to bottom,
+		rgba(245, 245, 245, 0) 0%,
+		var(--gray-1100) 95%
+	);
 }

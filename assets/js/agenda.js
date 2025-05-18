@@ -23,6 +23,8 @@ export function setAgendaData(classes, bookings) {
 	userBookings = bookings;
 }
 
+let agendaClickListenerAttached = false;
+
 export function renderAgenda(dateStr) {
 	selectedDate = dateStr;
 	const agendaContainer = document.getElementById("agenda");
@@ -102,36 +104,40 @@ export function renderAgenda(dateStr) {
 		agendaContainer.appendChild(card);
 	});
 
-	agendaContainer.addEventListener("click", async (e) => {
-		const card = e.target.closest(".agenda-card");
-		if (!card) return;
+	// Attach event listener only once using delegation
+	if (!agendaClickListenerAttached) {
+		agendaContainer.addEventListener("click", async (e) => {
+			const card = e.target.closest(".agenda-card");
+			if (!card) return;
 
-		const classId = card.dataset.id;
+			const classId = card.dataset.id;
+			const isBooked = userBookings.includes(classId);
 
-		const isBooked = userBookings.includes(classId);
-
-		if (isBooked) {
 			const confirmed = await confirmAction(
-				"Are you sure you want to cancel this class?"
+				isBooked
+					? "Are you sure you want to cancel this class?"
+					: "Book this class?"
 			);
 			if (!confirmed) return;
-			await cancelBooking(classId);
-		} else {
-			const confirmed = await confirmAction("Book this class?");
-			if (!confirmed) return;
-			console.log("📌 Booking classId:", classId);
-			await bookClass(classId);
-		}
 
-		// 🔄 Re-fetch updated bookings from DB
-		const session = await getSession();
-		const userId = session?.user?.id;
-		userBookings = await getUserBookings(userId);
+			if (isBooked) {
+				await cancelBooking(classId);
+			} else {
+				console.log("📌 Booking classId:", classId);
+				await bookClass(classId);
+			}
 
-		// 🔄 Re-render with updated bookings
-		renderAgenda(selectedDate);
-		console.log("📨 Booking triggered for", classId, "at", Date.now());
-	});
+			// 🔄 Re-fetch updated bookings from DB
+			const session = await getSession();
+			const userId = session?.user?.id;
+			userBookings = await getUserBookings(userId);
+
+			// 🔄 Re-render agenda
+			renderAgenda(selectedDate);
+			console.log("📨 Booking triggered for", classId, "at", Date.now());
+		});
+		agendaClickListenerAttached = true;
+	}
 }
 
 (async () => {
@@ -163,8 +169,6 @@ export async function bookClass(classId) {
 		const session = await getSession();
 		const userId = session?.user?.id;
 		if (!userId) throw new Error("Not logged in");
-
-		console.log("📨 Booking triggered for", classId);
 
 		// 1. Insert booking row
 		const { error: bookingError } = await supabase
