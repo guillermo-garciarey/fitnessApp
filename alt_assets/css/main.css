@@ -42,19 +42,19 @@
 	--forest-muted-400: #768d84;
 	--forest-muted-500: #4b5d54;
 
-	/* 🔴 RED - Error, Destructive */
+	/* RED - Error, Destructive */
 	--color-red-100: #fdecea;
 	--color-red-200: #f8c1bd;
 	--color-red-300: #e85c50;
 	--color-red-400: #c0392b;
 
-	/* 🟠 AMBER - Warning, Attention */
+	/* AMBER - Warning, Attention */
 	--color-amber-100: #fff8e1;
 	--color-amber-200: #ffe082;
 	--color-amber-300: #ffca28;
 	--color-amber-400: #ffa000;
 
-	/* 🟢 GREEN - Success, Confirmation */
+	/* GREEN - Success, Confirmation */
 	--color-green-100: #e6f4ea;
 	--color-green-200: #a5d6a7;
 	--color-green-300: #66bb6a;
@@ -3561,6 +3561,11 @@ input[type="button"]:disabled,
 
 .calendar-container {
 	margin: 0 0 2.25em 0;
+	justify-self: center;
+	display: flex;
+	flex-wrap: nowrap;
+	flex-direction: column;
+	align-items: center;
 }
 
 #month-label {
@@ -3606,10 +3611,11 @@ input[type="button"]:disabled,
 }
 
 .day-cell:hover {
-	background-color: var(--gray-100);
+	color: var(--color-amber-400) !important;
 	cursor: pointer;
+	scale: 1.1;
 
-	transition: background-color 0.2s ease;
+	transition: all 0.25s ease;
 }
 
 .day-number {
@@ -3620,12 +3626,13 @@ input[type="button"]:disabled,
 }
 
 .day-cell.selected {
-	background-color: var(--color-amber-400);
+	/* background-color: var(--color-amber-400); */
+	color: var(--color-amber-400) !important;
 	border-radius: 50%;
 }
 
 .day-cell.selected .day-number {
-	color: var(--cream-100) !important;
+	color: var(--amber-400) !important;
 }
 
 .day-cell.no-classes {
@@ -3661,10 +3668,6 @@ input[type="button"]:disabled,
 	z-index: 1;
 }
 
-.day-cell.selected .dot {
-	background-color: transparent;
-}
-
 .calendar-filter {
 	text-align: center;
 	margin-bottom: 1rem;
@@ -3686,6 +3689,7 @@ input[type="button"]:disabled,
 	border-top: solid 3px #f4f4f4;
 	padding-top: 2.25em;
 	margin: 0 0 2.25em 0;
+	justify-self: center;
 }
 
 .agenda-card {
@@ -3744,4 +3748,45 @@ input[type="button"]:disabled,
 
 .no-classes-msg {
 	text-align: center !important;
+}
+
+.expired-class {
+	opacity: 0.5;
+	text-decoration: line-through;
+}
+
+/* Dashboard Container Mobile & Desktop */
+
+@media screen and (min-width: 736px) {
+	.dashboard_wrapper {
+		/* display: flex;
+		flex-direction: row;
+		gap: 2.25em; */
+	}
+
+	.agenda-container {
+		width: 50%;
+
+		/* padding-top: 0; */
+	}
+
+	.agenda-card {
+		/* padding: 0.5rem;
+		margin-bottom: 0.5rem; */
+	}
+
+	.agenda-participants {
+		/* display: none; */
+	}
+
+	.agenda-description {
+		/* margin-left: 1rem;
+		margin-bottom: 0; */
+		/* display: none; */
+	}
+
+	.calendar-container {
+		width: 50%;
+		/* justify-self: center; */
+	}
 }

@@ -1,5 +1,7 @@
 // agenda.js
 
+import { supabase } from "./supabaseClient.js";
+
 import { getSession, getUserBookings } from "./utils.js";
 
 let allClasses = [];
@@ -34,6 +36,14 @@ export function renderAgenda(dateStr) {
 	sortedClasses.forEach((cls) => {
 		const card = document.createElement("div");
 		card.className = "agenda-card";
+		card.dataset.id = cls.id;
+
+		const classDateTime = new Date(`${cls.date}T${cls.time}`);
+		const now = new Date();
+
+		if (classDateTime < now) {
+			card.classList.add("expired-class");
+		}
 
 		const timeFormatted = new Date(`1970-01-01T${cls.time}`).toLocaleTimeString(
 			[],
@@ -44,12 +54,10 @@ export function renderAgenda(dateStr) {
 			}
 		);
 
-		// ✅ Define logic first
 		const isBooked = userBookings.includes(cls.id);
 		const isMatch =
 			selectedFilter !== "bookings" && cls.name === selectedFilter;
 
-		// ✅ Create dot element and apply correct color
 		const dot = document.createElement("span");
 		dot.classList.add("agenda-dot");
 
@@ -61,7 +69,6 @@ export function renderAgenda(dateStr) {
 			dot.style.background = "var(--gray-900)";
 		}
 
-		// ✅ Fill in HTML
 		card.innerHTML = `
 			<div class="agenda-card-header"></div>
 			${
@@ -74,7 +81,6 @@ export function renderAgenda(dateStr) {
 		} participants</div>
 		`;
 
-		// ✅ Append dot, name, and time
 		const header = card.querySelector(".agenda-card-header");
 		header.appendChild(dot);
 
@@ -90,6 +96,31 @@ export function renderAgenda(dateStr) {
 
 		agendaContainer.appendChild(card);
 	});
+
+	agendaContainer.addEventListener("click", async (e) => {
+		const card = e.target.closest(".agenda-card");
+		if (!card) return;
+
+		const classId = card.dataset.id;
+
+		const isBooked = userBookings.includes(classId);
+
+		if (isBooked) {
+			await cancelBooking(classId);
+		} else {
+			console.log("📌 Booking classId:", classId);
+			await bookClass(classId);
+		}
+
+		// 🔄 Re-fetch updated bookings from DB
+		const session = await getSession();
+		const userId = session?.user?.id;
+		userBookings = await getUserBookings(userId);
+
+		// 🔄 Re-render with updated bookings
+		renderAgenda(selectedDate);
+		console.log("📨 Booking triggered for", classId, "at", Date.now());
+	});
 }
 
 (async () => {
@@ -104,3 +135,87 @@ export function renderAgenda(dateStr) {
 	setAgendaData(classes, bookings);
 	renderAgenda(selectedDate);
 })();
+
+// Booking Function
+
+let bookingInProgress = new Set(); // Tracks classes being booked
+
+export async function bookClass(classId) {
+	if (bookingInProgress.has(classId)) {
+		console.log("🚫 Booking already in progress for", classId);
+		return;
+	}
+
+	bookingInProgress.add(classId);
+
+	try {
+		const session = await getSession();
+		const userId = session?.user?.id;
+		if (!userId) throw new Error("Not logged in");
+
+		console.log("📨 Booking triggered for", classId);
+
+		// 1. Insert booking row
+		const { error: bookingError } = await supabase
+			.from("bookings")
+			.insert([{ user_id: userId, class_id: classId }]);
+
+		if (bookingError) {
+			console.error("❌ Booking insert failed:", bookingError.message);
+			alert("Booking failed: " + bookingError.message);
+			return;
+		}
+
+		// 2. Insert payment row
+		const { error: paymentError } = await supabase.from("payments").insert([
+			{
+				user_id: userId,
+				credits: -1,
+				reason: "Class Booking",
+				date: new Date().toISOString().split("T")[0], // YYYY-MM-DD
+			},
+		]);
+
+		if (paymentError) {
+			console.error("❌ Payment insert failed:", paymentError.message);
+			alert("Booking failed during payment.");
+			return;
+		}
+
+		// 3. Fetch current class booked_slots
+		const { data: classData, error: fetchError } = await supabase
+			.from("classes")
+			.select("booked_slots")
+			.eq("id", classId)
+			.single();
+
+		if (fetchError || !classData) {
+			console.error("❌ Could not fetch class:", fetchError?.message);
+			alert("Booking failed while syncing class slots.");
+			return;
+		}
+
+		// 4. Update booked_slots count
+		const newBookedCount = (classData.booked_slots || 0) + 1;
+
+		const { error: updateError } = await supabase
+			.from("classes")
+			.update({ booked_slots: newBookedCount })
+			.eq("id", classId);
+
+		if (updateError) {
+			console.error("❌ Class update failed:", updateError.message);
+			alert("Booking failed while updating class.");
+			return;
+		}
+
+		// ✅ Done
+		alert("✅ Class booked!");
+		renderAgenda(selectedDate); // Refresh agenda UI
+	} catch (err) {
+		console.error("❌ Unexpected booking error:", err.message);
+		alert("Something went wrong.");
+	} finally {
+		bookingInProgress.delete(classId); // Release guard
+	}
+}
