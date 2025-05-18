@@ -3679,3 +3679,69 @@ input[type="button"]:disabled,
 	font-weight: 500;
 	appearance: none;
 }
+
+/* Agenda */
+
+.agenda-container {
+	border-top: solid 3px #f4f4f4;
+	padding-top: 2.25em;
+	margin: 0 0 2.25em 0;
+}
+
+.agenda-card {
+	background: #fafafa0a;
+	border-radius: 4px;
+	padding: 1rem;
+	margin-bottom: 1rem;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+	transition: all 0.2s ease;
+}
+
+.agenda-card.highlighted.agenda-dot {
+	background: var(--color-amber-400);
+	box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+}
+
+.agenda-card-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	font-weight: 600;
+	font-size: 1rem;
+	margin-bottom: 0.25rem;
+}
+
+.agenda-dot {
+	width: 8px;
+	height: 8px;
+	background: var(--gray-900);
+	border-radius: 50%;
+	margin-right: 0.5rem;
+}
+
+.agenda-name {
+	flex: 1;
+	font-weight: bold;
+	color: var(--cream-200);
+}
+
+.agenda-time {
+	color: var(--gray-500);
+	font-size: 0.9rem;
+	font-weight: 500;
+}
+
+.agenda-description {
+	font-size: 0.85rem;
+	color: var(--gray-700);
+	margin-bottom: 0.25rem;
+}
+
+.agenda-participants {
+	font-size: 0.75rem;
+	color: var(--gray-600);
+}
+
+.no-classes-msg {
+	text-align: center !important;
+}

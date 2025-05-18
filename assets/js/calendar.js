@@ -9,6 +9,8 @@ import {
 	groupClassesByDate,
 } from "./utils.js";
 
+import { renderAgenda } from "./agenda.js";
+
 let viewDate = new Date();
 let selectedDate = formatDate(new Date());
 let allClasses = [];
@@ -106,7 +108,8 @@ function renderCalendar() {
 		calendarBody.appendChild(cell);
 		cell.addEventListener("click", () => {
 			selectedDate = dateStr;
-			renderCalendar(); // will re-highlight the selected day
+			renderCalendar();
+			renderAgenda(dateStr);
 		});
 	}
 }
