@@ -155,3 +155,102 @@ export function confirmAction(message) {
 		no.addEventListener("click", onNo);
 	});
 }
+
+// Generate Schedule (Admin only)
+
+document
+	.getElementById("generate-schedule")
+	.addEventListener("click", async () => {
+		const label = document.getElementById("month-label").textContent.trim(); // e.g. "June 2025"
+		const [monthName, yearStr] = label.split(" ");
+		const year = parseInt(yearStr);
+		const monthIndex = new Date(`${monthName} 1, 2000`).getMonth() + 1; // convert to number 1-12
+
+		if (!year || !monthIndex) {
+			showToast?.("Invalid month label.", "error");
+			return;
+		}
+
+		// Step 1: Check for existing classes in selected month
+		const monthStart = `${year}-${String(monthIndex).padStart(2, "0")}-01`;
+		const monthEnd = new Date(year, monthIndex, 0).toISOString().split("T")[0]; // last day of month
+
+		const { data: existing, error: checkError } = await supabase
+			.from("classes")
+			.select("id")
+			.gte("date", monthStart)
+			.lte("date", monthEnd)
+			.limit(1);
+
+		if (checkError) {
+			console.error("❌ Error checking existing classes:", checkError.message);
+			showToast?.("Failed to check existing classes.", "error");
+			return;
+		}
+
+		if (existing.length > 0) {
+			showToast?.(
+				"Month already contains classes. Please clear them first.",
+				"warning"
+			);
+			return;
+		}
+
+		// Step 2: Proceed to generate
+		await generateScheduleForMonth(year, monthIndex);
+	});
+
+// Generate Schedule Function
+
+async function generateScheduleForMonth(year, month) {
+	const { data: templates, error: templateError } = await supabase
+		.from("class_schedule_template")
+		.select("*");
+
+	if (templateError) {
+		console.error("❌ Template fetch failed:", templateError.message);
+		showToast?.("Failed to load schedule templates.", "error");
+		return;
+	}
+
+	const daysInMonth = new Date(year, month, 0).getDate();
+	const newClasses = [];
+
+	for (let day = 1; day <= daysInMonth; day++) {
+		const dateObj = new Date(year, month - 1, day);
+
+		// 🧠 Get full weekday name (e.g., "Monday")
+		const dayName = dateObj.toLocaleDateString("en-US", { weekday: "long" });
+
+		const matchingTemplates = templates.filter(
+			(t) => t.day_of_week === dayName
+		);
+
+		for (const template of matchingTemplates) {
+			newClasses.push({
+				name: template.name,
+				date: dateObj.toISOString().split("T")[0],
+				time: template.time,
+				capacity: template.capacity,
+				description: template.description || null,
+				trainer: template.trainer || null,
+			});
+		}
+	}
+
+	if (newClasses.length === 0) {
+		showToast?.("No matching templates for this month.", "info");
+		return;
+	}
+
+	const { error: insertError } = await supabase
+		.from("classes")
+		.insert(newClasses);
+
+	if (insertError) {
+		console.error("❌ Insert failed:", insertError.message);
+		showToast?.("Failed to generate schedule.", "error");
+	} else {
+		showToast?.("Schedule generated successfully!", "success");
+	}
+}

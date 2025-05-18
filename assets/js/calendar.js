@@ -1,5 +1,7 @@
 // calendar.js
 
+import { supabase } from "./supabaseClient.js";
+
 import {
 	getSession,
 	getUserProfile,
@@ -11,7 +13,7 @@ import {
 	confirmAction,
 } from "./utils.js";
 
-import { renderAgenda } from "./agenda.js";
+import { renderAgenda, fetchUserRole } from "./agenda.js";
 
 let viewDate = new Date();
 let selectedDate = formatDate(new Date());
@@ -108,9 +110,11 @@ function renderCalendar() {
 		if (dateStr === selectedDate) cell.classList.add("selected");
 
 		calendarBody.appendChild(cell);
+
 		cell.addEventListener("click", () => {
 			selectedDate = dateStr;
 			renderCalendar();
+
 			renderAgenda(dateStr);
 		});
 	}

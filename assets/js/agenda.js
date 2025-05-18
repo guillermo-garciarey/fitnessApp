@@ -13,6 +13,30 @@ let allClasses = [];
 let userBookings = [];
 let selectedDate = getLocalDateStr();
 console.log("Agenda script loaded");
+export let userRole = "user"; // default
+
+export async function fetchUserRole() {
+	const session = await getSession();
+	const userId = session?.user?.id;
+	if (!userId) {
+		console.warn("❌ No user session found");
+		return;
+	}
+
+	const { data, error } = await supabase
+		.from("profiles")
+		.select("role")
+		.eq("id", userId)
+		.single();
+
+	if (error) {
+		console.error("❌ Failed to fetch user role from profiles:", error.message);
+		return;
+	}
+
+	userRole = data.role || "user";
+	console.log("👤 Role from profiles table:", userRole);
+}
 
 function getLocalDateStr(date = new Date()) {
 	return date.toLocaleDateString("sv-SE"); // "sv-SE" = YYYY-MM-DD format
@@ -111,6 +135,12 @@ export function renderAgenda(dateStr) {
 			if (!card) return;
 
 			const classId = card.dataset.id;
+			// 🧠 Check admin role
+			if (userRole === "admin") {
+				openAdminModal(classId);
+				return; // 🛑 Stop regular booking flow
+			}
+
 			const isBooked = userBookings.includes(classId);
 
 			const confirmed = await confirmAction(
@@ -141,6 +171,8 @@ export function renderAgenda(dateStr) {
 }
 
 (async () => {
+	await supabase.auth.refreshSession();
+	await fetchUserRole();
 	const session = await getSession();
 	const userId = session?.user?.id;
 	if (!userId) return;
@@ -358,3 +390,125 @@ export async function cancelBooking(classId) {
 		cancelInProgress.delete(classId);
 	}
 }
+
+// Admin Modal
+
+// Close Modal
+document.getElementById("admin-modal-close").addEventListener("click", () => {
+	document.getElementById("admin-modal").classList.add("hidden");
+	renderAgenda(selectedDate); // ✅ re-render day after closing modal
+	loadCalendar(allClasses, userBookings); // 🔁 Refresh calendar view (dots, etc.)
+});
+
+export let currentClassId = null;
+
+export async function openAdminModal(classId) {
+	currentClassId = classId;
+	document.getElementById("admin-modal").classList.remove("hidden");
+
+	const titleEl = document.getElementById("admin-modal-title");
+	const dateEl = document.getElementById("admin-modal-date");
+	const timeEl = document.getElementById("admin-modal-time");
+	const slotsEl = document.getElementById("admin-modal-slots");
+	const userList = document.getElementById("admin-user-list");
+	const userSelect = document.getElementById("admin-user-select");
+
+	// Clear old data
+	userList.innerHTML = "";
+	userSelect.innerHTML = `<option value="">-- Select User --</option>`;
+
+	// 🔹 Fetch class info
+	const { data: cls, error: clsErr } = await supabase
+		.from("classes")
+		.select("*")
+		.eq("id", classId)
+		.single();
+
+	if (clsErr || !cls) {
+		console.error("❌ Failed to fetch class:", clsErr?.message);
+		return;
+	}
+
+	titleEl.textContent = cls.name;
+	dateEl.textContent = cls.date;
+	timeEl.textContent = cls.time;
+	slotsEl.textContent = cls.available_slots;
+
+	// 🔹 Fetch booked users
+	const { data: bookings } = await supabase
+		.from("bookings")
+		.select("user_id, profiles(id, name, surname)")
+		.eq("class_id", classId);
+
+	// 🔹 Fetch all users
+	const { data: allUsers } = await supabase
+		.from("profiles")
+		.select("id, name, surname, credits");
+
+	const bookedUserIds = bookings.map((b) => b.user_id);
+
+	// 🔹 List booked users
+	bookings.forEach((b) => {
+		const li = document.createElement("li");
+		li.innerHTML = `
+      ${b.profiles.name} ${b.profiles.surname}
+      <button class="remove-user-btn" data-user-id="${b.user_id}">❌</button>
+    `;
+		userList.appendChild(li);
+	});
+
+	// 🔹 Populate add-user dropdown (excluding already booked)
+	allUsers
+		.filter((u) => !bookedUserIds.includes(u.id))
+		.forEach((u) => {
+			const option = document.createElement("option");
+			option.value = u.id;
+			option.textContent = `${u.name} ${u.surname} (${u.credits} cr)`;
+			userSelect.appendChild(option);
+		});
+}
+
+// Remove user from class (Admin Only)
+
+document
+	.getElementById("admin-user-list")
+	.addEventListener("click", async (e) => {
+		if (!e.target.classList.contains("remove-user-btn")) return;
+
+		const userId = e.target.dataset.userId;
+
+		const confirmed = await confirmAction(
+			"Remove this user and refund 1 credit?"
+		);
+		if (!confirmed) return;
+
+		try {
+			// 1. Remove booking
+			await supabase.from("bookings").delete().match({
+				user_id: userId,
+				class_id: currentClassId,
+			});
+
+			// 2. Add refund row
+			await supabase.from("payments").insert({
+				user_id: userId,
+				credits: 1,
+				reason: "Admin refund",
+				date: new Date().toISOString().split("T")[0],
+			});
+
+			// 3. Update credits in profile
+			await supabase.rpc("adjust_user_credits", {
+				uid: userId,
+				delta: 1,
+			});
+
+			showToast("User removed and refunded.", "success");
+
+			// 🔁 Refresh modal content
+			openAdminModal(currentClassId);
+		} catch (err) {
+			console.error("❌ Failed to remove user:", err.message);
+			showToast("Error removing user.", "error");
+		}
+	});

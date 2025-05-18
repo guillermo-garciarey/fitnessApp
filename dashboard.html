@@ -155,6 +155,12 @@
 									style="cursor: pointer"
 								></i>
 							</div>
+							<div>
+								<i
+									id="generate-schedule"
+									class="fa-solid fa-gears"
+								></i>
+							</div>
 							<div class="calendar-filter">
 								<select id="class-filter">
 									<option
@@ -380,6 +386,51 @@
 					<div class="modal-actions">
 						<button id="confirm-yes">Yes</button>
 						<button id="confirm-no">No</button>
+					</div>
+				</div>
+			</div>
+			<div
+				id="admin-modal"
+				class="admin-modal-overlay hidden"
+			>
+				<div class="admin-modal">
+					<div class="admin-modal-header">
+						<h3 id="admin-modal-title">Class Details</h3>
+						<button
+							id="admin-modal-close"
+							class="close-btn"
+						>
+							×
+						</button>
+					</div>
+
+					<div class="admin-modal-body">
+						<p><strong>Date:</strong> <span id="admin-modal-date"></span></p>
+						<p><strong>Time:</strong> <span id="admin-modal-time"></span></p>
+						<p>
+							<strong>Available Slots:</strong>
+							<span id="admin-modal-slots"></span>
+						</p>
+
+						<h4>Booked Users</h4>
+						<ul
+							id="admin-user-list"
+							class="user-list"
+						></ul>
+
+						<h4>Add User to Class</h4>
+						<select id="admin-user-select">
+							<option value="">-- Select User --</option>
+						</select>
+						<button id="admin-add-user">➕ Add</button>
+
+						<hr />
+						<button
+							id="admin-delete-class"
+							class="danger full-width"
+						>
+							🗑️ Delete Class
+						</button>
 					</div>
 				</div>
 			</div>

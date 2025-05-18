@@ -2623,7 +2623,7 @@ ul.icons li .icon:before {
 
 /* Table */
 
-/* .table-wrapper {
+.table-wrapper {
 	-webkit-overflow-scrolling: touch;
 	overflow-x: auto;
 }
@@ -2687,7 +2687,7 @@ table.alt thead {
 
 table.alt tfoot {
 	border-top: 0;
-} */
+}
 
 /* Button */
 
@@ -3233,8 +3233,8 @@ input[type="button"]:disabled,
 		bottom: 0;
 		width: 100%;
 		z-index: 10001;
-		background: var(--gray-1100);
-		color: var(--gray-1100);
+		background: var(--gray-1200);
+		color: var(--gray-1200);
 		min-width: 320px;
 	}
 
@@ -3279,7 +3279,7 @@ input[type="button"]:disabled,
 	}
 
 	#titleBar .toggle:before {
-		background: var(--gray-1100);
+		background: var(--gray-1200);
 		color: var(--cream-300);
 		content: "\f0c9";
 		display: block;
@@ -3561,6 +3561,9 @@ input[type="button"]:disabled,
 
 /* Booking Calendar */
 
+#generate-schedule {
+}
+
 .calendar-container {
 	margin: 0 0 2.25em 0;
 }
@@ -3750,8 +3753,8 @@ input[type="button"]:disabled,
 .expired-class {
 	opacity: 0.5;
 	text-decoration: line-through;
-	cursor: none;
-	pointer-events: none;
+	/* cursor: none;
+	pointer-events: none; */
 }
 
 /* Toast Settings */
@@ -3848,7 +3851,7 @@ input[type="button"]:disabled,
 
 /* Fade Down Overlay */
 
-.fade-down {
+/* .fade-down {
 	position: fixed;
 	bottom: 10vh;
 	height: 15vh;
@@ -3872,7 +3875,7 @@ input[type="button"]:disabled,
 		rgba(var(--gray-1100-rgb), 0.75) 80%,
 		rgba(var(--gray-1100-rgb), 1) 100%
 	);
-}
+} */
 
 @media screen and (min-width: 1024px) {
 	#header {
@@ -3942,7 +3945,6 @@ input[type="button"]:disabled,
 	color: #888;
 }
 
-/* Container wrapping the search bar */
 .table-search-bar {
 	display: flex;
 	flex-direction: row-reverse;
@@ -3955,7 +3957,6 @@ input[type="button"]:disabled,
 	border: 1px solid #444;
 }
 
-/* Input styling */
 .table-search-bar input[type="text"] {
 	flex: 1;
 	background: transparent;
@@ -3966,15 +3967,153 @@ input[type="button"]:disabled,
 	font-family: inherit;
 }
 
-/* Search icon styling */
 .table-search-bar i {
 	color: #ccc;
 }
 
-/* User list container (where rows go) */
 .user-list-container {
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
 	margin: 0 0 2.25em 0;
+}
+
+/* Admin Modal */
+
+.admin-modal-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.6);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 1000;
+}
+
+.admin-modal {
+	background: #212121;
+	color: white;
+	border-radius: 10px;
+	width: 90%;
+	max-width: 400px;
+	padding: 1rem;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.admin-modal-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.admin-modal-header h3 {
+	margin: 0;
+}
+
+.close-btn {
+	background: none;
+	border: none;
+	font-size: 1.5rem;
+	color: white;
+	cursor: pointer;
+}
+
+.user-list {
+	list-style: none;
+	padding: 0;
+	margin: 0.5rem 0;
+}
+
+.user-list li {
+	display: flex;
+	justify-content: space-between;
+	padding: 0.3rem 0;
+	border-bottom: 1px solid #333;
+}
+
+.admin-actions {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 1rem;
+}
+
+.admin-actions .danger {
+	background: crimson;
+	color: white;
+}
+.hidden {
+	display: none;
+}
+
+/* Admin Modal */
+
+.no-scroll {
+	overflow: hidden !important;
+}
+.admin-modal-overlay {
+	position: fixed;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.6);
+	z-index: 999;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+}
+
+.admin-modal {
+	background: #212121;
+	color: white;
+	border-radius: 12px;
+	width: 90%;
+	max-width: 400px;
+	padding: 1rem;
+	max-height: 90vh;
+	overflow-y: auto;
+}
+
+.admin-modal-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.close-btn {
+	background: none;
+	border: none;
+	color: white;
+	font-size: 1.5rem;
+	cursor: pointer;
+}
+
+.user-list {
+	list-style: none;
+	padding-left: 0;
+}
+
+.user-list li {
+	display: flex;
+	justify-content: space-between;
+	margin: 0.25rem 0;
+}
+
+.danger {
+	background: crimson;
+	color: white;
+	padding: 0.5rem;
+	border: none;
+	width: 100%;
+	border-radius: 6px;
+	cursor: pointer;
+}
+
+.full-width {
+	width: 100%;
+}
+
+.hidden {
+	display: none;
 }
