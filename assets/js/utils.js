@@ -105,3 +105,53 @@ export function getUniqueClassTypes(classes) {
 	});
 	return Array.from(types);
 }
+
+// Toast
+
+export function showToast(message, type = "success") {
+	const toastContainer = document.getElementById("toast-container");
+
+	const toast = document.createElement("div");
+	toast.className = `toast toast-${type}`;
+	toast.textContent = message;
+
+	toastContainer.appendChild(toast);
+
+	// Remove after animation completes (e.g., 4s)
+	setTimeout(() => {
+		toast.remove();
+	}, 4000);
+}
+
+// Confirmation Modal
+
+export function confirmAction(message) {
+	return new Promise((resolve) => {
+		const modal = document.getElementById("confirm-modal");
+		const msg = document.getElementById("confirm-message");
+		const yes = document.getElementById("confirm-yes");
+		const no = document.getElementById("confirm-no");
+
+		msg.textContent = message;
+		modal.classList.remove("hidden");
+
+		const cleanup = () => {
+			modal.classList.add("hidden");
+			yes.removeEventListener("click", onYes);
+			no.removeEventListener("click", onNo);
+		};
+
+		const onYes = () => {
+			cleanup();
+			resolve(true);
+		};
+
+		const onNo = () => {
+			cleanup();
+			resolve(false);
+		};
+
+		yes.addEventListener("click", onYes);
+		no.addEventListener("click", onNo);
+	});
+}

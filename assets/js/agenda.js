@@ -2,7 +2,12 @@
 
 import { supabase } from "./supabaseClient.js";
 
-import { getSession, getUserBookings } from "./utils.js";
+import {
+	getSession,
+	getUserBookings,
+	showToast,
+	confirmAction,
+} from "./utils.js";
 
 let allClasses = [];
 let userBookings = [];
@@ -106,8 +111,14 @@ export function renderAgenda(dateStr) {
 		const isBooked = userBookings.includes(classId);
 
 		if (isBooked) {
+			const confirmed = await confirmAction(
+				"Are you sure you want to cancel this class?"
+			);
+			if (!confirmed) return;
 			await cancelBooking(classId);
 		} else {
+			const confirmed = await confirmAction("Book this class?");
+			if (!confirmed) return;
 			console.log("📌 Booking classId:", classId);
 			await bookClass(classId);
 		}
@@ -161,8 +172,9 @@ export async function bookClass(classId) {
 			.insert([{ user_id: userId, class_id: classId }]);
 
 		if (bookingError) {
+			showToast("Booking failed.", "error");
 			console.error("❌ Booking insert failed:", bookingError.message);
-			alert("Booking failed: " + bookingError.message);
+			// alert("Booking failed: " + bookingError.message);
 			return;
 		}
 
@@ -177,8 +189,9 @@ export async function bookClass(classId) {
 		]);
 
 		if (paymentError) {
+			showToast("Booking failed during payment.", "error");
 			console.error("❌ Payment insert failed:", paymentError.message);
-			alert("Booking failed during payment.");
+			// alert("Booking failed during payment.");
 			return;
 		}
 
@@ -190,8 +203,9 @@ export async function bookClass(classId) {
 			.single();
 
 		if (fetchError || !classData) {
+			showToast("Booking failed while syncing class slots.", "error");
 			console.error("❌ Could not fetch class:", fetchError?.message);
-			alert("Booking failed while syncing class slots.");
+			// alert("Booking failed while syncing class slots.");
 			return;
 		}
 
@@ -204,18 +218,95 @@ export async function bookClass(classId) {
 			.eq("id", classId);
 
 		if (updateError) {
+			showToast("Booking failed while updating class.", "error");
 			console.error("❌ Class update failed:", updateError.message);
-			alert("Booking failed while updating class.");
+			// alert("Booking failed while updating class.");
 			return;
 		}
 
 		// ✅ Done
-		alert("✅ Class booked!");
+		showToast("Class booked successfully!", "success");
 		renderAgenda(selectedDate); // Refresh agenda UI
 	} catch (err) {
+		showToast("Something went wrong.", "error");
 		console.error("❌ Unexpected booking error:", err.message);
 		alert("Something went wrong.");
 	} finally {
 		bookingInProgress.delete(classId); // Release guard
+	}
+}
+
+// Cancel Booking Function
+
+let cancelInProgress = new Set();
+
+export async function cancelBooking(classId) {
+	try {
+		const session = await getSession();
+		const userId = session?.user?.id;
+		if (!userId) throw new Error("Not logged in");
+
+		// 1. Remove booking row
+		const { error: deleteError } = await supabase
+			.from("bookings")
+			.delete()
+			.eq("user_id", userId)
+			.eq("class_id", classId);
+
+		if (deleteError) {
+			console.error("❌ Booking delete failed:", deleteError.message);
+			showToast("Cancel failed.", "error");
+			return;
+		}
+
+		// 2. Add payment (+1 credit)
+		const { error: paymentError } = await supabase.from("payments").insert([
+			{
+				user_id: userId,
+				credits: 1,
+				reason: "Cancelled Booking",
+				date: new Date().toISOString().split("T")[0],
+			},
+		]);
+
+		if (paymentError) {
+			console.error("❌ Payment insert failed:", paymentError.message);
+			showToast("Cancel failed (payment error).", "error");
+			return;
+		}
+
+		// 3. Decrement booked_slots
+		const { data: classData, error: fetchError } = await supabase
+			.from("classes")
+			.select("booked_slots")
+			.eq("id", classId)
+			.single();
+
+		if (fetchError) {
+			console.error("❌ Fetch class failed:", fetchError.message);
+			showToast("Cancel failed (class fetch).", "error");
+			return;
+		}
+
+		const newBookedCount = Math.max((classData?.booked_slots || 1) - 1, 0);
+
+		const { error: updateError } = await supabase
+			.from("classes")
+			.update({ booked_slots: newBookedCount })
+			.eq("id", classId);
+
+		if (updateError) {
+			console.error("❌ Class update failed:", updateError.message);
+			showToast("Cancel failed (class update).", "error");
+			return;
+		}
+
+		showToast("Booking cancelled.");
+		renderAgenda(selectedDate);
+	} catch (err) {
+		console.error("❌ Unexpected cancel error:", err);
+		showToast("Something went wrong.", "error");
+	} finally {
+		cancelInProgress.delete(classId); // Always release lock
 	}
 }

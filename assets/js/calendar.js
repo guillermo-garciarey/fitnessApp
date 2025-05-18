@@ -7,6 +7,8 @@ import {
 	getAvailableClasses,
 	isClassBooked,
 	groupClassesByDate,
+	showToast,
+	confirmAction,
 } from "./utils.js";
 
 import { renderAgenda } from "./agenda.js";
