@@ -57,13 +57,13 @@
 				<ul>
 					<li>
 						<a
-							href="#one"
+							href="#"
 							class="active"
 							>My Bookings</a
 						>
 					</li>
-					<li><a href="#two">Class Timetable</a></li>
-					<li><a href="#three">Admin Tools</a></li>
+					<li><a href="#">Class Timetable</a></li>
+					<li><a href="#">Admin Tools</a></li>
 				</ul>
 			</nav>
 
@@ -111,20 +111,26 @@
 
 		<!-- Wrapper -->
 		<div id="wrapper">
+			<section id="home">
+				<div
+					class="image main"
+					data-position="center"
+				>
+					<img
+						src="alt_images/banner.jpg"
+						alt=""
+					/>
+				</div>
+				<!-- <div id="welcome"></div> -->
+			</section>
 			<!-- Main -->
 			<div id="main">
 				<!-- One -->
-				<section id="one">
-					<div
-						class="image main"
-						data-position="center"
-					>
-						<img
-							src="alt_images/banner.jpg"
-							alt=""
-						/>
-					</div>
-					<div id="welcome"></div>
+
+				<section
+					class="panel active"
+					id="one"
+				>
 					<div class="container">
 						<div class="calendar-container">
 							<div class="calendar-header">
@@ -189,7 +195,10 @@
 				</section>
 
 				<!-- Two -->
-				<section id="two">
+				<section
+					class="panel"
+					id="two"
+				>
 					<div class="container">
 						<h3>Data & Analytics</h3>
 						<p>
@@ -206,7 +215,10 @@
 						</ul>
 					</div>
 				</section>
-				<section id="">
+				<section
+					class="panel"
+					id="three"
+				>
 					<div class="container">
 						<h3>Payments & Transactions</h3>
 						<p>
@@ -235,7 +247,10 @@
 				</section>
 
 				<!-- Three -->
-				<section id="three">
+				<section
+					class="panel"
+					id="four"
+				>
 					<div class="container">
 						<h3>A Few Accomplishments</h3>
 						<p>
@@ -297,7 +312,10 @@
 				</section>
 
 				<!-- Four -->
-				<section id="four">
+				<section
+					class="panel"
+					id="five"
+				>
 					<div class="container">
 						<h3>Contact Me</h3>
 						<p>
@@ -427,13 +445,31 @@
 			</div>
 
 			<!-- Footer -->
-			<section id="footer">
+			<!-- <section id="footer">
 				<div class="container">
 					<ul class="copyright">
 						<li>&copy; Guillermo Garcia. All rights reserved.</li>
 					</ul>
 				</div>
-			</section>
+			</section> -->
+			<nav class="nav-bottom">
+				<i
+					class="fa-solid fa-house nav-btn active"
+					data-target="one"
+				></i>
+				<i
+					class="fa-solid fa-calendar nav-btn"
+					data-target="two"
+				></i>
+				<i
+					class="fa-solid fa-bolt nav-btn"
+					data-target="three"
+				></i>
+				<i
+					class="fa-solid fa-user nav-btn"
+					data-target="four"
+				></i>
+			</nav>
 		</div>
 
 		<!-- Scripts -->

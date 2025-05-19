@@ -304,3 +304,43 @@ export async function adjustUserCredits(userId, delta) {
 
 	return true;
 }
+
+// Expand Panel
+
+const navIcons = document.querySelectorAll(".nav-btn");
+const sections = document.querySelectorAll(".panel");
+
+navIcons.forEach((icon) => {
+	icon.addEventListener("click", () => {
+		const targetId = icon.dataset.target;
+		console.log("Clicked nav icon for:", targetId);
+
+		if (targetId === "four") {
+			console.log("Toggling class 'header-visible' on body");
+			document.body.classList.toggle("header-visible");
+			return;
+		}
+
+		const targetSection = document.getElementById(targetId);
+		if (!targetSection) {
+			console.warn("Target section not found:", targetId);
+			return;
+		}
+
+		// Normal panel switching
+		navIcons.forEach((i) => i.classList.remove("active"));
+		icon.classList.add("active");
+
+		sections.forEach((section) => {
+			if (section.id === targetId) {
+				section.classList.add("active");
+				section.scrollTop = 0;
+			} else {
+				section.classList.remove("active");
+			}
+		});
+
+		// Remove header-visible if not panel "four"
+		document.body.classList.remove("header-visible");
+	});
+});

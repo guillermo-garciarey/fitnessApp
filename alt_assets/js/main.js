@@ -82,46 +82,48 @@
 				bottom: "5vh",
 				initialize: function () {
 					// Deactivate section.
-					$section.addClass("inactive");
+					// $section.addClass("inactive");
 				},
 				enter: function () {
 					// Activate section.
-					$section.removeClass("inactive");
-
+					// $section.removeClass("inactive");
 					// No locked links? Deactivate all links and activate this section's one.
-					if ($nav_a.filter(".active-locked").length == 0) {
-						$nav_a.removeClass("active");
-						$this.addClass("active");
-					}
-
+					// if ($nav_a.filter(".active-locked").length == 0) {
+					// 	$nav_a.removeClass("active");
+					// 	$this.addClass("active");
+					// }
 					// Otherwise, if this section's link is the one that's locked, unlock it.
-					else if ($this.hasClass("active-locked"))
-						$this.removeClass("active-locked");
+					// else if ($this.hasClass("active-locked"))
+					// 	$this.removeClass("active-locked");
 				},
 			});
 		});
 
 	// Title Bar.
-	$titleBar = $(
-		'<div id="titleBar">' +
-			'<a href="#header" class="toggle"></a>' +
-			'<span class="title">' +
-			$("#logo").html() +
-			"</span>" +
-			"</div>"
-	).appendTo($body);
+	// $titleBar = $(
+	// 	'<div id="titleBar">' +
+	// 		'<a href="#header" class="toggle"></a>' +
+	// 		'<span class="title">' +
+	// 		$("#logo").html() +
+	// 		"</span>" +
+	// 		'<i class="fa-solid fa-bolt nav-bottom"></i>' +
+	// 		"</div>"
+	// ).appendTo($body);
 
 	// Panel.
-	$header.panel({
-		delay: 500,
-		hideOnClick: true,
-		hideOnSwipe: true,
-		resetScroll: true,
-		resetForms: true,
-		side: "right",
-		target: $body,
-		visibleClass: "header-visible",
-	});
+	// $header.panel({
+	// 	delay: 500,
+	// 	hideOnClick: true,
+	// 	hideOnSwipe: true,
+	// 	resetScroll: true,
+	// 	resetForms: true,
+	// 	side: "right",
+	// 	target: $body,
+	// 	visibleClass: "header-visible",
+	// });
+	// console.log("Panel initialized on #header");
+
+	// window.$header = $header;
 
 	// Scrolly.
 	$(".scrolly").scrolly({
