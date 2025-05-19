@@ -3018,7 +3018,7 @@ input[type="button"]:disabled,
 /* Wrapper */
 
 #wrapper {
-	background: var(--gray-1100);
+	/* background: var(--gray-1100); */
 	padding-right: 23em;
 }
 
@@ -4134,8 +4134,8 @@ input[type="button"]:disabled,
 	color: inherit;
 	border: none;
 	cursor: pointer;
-	transition: transform 0.08s ease-in, box-shadow 0.08s ease-in,
-		filter 0.08s ease-in;
+	transition: transform 0.2s ease-in, box-shadow 0.2s ease-in,
+		filter 0.2s ease-in;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
@@ -4176,18 +4176,6 @@ input[type="button"]:disabled,
 
 /* Section Expanding */
 
-/* .panel {
-	max-height: 0;
-	opacity: 0;
-	overflow: hidden;
-	transition: max-height 1s ease, transform 1s ease, opacity 1s ease;
-}
-.panel.active {
-	max-height: 2000px;
-	transform: translateY(0);
-	opacity: 1;
-} */
-
 .panel {
 	position: absolute;
 	top: 0;
@@ -4227,12 +4215,16 @@ input[type="button"]:disabled,
 .nav-btn {
 	background: none;
 	border: none;
-	color: var(--slack-accent-500);
+	color: var(--gray-300);
 	font-size: 1.5rem;
 	position: relative;
 	padding: 10px;
 	cursor: pointer;
 	transition: color 0.3s ease;
+}
+
+.nav-btn.active {
+	border-top: solid var(--color-amber-400) 2px;
 }
 
 @media screen and (min-width: 1024px) {
@@ -4241,6 +4233,8 @@ input[type="button"]:disabled,
 	}
 }
 
+/* Misc
+ */
 html,
 body {
 	margin: 0;

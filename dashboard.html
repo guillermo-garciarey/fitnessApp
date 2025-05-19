@@ -57,13 +57,13 @@
 				<ul>
 					<li>
 						<a
-							href="#"
+							href=""
 							class="active"
 							>My Bookings</a
 						>
 					</li>
-					<li><a href="#">Class Timetable</a></li>
-					<li><a href="#">Admin Tools</a></li>
+					<li><a href="">Class Timetable</a></li>
+					<li><a href="">Admin Tools</a></li>
 				</ul>
 			</nav>
 
@@ -136,27 +136,27 @@
 							<div class="calendar-header">
 								<i
 									id="prev-month"
-									class="fas fa-chevron-left"
+									class="pressable fas fa-chevron-left"
 									style="cursor: pointer"
 								></i>
 								<span id="month-label">Month YYYY</span>
 								<i
 									id="next-month"
-									class="fas fa-chevron-right"
+									class="pressable fas fa-chevron-right"
 									style="cursor: pointer"
 								></i>
 							</div>
 							<div class="calendar-admin-actions">
 								<i
 									id="generate-class"
-									class="fa-solid fa-calendar-day"
+									class="pressable fa-solid fa-calendar-day"
 								></i>
 								<i
 									id="generate-schedule"
 									class="fa-solid fa-calendar-days"
 								></i>
 							</div>
-							<div class="calendar-filter">
+							<div class="pressable calendar-filter">
 								<select id="class-filter">
 									<option
 										value="bookings"
@@ -207,11 +207,13 @@
 							to export below.
 						</p>
 						<ul class="feature-icons">
-							<li class="icon solid fa-users">User Data</li>
-							<li class="icon solid fa-calendar-check">Booking Data</li>
-							<li class="icon solid fa-calendar-day">Class Data</li>
-							<li class="icon solid fa-calendar">Schedule Data</li>
-							<li class="icon solid fa-credit-card">Payment Data</li>
+							<li class="pressable icon solid fa-users">User Data</li>
+							<li class="pressable icon solid fa-calendar-check">
+								Booking Data
+							</li>
+							<li class="pressable icon solid fa-calendar-day">Class Data</li>
+							<li class="pressable icon solid fa-calendar">Schedule Data</li>
+							<li class="pressable icon solid fa-credit-card">Payment Data</li>
 						</ul>
 					</div>
 				</section>
@@ -227,7 +229,7 @@
 						</p>
 
 						<!-- Search bar -->
-						<div class="table-search-bar">
+						<div class="pressable table-search-bar">
 							<input
 								type="text"
 								id="userSearch"
@@ -247,69 +249,6 @@
 				</section>
 
 				<!-- Three -->
-				<section
-					class="panel"
-					id="four"
-				>
-					<div class="container">
-						<h3>A Few Accomplishments</h3>
-						<p>
-							Integer eu ante ornare amet commetus vestibulum blandit integer in
-							curae ac faucibus integer non. Adipiscing cubilia elementum
-							integer. Integer eu ante ornare amet commetus.
-						</p>
-						<div class="features">
-							<article>
-								<a
-									href="#"
-									class="image"
-									><img
-										src="alt_images/pic01.jpg"
-										alt=""
-								/></a>
-								<div class="inner">
-									<h4>Pharetra fusce facilisis</h4>
-									<p>
-										Integer eu ante ornare amet commetus vestibulum blandit
-										integer in curae ac faucibus integer adipiscing ornare amet.
-									</p>
-								</div>
-							</article>
-							<article>
-								<a
-									href="#"
-									class="image"
-									><img
-										src="alt_images/pic02.jpg"
-										alt=""
-								/></a>
-								<div class="inner">
-									<h4>Condimentum mus ipsum orci</h4>
-									<p>
-										Integer eu ante ornare amet commetus vestibulum blandit
-										integer in curae ac faucibus integer adipiscing ornare amet.
-									</p>
-								</div>
-							</article>
-							<article>
-								<a
-									href="#"
-									class="image"
-									><img
-										src="alt_images/pic03.jpg"
-										alt=""
-								/></a>
-								<div class="inner">
-									<h4>Cubilia enim congue at cep amet</h4>
-									<p>
-										Integer eu ante ornare amet commetus vestibulum blandit
-										integer in curae ac faucibus integer adipiscing ornare amet.
-									</p>
-								</div>
-							</article>
-						</div>
-					</div>
-				</section>
 
 				<!-- Four -->
 				<section
@@ -429,13 +368,16 @@
 						<select id="admin-user-select">
 							<option value="">Add User</option>
 						</select>
-						<button id="admin-add-user">
+						<button
+							id="admin-add-user"
+							class="pressable"
+						>
 							<i class="fa-solid fa-user-plus"></i>
 						</button>
 
 						<button
 							id="admin-delete-class"
-							class="danger full-width"
+							class="pressable danger full-width"
 						>
 							<i class="fa-solid fa-trash-can"></i>
 							Delete Class
@@ -454,19 +396,21 @@
 			</section> -->
 			<nav class="nav-bottom">
 				<i
-					class="fa-solid fa-house nav-btn active"
+					class="pressable fa-solid fa-calendar-days nav-btn active"
 					data-target="one"
 				></i>
+
 				<i
-					class="fa-solid fa-calendar nav-btn"
+					class="pressable fa-regular fa-floppy-disk nav-btn"
 					data-target="two"
 				></i>
+
 				<i
-					class="fa-solid fa-bolt nav-btn"
+					class="pressable fa-regular fa-credit-card nav-btn"
 					data-target="three"
 				></i>
 				<i
-					class="fa-solid fa-user nav-btn"
+					class="pressable fa-solid fa-user nav-btn"
 					data-target="four"
 				></i>
 			</nav>
@@ -481,6 +425,7 @@
 		<script src="alt_assets/js/breakpoints.min.js"></script>
 		<script src="alt_assets/js/util.js"></script>
 		<script src="alt_assets/js/main.js"></script>
+		<!-- <script src="assets/js/backgroundslider.js"></script> -->
 		<script
 			type="module"
 			src="assets/js/utils.js"
