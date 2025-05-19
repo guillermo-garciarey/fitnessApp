@@ -4136,7 +4136,7 @@ input[type="button"]:disabled,
 	cursor: pointer;
 	transition: transform 0.2s ease-in, box-shadow 0.2s ease-in,
 		filter 0.2s ease-in;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+	box-shadow: 0 4px 8px var(--gray-1200);
 }
 
 .pressable:active {
