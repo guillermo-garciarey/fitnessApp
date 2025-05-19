@@ -3561,7 +3561,19 @@ input[type="button"]:disabled,
 
 /* Booking Calendar */
 
+.calendar-admin-actions {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 1rem;
+	gap: 1rem;
+}
+
 #generate-schedule {
+	font-size: larger;
+}
+
+#generate-class {
+	font-size: larger;
 }
 
 .calendar-container {
@@ -3778,7 +3790,7 @@ input[type="button"]:disabled,
 	color: white;
 	font-weight: 500;
 	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-	animation: toastFadeUp 3s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+	animation: toastFadeUp 2s cubic-bezier(0.33, 1, 0.68, 1) forwards;
 	transform: translateY(40px);
 	opacity: 0;
 	pointer-events: auto; /* Allow interaction with toast if needed */
@@ -3835,11 +3847,15 @@ input[type="button"]:disabled,
 }
 
 .modal-content {
-	background: white;
 	padding: 1.5rem;
 	border-radius: 4px;
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 	text-align: center;
+	background: var(--gray-1200);
+	color: rgb(255, 255, 255);
+	border-radius: 4px;
+	width: 90%;
+	max-width: 400px;
+	max-height: 70vh;
 }
 
 .modal-actions {
@@ -4000,8 +4016,7 @@ input[type="button"]:disabled,
 	width: 90%;
 	max-width: 400px;
 	padding: 1rem;
-	max-height: 90vh;
-	overflow-y: auto;
+	max-height: 70vh;
 }
 
 .admin-modal-header {
@@ -4011,13 +4026,29 @@ input[type="button"]:disabled,
 	align-items: center;
 }
 
+.admin-user-list-container {
+	max-height: 150px;
+	overflow: auto;
+	padding-right: 1rem;
+	margin-bottom: 2.25em;
+}
+
 #admin-user-select {
 	background-color: var(--gray-1100);
-	margin-bottom: 1rem;
+	margin-bottom: 0.5rem;
+	border: 0.5px solid;
+	border-radius: 4px;
 }
 
 .admin-modal-header h3 {
 	margin: 0;
+	letter-spacing: 1px;
+}
+
+.admin-modal-body p {
+	margin-block: 1rem !important;
+	padding-left: 1rem;
+	color: var(--gray-600);
 }
 
 .admin-actions {
@@ -4036,35 +4067,37 @@ input[type="button"]:disabled,
 
 .user-list {
 	list-style: none;
-	padding: 0;
-	margin: 0.5rem 0;
+
+	margin: 0;
 }
 
 .user-list li {
+	color: var(--gray-600);
 	display: flex;
 	justify-content: space-between;
 	padding: 0.3rem 0;
-	border-bottom: 1px solid #333;
 }
 
 .danger {
 	background: var(--color-red-300);
-	color: white;
+	color: var(--gray-100);
 	padding: 0.5rem;
 	border: none;
 	width: 100%;
-	border-radius: 6px;
+	border-radius: 4px;
 	cursor: pointer;
+	margin-bottom: 0.5rem;
 }
 
 #admin-add-user {
-	background: var(--color-green-300);
-	color: white;
+	background: var(--gray-900);
+	color: var(--gray-100);
 	padding: 0.5rem;
 	border: none;
 	width: 100%;
-	border-radius: 6px;
+	border-radius: 4px;
 	cursor: pointer;
+	margin-bottom: 0.5rem;
 }
 
 .full-width {
@@ -4073,4 +4106,12 @@ input[type="button"]:disabled,
 
 .hidden {
 	display: none;
+}
+
+.remove-user-btn {
+	all: unset; /* removes all browser default styles */
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
 }

@@ -117,10 +117,10 @@ export function showToast(message, type = "success") {
 
 	toastContainer.appendChild(toast);
 
-	// Remove after animation completes (e.g., 4s)
+	// Remove after animation completes (e.g., 3s)
 	setTimeout(() => {
 		toast.remove();
-	}, 4000);
+	}, 3000);
 }
 
 // Confirmation Modal
