@@ -310,6 +310,8 @@ export async function adjustUserCredits(userId, delta) {
 const navIcons = document.querySelectorAll(".nav-btn");
 const sections = document.querySelectorAll(".panel");
 
+const main = document.getElementById("main");
+
 navIcons.forEach((icon) => {
 	icon.addEventListener("click", () => {
 		const targetId = icon.dataset.target;
@@ -327,20 +329,23 @@ navIcons.forEach((icon) => {
 			return;
 		}
 
-		// Normal panel switching
+		// Switch active nav icon
 		navIcons.forEach((i) => i.classList.remove("active"));
 		icon.classList.add("active");
 
+		// Activate the selected panel
 		sections.forEach((section) => {
 			if (section.id === targetId) {
 				section.classList.add("active");
-				section.scrollTop = 0;
+
+				// ✅ Reset scroll on the #main scroll container
+				if (main) main.scrollTop = 0;
 			} else {
 				section.classList.remove("active");
 			}
 		});
 
-		// Remove header-visible if not panel "four"
+		// Remove sidebar if coming from "four"
 		document.body.classList.remove("header-visible");
 	});
 });
