@@ -6,6 +6,7 @@ import {
 	getAvailableClasses,
 	isClassBooked,
 	groupClassesByDate,
+	formatDate,
 } from "./utils.js";
 
 // Check for user login & set up profile information (name & avatar)

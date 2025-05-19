@@ -8,6 +8,7 @@ import {
 	showToast,
 	confirmAction,
 	getAvailableClasses,
+	formatDate,
 } from "./utils.js";
 
 import { loadCalendar, renderCalendar } from "./calendar.js";
@@ -226,7 +227,7 @@ export async function bookClass(classId) {
 				user_id: userId,
 				credits: -1,
 				reason: "Class Booking",
-				date: new Date().toISOString().split("T")[0], // YYYY-MM-DD
+				date: new Date().formatDate(dateObj),
 			},
 		]);
 
@@ -333,7 +334,7 @@ export async function cancelBooking(classId) {
 				user_id: userId,
 				credits: 1,
 				reason: "Booking Cancelled",
-				date: new Date().toISOString().split("T")[0],
+				date: new Date().formatDate(dateObj),
 			},
 		]);
 

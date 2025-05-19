@@ -85,7 +85,7 @@ export async function getAllBookings() {
 export function groupClassesByDate(classes) {
 	const grouped = {};
 	classes.forEach((cls) => {
-		const dateKey = cls.date.split("T")[0];
+		const dateKey = formatDate(new Date(cls.date));
 		if (!grouped[dateKey]) grouped[dateKey] = [];
 		grouped[dateKey].push(cls);
 	});
@@ -104,6 +104,16 @@ export function getUniqueClassTypes(classes) {
 		if (cls.type) types.add(cls.type);
 	});
 	return Array.from(types);
+}
+
+// Format Date
+
+export function formatDate(date) {
+	const d = new Date(date); // ensures it's a Date object
+	const year = d.getUTCFullYear();
+	const month = String(d.getUTCMonth() + 1).padStart(2, "0");
+	const day = String(d.getUTCDate()).padStart(2, "0");
+	return `${year}-${month}-${day}`;
 }
 
 // Toast
@@ -156,7 +166,7 @@ export function confirmAction(message) {
 	});
 }
 
-// Generate Schedule (Admin only)
+// Generate Schedule Trigger (Admin only)
 
 document
 	.getElementById("generate-schedule")
@@ -164,16 +174,16 @@ document
 		const label = document.getElementById("month-label").textContent.trim(); // e.g. "June 2025"
 		const [monthName, yearStr] = label.split(" ");
 		const year = parseInt(yearStr);
-		const monthIndex = new Date(`${monthName} 1, 2000`).getMonth() + 1; // convert to number 1-12
+		const monthIndex = new Date(`${monthName} 1, 2000`).getMonth(); // ✅ 0-based
 
-		if (!year || !monthIndex) {
+		if (!year || isNaN(monthIndex)) {
 			showToast?.("Invalid month label.", "error");
 			return;
 		}
 
-		// Step 1: Check for existing classes in selected month
-		const monthStart = `${year}-${String(monthIndex).padStart(2, "0")}-01`;
-		const monthEnd = new Date(year, monthIndex, 0).toISOString().split("T")[0]; // last day of month
+		// Step 1: Check for existing classes
+		const monthStart = `${year}-${String(monthIndex + 1).padStart(2, "0")}-01`;
+		const monthEnd = formatDate(new Date(year, monthIndex + 1, 0)); // ✅ end of the month
 
 		const { data: existing, error: checkError } = await supabase
 			.from("classes")
@@ -196,13 +206,18 @@ document
 			return;
 		}
 
-		// Step 2: Proceed to generate
-		await generateScheduleForMonth(year, monthIndex);
+		const confirmed = await confirmAction(
+			`This will generate a full class schedule for ${monthName} ${year}.\n\nAre you sure you want to continue?`
+		);
+
+		if (!confirmed) return;
+
+		await generateScheduleForMonth(year, monthIndex); // ✅ uses 0-based month
 	});
 
 // Generate Schedule Function
 
-async function generateScheduleForMonth(year, month) {
+async function generateScheduleForMonth(year, monthIndex) {
 	const { data: templates, error: templateError } = await supabase
 		.from("class_schedule_template")
 		.select("*");
@@ -213,30 +228,34 @@ async function generateScheduleForMonth(year, month) {
 		return;
 	}
 
-	const daysInMonth = new Date(year, month, 0).getDate();
+	const daysInMonth = new Date(year, monthIndex + 1, 0).getDate(); // ✅ get # days in correct month
 	const newClasses = [];
 
 	for (let day = 1; day <= daysInMonth; day++) {
-		const dateObj = new Date(year, month - 1, day);
+		const dateObj = new Date(Date.UTC(year, monthIndex, day));
+		console.log("📆 Date:", dateObj.toISOString(), "→", formatDate(dateObj));
 
-		// 🧠 Get full weekday name (e.g., "Monday")
-		const dayName = dateObj.toLocaleDateString("en-US", { weekday: "long" });
+		const dayIndex = dateObj.getDay(); // 0–6 (Sun–Sat)
 
 		const matchingTemplates = templates.filter(
-			(t) => t.day_of_week === dayName
+			(t) => Number(t.day_of_week) === dayIndex
 		);
 
 		for (const template of matchingTemplates) {
-			newClasses.push({
+			const newClass = {
 				name: template.name,
-				date: dateObj.toISOString().split("T")[0],
+				date: formatDate(dateObj),
 				time: template.time,
 				capacity: template.capacity,
 				description: template.description || null,
-				trainer: template.trainer || null,
-			});
+				// trainer: template.trainer || null, // optional
+			};
+
+			newClasses.push(newClass);
 		}
 	}
+
+	console.log(`🧾 Preparing to insert ${newClasses.length} classes`);
 
 	if (newClasses.length === 0) {
 		showToast?.("No matching templates for this month.", "info");
@@ -249,8 +268,39 @@ async function generateScheduleForMonth(year, month) {
 
 	if (insertError) {
 		console.error("❌ Insert failed:", insertError.message);
+		console.log("🧾 Payload:", newClasses);
 		showToast?.("Failed to generate schedule.", "error");
 	} else {
 		showToast?.("Schedule generated successfully!", "success");
+		console.log("✅ Insert complete!");
 	}
+}
+
+// Helper function to adjust user credits (for admin use)
+
+export async function adjustUserCredits(userId, delta) {
+	const { data: profile, error: fetchError } = await supabase
+		.from("profiles")
+		.select("credits")
+		.eq("id", userId)
+		.single();
+
+	if (fetchError || !profile) {
+		console.error("❌ Could not fetch credits:", fetchError?.message);
+		return false;
+	}
+
+	const newCredits = profile.credits + delta;
+
+	const { error: updateError } = await supabase
+		.from("profiles")
+		.update({ credits: newCredits })
+		.eq("id", userId);
+
+	if (updateError) {
+		console.error("❌ Failed to update credits:", updateError.message);
+		return false;
+	}
+
+	return true;
 }

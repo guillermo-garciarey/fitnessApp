@@ -11,6 +11,7 @@ import {
 	groupClassesByDate,
 	showToast,
 	confirmAction,
+	formatDate,
 } from "./utils.js";
 
 import { renderAgenda, fetchUserRole } from "./agenda.js";
@@ -23,13 +24,6 @@ let userBookings = [];
 
 const calendarBody = document.getElementById("calendar");
 const monthLabel = document.getElementById("month-label");
-
-function formatDate(date) {
-	const year = date.getFullYear();
-	const month = String(date.getMonth() + 1).padStart(2, "0");
-	const day = String(date.getDate()).padStart(2, "0");
-	return `${year}-${month}-${day}`;
-}
 
 function updateMonthLabel() {
 	const options = { year: "numeric", month: "long" };
@@ -58,13 +52,17 @@ function populateClassFilter(classList) {
 export function renderCalendar() {
 	calendarBody.innerHTML = "";
 
-	const year = viewDate.getFullYear();
-	const month = viewDate.getMonth();
-	const firstDay = new Date(year, month, 1);
-	const daysInMonth = new Date(year, month + 1, 0).getDate();
-	const rawOffset = firstDay.getDay();
+	const year = viewDate.getUTCFullYear();
+	const month = viewDate.getUTCMonth();
+
+	const firstDay = new Date(Date.UTC(year, month, 1));
+	const daysInMonth = new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
+
+	// ✅ Shift to Monday-start (JS: 0=Sun → 6, 1=Mon → 0, etc.)
+	const rawOffset = firstDay.getUTCDay();
 	const startOffset = (rawOffset + 6) % 7;
 
+	// Fill leading empty cells
 	for (let i = 0; i < startOffset; i++) {
 		const empty = document.createElement("div");
 		empty.className = "day-cell empty";
@@ -75,8 +73,11 @@ export function renderCalendar() {
 		const cell = document.createElement("div");
 		cell.className = "day-cell";
 
-		const dateObj = new Date(year, month, day);
-		const dateStr = formatDate(dateObj);
+		const dateObj = new Date(Date.UTC(year, month, day));
+		const dateStr = formatDate(dateObj); // should also be UTC-safe
+
+		// Debug log to ensure correct mapping
+		console.log(`📅 ${dateStr} → weekday index ${dateObj.getUTCDay()}`);
 
 		const number = document.createElement("div");
 		number.className = "day-number";
@@ -107,14 +108,15 @@ export function renderCalendar() {
 			cell.appendChild(greenDot);
 		}
 
-		if (dateStr === selectedDate) cell.classList.add("selected");
+		if (dateStr === selectedDate) {
+			cell.classList.add("selected");
+		}
 
 		calendarBody.appendChild(cell);
 
 		cell.addEventListener("click", () => {
 			selectedDate = dateStr;
 			renderCalendar();
-
 			renderAgenda(dateStr);
 		});
 	}

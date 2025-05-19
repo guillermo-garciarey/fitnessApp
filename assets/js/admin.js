@@ -8,6 +8,8 @@ import {
 	showToast,
 	confirmAction,
 	getAvailableClasses,
+	adjustUserCredits,
+	formatDate,
 } from "./utils.js";
 
 import { loadCalendar, renderCalendar } from "./calendar.js";
@@ -24,17 +26,17 @@ document
 		document.getElementById("admin-modal").classList.remove("show");
 
 		// 🔄 Re-fetch latest bookings and classes
-		const session = await getSession();
-		const userId = session?.user?.id;
+		// const session = await getSession();
+		// const userId = session?.user?.id;
 
-		if (!userId) return;
+		// if (!userId) return;
 
-		allClasses = await getAvailableClasses();
-		userBookings = await getUserBookings(userId);
+		// allClasses = await getAvailableClasses();
+		// userBookings = await getUserBookings(userId);
 
 		// 🔁 Refresh views with fresh data
-		renderAgenda(selectedDate);
-		loadCalendar(allClasses, userBookings);
+		// renderAgenda(selectedDate);
+		// loadCalendar(allClasses, userBookings);
 	});
 
 export let currentClassId = null;
@@ -125,14 +127,13 @@ export async function openAdminModal(classId) {
 
 // Remove user from class (Admin Only)
 
-document;
 document
 	.getElementById("admin-user-list")
 	.addEventListener("click", async (e) => {
 		const button = e.target.closest(".remove-user-btn");
 		if (!button) return;
 
-		const userId = e.target.dataset.userId;
+		const userId = button.dataset.userId;
 
 		const confirmed = await confirmAction(
 			"Remove this user and refund 1 credit?"
@@ -151,14 +152,19 @@ document
 				user_id: userId,
 				credits: 1,
 				reason: "Admin refund",
-				date: new Date().toISOString().split("T")[0],
+				date: new Date().formatDate(dateObj),
 			});
 
 			// 3. Update credits in profile
-			await supabase.rpc("adjust_user_credits", {
-				uid: userId,
-				delta: 1,
-			});
+			const { error: creditUpdateError } = await adjustUserCredits(userId, +1);
+
+			if (creditUpdateError) {
+				console.error(
+					"❌ Failed to update credits via JS:",
+					creditUpdateError.message
+				);
+				showToast?.("Failed to update credits", "error");
+			}
 
 			// 4. Decrement booked_slots
 			const { data: classData, error: fetchError } = await supabase
@@ -215,14 +221,19 @@ document
 				user_id: userId,
 				credits: -1,
 				reason: "Admin booking",
-				date: new Date().toISOString().split("T")[0],
+				date: new Date().formatDate(dateObj),
 			});
 
 			// 3. Update profile credit
-			await supabase.rpc("adjust_user_credits", {
-				uid: userId,
-				delta: -1,
-			});
+			const { error: creditUpdateError } = await adjustUserCredits(userId, -1);
+
+			if (creditUpdateError) {
+				console.error(
+					"❌ Failed to deduct credits via JS:",
+					creditUpdateError.message
+				);
+				showToast?.("Failed to deduct credits", "error");
+			}
 
 			// 4. Increment class booked_slots
 			const { data: classData, error: fetchError } = await supabase
