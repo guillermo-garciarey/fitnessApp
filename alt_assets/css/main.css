@@ -4002,7 +4002,7 @@ input[type="button"]:disabled,
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background-color: rgba(0, 0, 0, 0.6);
+	background-color: transparent;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -4114,4 +4114,52 @@ input[type="button"]:disabled,
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
+}
+
+/* Press Button */
+
+.pressable {
+	position: relative;
+	background: inherit; /* or inherit */
+	color: inherit;
+	border: none;
+	cursor: pointer;
+	transition: transform 0.08s ease-in, box-shadow 0.08s ease-in,
+		filter 0.08s ease-in;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.pressable:active {
+	transform: translateY(2px);
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+	filter: brightness(0.95);
+}
+
+/* Modal Animations */
+
+/* Modal base styles */
+#admin-modal {
+	transition: transform 0.3s ease, opacity 0.3s ease;
+	transform: translateY(100%);
+	opacity: 0;
+	pointer-events: none;
+}
+
+/* Show the modal */
+#admin-modal.show {
+	transform: translateY(0);
+	opacity: 1;
+	pointer-events: auto;
+}
+
+/* Optional: modal background layer */
+.admin-modal-overlay {
+	transition: opacity 0.3s ease;
+	opacity: 0;
+	pointer-events: none;
+}
+
+.admin-modal-overlay.show {
+	opacity: 1;
+	pointer-events: auto;
 }

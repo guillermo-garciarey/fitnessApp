@@ -21,7 +21,7 @@ let selectedDate = getLocalDateStr();
 document
 	.getElementById("admin-modal-close")
 	.addEventListener("click", async () => {
-		document.getElementById("admin-modal").classList.add("hidden");
+		document.getElementById("admin-modal").classList.remove("show");
 
 		// 🔄 Re-fetch latest bookings and classes
 		const session = await getSession();
@@ -41,7 +41,9 @@ export let currentClassId = null;
 
 export async function openAdminModal(classId) {
 	currentClassId = classId;
-	document.getElementById("admin-modal").classList.remove("hidden");
+	setTimeout(() => {
+		document.getElementById("admin-modal").classList.add("show");
+	}, 500);
 
 	const titleEl = document.getElementById("admin-modal-title");
 	const dateEl = document.getElementById("admin-modal-date");

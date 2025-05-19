@@ -71,7 +71,7 @@ export function renderAgenda(dateStr) {
 
 	sortedClasses.forEach((cls) => {
 		const card = document.createElement("div");
-		card.className = "agenda-card";
+		card.className = "agenda-card pressable";
 		card.dataset.id = cls.id;
 
 		const classDateTime = new Date(`${cls.date}T${cls.time}`);
