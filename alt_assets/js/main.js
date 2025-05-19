@@ -1,9 +1,3 @@
-/*
-	Read Only by Pixelarity
-	pixelarity.com | hello@pixelarity.com
-	License: pixelarity.com/license
-*/
-
 (function ($) {
 	var $window = $(window),
 		$body = $("body"),
@@ -55,22 +49,27 @@
 
 	$nav_a
 		.addClass("scrolly")
-		.on("click", function () {
+		.on("click", function (e) {
 			var $this = $(this);
+			var href = $this.attr("href");
 
-			// External link? Bail.
-			if ($this.attr("href").charAt(0) != "#") return;
+			// External or invalid link? Bail.
+			if (!href || href === "#" || href.charAt(0) !== "#") return;
 
 			// Deactivate all links.
 			$nav_a.removeClass("active");
 
-			// Activate link *and* lock it (so Scrollex doesn't try to activate other links as we're scrolling to this one's section).
-			$this.addClass("active").addClass("active-locked");
+			// Activate link *and* lock it.
+			$this.addClass("active active-locked");
 		})
 		.each(function () {
 			var $this = $(this),
-				id = $this.attr("href"),
-				$section = $(id);
+				id = $this.attr("href");
+
+			// Skip invalid IDs.
+			if (!id || id === "#") return;
+
+			var $section = $(id);
 
 			// No section for this link? Bail.
 			if ($section.length < 1) return;
@@ -81,57 +80,21 @@
 				top: "5vh",
 				bottom: "5vh",
 				initialize: function () {
-					// Deactivate section.
-					// $section.addClass("inactive");
+					// Optionally deactivate section here.
 				},
 				enter: function () {
-					// Activate section.
-					// $section.removeClass("inactive");
-					// No locked links? Deactivate all links and activate this section's one.
-					// if ($nav_a.filter(".active-locked").length == 0) {
-					// 	$nav_a.removeClass("active");
-					// 	$this.addClass("active");
-					// }
-					// Otherwise, if this section's link is the one that's locked, unlock it.
-					// else if ($this.hasClass("active-locked"))
-					// 	$this.removeClass("active-locked");
+					// Optionally activate section here.
 				},
 			});
 		});
-
-	// Title Bar.
-	// $titleBar = $(
-	// 	'<div id="titleBar">' +
-	// 		'<a href="#header" class="toggle"></a>' +
-	// 		'<span class="title">' +
-	// 		$("#logo").html() +
-	// 		"</span>" +
-	// 		'<i class="fa-solid fa-bolt nav-bottom"></i>' +
-	// 		"</div>"
-	// ).appendTo($body);
-
-	// Panel.
-	// $header.panel({
-	// 	delay: 500,
-	// 	hideOnClick: true,
-	// 	hideOnSwipe: true,
-	// 	resetScroll: true,
-	// 	resetForms: true,
-	// 	side: "right",
-	// 	target: $body,
-	// 	visibleClass: "header-visible",
-	// });
-	// console.log("Panel initialized on #header");
-
-	// window.$header = $header;
 
 	// Scrolly.
 	$(".scrolly").scrolly({
 		speed: 1000,
 		offset: function () {
-			if (breakpoints.active("<=medium")) return $titleBar.height();
-
-			return 0;
+			return breakpoints.active("<=medium") && $titleBar
+				? $titleBar.height()
+				: 0;
 		},
 	});
 })(jQuery);

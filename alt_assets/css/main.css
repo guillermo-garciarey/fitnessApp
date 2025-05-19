@@ -96,6 +96,10 @@
 	License: pixelarity.com/license
 */
 
+* {
+	-webkit-tap-highlight-color: transparent;
+}
+
 html,
 body,
 div,

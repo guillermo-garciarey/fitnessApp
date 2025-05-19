@@ -152,7 +152,7 @@ document
 				user_id: userId,
 				credits: 1,
 				reason: "Admin refund",
-				date: new Date().formatDate(dateObj),
+				date: formatDate(new Date()),
 			});
 
 			// 3. Update credits in profile
@@ -201,62 +201,105 @@ document
 
 		if (!userId) {
 			showToast?.("Please select a user to add.", "warning");
+			console.warn("⚠️ No user selected in admin-user-select dropdown");
 			return;
 		}
 
 		const confirmed = await confirmAction(
 			"Add this user to the class and deduct 1 credit?"
 		);
-		if (!confirmed) return;
+		if (!confirmed) {
+			console.log("🚫 Admin cancelled booking confirmation");
+			return;
+		}
 
 		try {
 			// 1. Add booking
-			await supabase.from("bookings").insert({
+			const { error: bookingError } = await supabase.from("bookings").insert({
 				user_id: userId,
 				class_id: currentClassId,
 			});
 
+			if (bookingError) {
+				console.error(
+					"❌ Failed to insert into bookings table:",
+					bookingError.message
+				);
+				showToast("Failed to create booking.", "error");
+				return;
+			}
+
 			// 2. Subtract 1 credit in payments
-			await supabase.from("payments").insert({
+			const { error: paymentError } = await supabase.from("payments").insert({
 				user_id: userId,
 				credits: -1,
 				reason: "Admin booking",
-				date: new Date().formatDate(dateObj),
+				date: formatDate(new Date()),
 			});
+
+			if (paymentError) {
+				console.error("❌ Failed to insert payment row:", paymentError.message);
+				showToast("Failed to create payment record.", "error");
+				return;
+			}
 
 			// 3. Update profile credit
 			const { error: creditUpdateError } = await adjustUserCredits(userId, -1);
 
 			if (creditUpdateError) {
 				console.error(
-					"❌ Failed to deduct credits via JS:",
+					"❌ Failed to update profile credits:",
 					creditUpdateError.message
 				);
-				showToast?.("Failed to deduct credits", "error");
+				showToast("Failed to deduct credits from user profile.", "error");
+				return;
 			}
 
-			// 4. Increment class booked_slots
+			// 4. Fetch and increment class's booked_slots
 			const { data: classData, error: fetchError } = await supabase
 				.from("classes")
 				.select("booked_slots")
 				.eq("id", currentClassId)
 				.single();
 
-			if (fetchError) throw new Error(fetchError.message);
+			if (fetchError) {
+				console.error(
+					"❌ Failed to fetch class for booked_slots update:",
+					fetchError.message
+				);
+				showToast("Failed to fetch class details.", "error");
+				return;
+			}
 
 			const newBookedCount = (classData.booked_slots || 0) + 1;
 
-			await supabase
+			const { error: updateError } = await supabase
 				.from("classes")
 				.update({ booked_slots: newBookedCount })
 				.eq("id", currentClassId);
 
-			showToast("User added and charged 1 credit.", "success");
+			if (updateError) {
+				console.error(
+					"❌ Failed to update booked_slots in class:",
+					updateError.message
+				);
+				showToast("Failed to update class booking count.", "error");
+				return;
+			}
+
+			showToast("✅ User added and charged 1 credit.", "success");
+			console.log(
+				`✅ Successfully booked user (${userId}) for class (${currentClassId})`
+			);
 
 			// 🔁 Refresh modal content
 			openAdminModal(currentClassId);
 		} catch (err) {
-			console.error("❌ Error adding user to class:", err.message);
-			showToast("Failed to add user to class.", "error");
+			console.error(
+				"❌ Unexpected error in admin booking flow:",
+				err.message,
+				err
+			);
+			showToast("An unexpected error occurred.", "error");
 		}
 	});
