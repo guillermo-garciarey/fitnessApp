@@ -49,20 +49,64 @@ function populateClassFilter(classList) {
 	});
 }
 
-export function renderCalendar() {
+// Caching mechanism
+const loadedMonths = new Set(); // e.g. "2025-05"
+const classCache = {}; // { "2025-05": [ ...classes ] }
+
+// Format YYYY-MM string
+function getMonthKey(date) {
+	return `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(
+		2,
+		"0"
+	)}`;
+}
+
+// Fetch classes for a given month if not already loaded
+async function fetchClassesForMonth(date) {
+	const key = getMonthKey(date);
+	if (loadedMonths.has(key)) return;
+
+	const year = date.getUTCFullYear();
+	const month = date.getUTCMonth();
+
+	const firstDay = `${key}-01`;
+	const lastDay = new Date(Date.UTC(year, month + 1, 0))
+		.toISOString()
+		.split("T")[0];
+
+	const { data, error } = await supabase
+		.from("classes")
+		.select("id, name, date, time, description, booked_slots, capacity")
+		.gte("date", firstDay)
+		.lte("date", lastDay);
+
+	if (error) {
+		console.error(`❌ Failed to fetch classes for ${key}:`, error.message);
+		return;
+	}
+
+	classCache[key] = data;
+	loadedMonths.add(key);
+
+	// Flatten all months to update global state
+	allClasses = Object.values(classCache).flat();
+	groupedByDate = groupClassesByDate(allClasses);
+}
+
+export async function renderCalendar() {
 	calendarBody.innerHTML = "";
 
 	const year = viewDate.getUTCFullYear();
 	const month = viewDate.getUTCMonth();
 
+	const viewMonthDate = new Date(Date.UTC(year, month, 1));
+	await fetchClassesForMonth(viewMonthDate); // Ensure this month is loaded
+
 	const firstDay = new Date(Date.UTC(year, month, 1));
 	const daysInMonth = new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
-
-	// ✅ Shift to Monday-start (JS: 0=Sun → 6, 1=Mon → 0, etc.)
 	const rawOffset = firstDay.getUTCDay();
 	const startOffset = (rawOffset + 6) % 7;
 
-	// Fill leading empty cells
 	for (let i = 0; i < startOffset; i++) {
 		const empty = document.createElement("div");
 		empty.className = "day-cell empty";
@@ -74,7 +118,7 @@ export function renderCalendar() {
 		cell.className = "day-cell";
 
 		const dateObj = new Date(Date.UTC(year, month, day));
-		const dateStr = formatDate(dateObj); // should also be UTC-safe
+		const dateStr = formatDate(dateObj);
 
 		const number = document.createElement("div");
 		number.className = "day-number";
@@ -87,7 +131,6 @@ export function renderCalendar() {
 		}
 
 		const selectedFilter = document.getElementById("class-filter").value;
-
 		let showGreenDot = false;
 
 		classes.forEach((cls) => {
@@ -111,56 +154,59 @@ export function renderCalendar() {
 
 		calendarBody.appendChild(cell);
 
-		cell.addEventListener("click", () => {
+		cell.addEventListener("click", async () => {
 			selectedDate = dateStr;
-			renderCalendar();
+			await renderCalendar();
 			renderAgenda(dateStr);
 		});
 	}
 }
 
-export async function loadCalendar(classes, bookings = []) {
-	allClasses = classes;
-	groupedByDate = groupClassesByDate(allClasses);
+export async function loadCalendar(bookings = []) {
+	const now = new Date();
+	await fetchClassesForMonth(now); // Only initial month
 	userBookings = bookings;
 	updateMonthLabel();
-	renderCalendar();
+	await renderCalendar();
 }
 
-export function goToNextMonth() {
+export async function goToNextMonth() {
 	viewDate.setMonth(viewDate.getMonth() + 1);
 	updateMonthLabel();
-	renderCalendar();
+	await renderCalendar();
 }
 
-export function goToPrevMonth() {
+export async function goToPrevMonth() {
 	viewDate.setMonth(viewDate.getMonth() - 1);
 	updateMonthLabel();
-	renderCalendar();
+	await renderCalendar();
 }
 
-// Connect buttons to navigation
-document.getElementById("next-month").addEventListener("click", goToNextMonth);
-document.getElementById("prev-month").addEventListener("click", goToPrevMonth);
+// Month nav buttons
+document.getElementById("next-month").addEventListener("click", async () => {
+	await goToNextMonth();
+});
+document.getElementById("prev-month").addEventListener("click", async () => {
+	await goToPrevMonth();
+});
 
-// Load calendar with class data
+document.getElementById("class-filter").addEventListener("change", async () => {
+	await renderCalendar();
+});
+
 (async () => {
 	const session = await getSession();
 	const userId = session?.user?.id;
 
 	const bookings = userId ? await getUserBookings(userId) : [];
 
-	const classes = await getAvailableClasses();
+	await loadCalendar(bookings); // ✅ load current month + bookings
 
-	const sorted = classes.sort((a, b) => a.date.localeCompare(b.date));
-	populateClassFilter(sorted);
+	// ✅ Populate filter based on the classes for the loaded month
+	const initialMonthKey = `${viewDate.getUTCFullYear()}-${String(
+		viewDate.getUTCMonth() + 1
+	).padStart(2, "0")}`;
+	const initialClasses = classCache[initialMonthKey] || [];
 
-	loadCalendar(sorted, bookings);
+	populateClassFilter(initialClasses);
 })();
-
-let sorted = [];
-let bookings = [];
-
-document.getElementById("class-filter").addEventListener("change", () => {
-	renderCalendar();
-});
