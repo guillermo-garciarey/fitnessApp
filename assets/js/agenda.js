@@ -171,11 +171,17 @@ export async function renderAgenda(dateStr) {
 			);
 			if (!confirmed) return;
 
+			const scrollY = window.scrollY;
+
 			if (isBooked) {
+				// do the booking
 				await cancelBooking(classId);
 			} else {
+				// do the booking
 				await bookClass(classId);
 			}
+			// restore position
+			window.scrollTo({ top: scrollY });
 
 			// 🔄 Update bookings
 			const session = await getSession();
@@ -271,6 +277,8 @@ export async function cancelBooking(classId) {
 
 		// ✅ Success
 		showToast("Booking cancelled and credit refunded!", "success");
+		loadCalendar(allClasses, userBookings);
+		renderAgenda(selectedDate);
 	} catch (err) {
 		console.error("❌ Unexpected cancel error:", err.message);
 		showToast("Something went wrong during cancellation.", "error");

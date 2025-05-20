@@ -157,7 +157,13 @@ export async function renderCalendar() {
 		cell.addEventListener("click", async () => {
 			selectedDate = dateStr;
 			await renderCalendar();
-			renderAgenda(dateStr);
+			await renderAgenda(dateStr);
+
+			// ✅ Scroll to agenda section
+			const agendaEl = document.querySelector(".agenda-container");
+			if (agendaEl) {
+				agendaEl.scrollIntoView({ behavior: "smooth", block: "start" });
+			}
 		});
 	}
 }

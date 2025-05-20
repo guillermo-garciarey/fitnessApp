@@ -3708,7 +3708,6 @@ input[type="button"]:disabled,
 /* Agenda */
 
 .agenda-container {
-	border-top: solid 3px #f4f4f4;
 	padding-top: 2.25em;
 	margin: 0 0 2.25em 0;
 }

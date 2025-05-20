@@ -50,16 +50,16 @@
 	$nav_a
 		.addClass("scrolly")
 		.on("click", function (e) {
-			var $this = $(this);
-			var href = $this.attr("href");
+			const $this = $(this);
+			const href = $this.attr("href");
 
-			// External or invalid link? Bail.
-			if (!href || href === "#" || href.charAt(0) !== "#") return;
+			// 🚫 Skip scroll for empty or bad hrefs
+			if (!href || href === "" || href === "#" || href.charAt(0) !== "#") {
+				e.preventDefault(); // 👈 stop the scroll!
+				return;
+			}
 
-			// Deactivate all links.
 			$nav_a.removeClass("active");
-
-			// Activate link *and* lock it.
 			$this.addClass("active active-locked");
 		})
 		.each(function () {
