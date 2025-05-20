@@ -55,11 +55,26 @@ export function setAgendaData(classes, bookings) {
 
 let agendaClickListenerAttached = false;
 
-export function renderAgenda(dateStr) {
+export async function renderAgenda(dateStr) {
 	selectedDate = dateStr;
 	const agendaContainer = document.getElementById("agenda");
 	agendaContainer.innerHTML = "";
 
+	// ✅ Step 1: Refresh classes from DB
+	const { data: latestClasses, error } = await supabase
+		.from("classes")
+		.select("*");
+
+	if (error || !latestClasses) {
+		console.error("❌ Failed to fetch latest classes:", error?.message);
+		agendaContainer.innerHTML =
+			'<p class="error-msg">Could not load classes. Try again later.</p>';
+		return;
+	}
+
+	allClasses = latestClasses; // 🔁 Update global cache
+
+	// ✅ Step 2: Continue with render logic
 	const dayClasses = allClasses.filter((cls) => cls.date === selectedDate);
 	const sortedClasses = dayClasses.sort((a, b) => a.time.localeCompare(b.time));
 
@@ -134,17 +149,17 @@ export function renderAgenda(dateStr) {
 		agendaContainer.appendChild(card);
 	});
 
-	// Attach event listener only once using delegation
+	// Attach click handler only once
 	if (!agendaClickListenerAttached) {
 		agendaContainer.addEventListener("click", async (e) => {
 			const card = e.target.closest(".agenda-card");
 			if (!card) return;
 
 			const classId = card.dataset.id;
-			// 🧠 Check admin role
+
 			if (userRole === "admin") {
 				openAdminModal(classId);
-				return; // 🛑 Stop regular booking flow
+				return;
 			}
 
 			const isBooked = userBookings.includes(classId);
@@ -159,20 +174,19 @@ export function renderAgenda(dateStr) {
 			if (isBooked) {
 				await cancelBooking(classId);
 			} else {
-				console.log("📌 Booking classId:", classId);
 				await bookClass(classId);
 			}
 
-			// 🔄 Re-fetch updated bookings from DB
+			// 🔄 Update bookings
 			const session = await getSession();
 			const userId = session?.user?.id;
 			userBookings = await getUserBookings(userId);
 
-			// 🔄 Re-render agenda
-			renderAgenda(selectedDate);
+			// 🔄 Re-render with updated class and booking data
+			await renderAgenda(selectedDate);
 			loadCalendar(allClasses, userBookings);
-			console.log("📨 Booking triggered for", classId, "at", Date.now());
 		});
+
 		agendaClickListenerAttached = true;
 	}
 }
