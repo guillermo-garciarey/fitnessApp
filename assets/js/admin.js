@@ -150,6 +150,9 @@ document
 			);
 
 			openAdminModal(currentClassId); // Refresh modal
+			// You can redirect, reload, or just refresh your agenda
+			loadCalendar(allClasses, userBookings);
+			renderAgenda(selectedDate);
 		} catch (err) {
 			console.error("❌ Unexpected admin booking error:", err.message, err);
 			showToast("An unexpected error occurred.", "error");
@@ -184,6 +187,9 @@ document
 			}
 
 			showToast("User removed and refunded.", "success");
+			// You can redirect, reload, or just refresh your agenda
+			loadCalendar(allClasses, userBookings);
+			renderAgenda(selectedDate);
 
 			// 🔁 Refresh modal
 			openAdminModal(currentClassId);
