@@ -338,8 +338,8 @@ navIcons.forEach((icon) => {
 			if (section.id === targetId) {
 				section.classList.add("active");
 
-				// ✅ Reset scroll on the #main scroll container
-				if (main) main.scrollTop = 0;
+				// ✅ Reset scroll on the active panel, not #main
+				section.scrollTop = 0;
 			} else {
 				section.classList.remove("active");
 			}
