@@ -3698,7 +3698,7 @@ input[type="button"]:disabled,
 #class-filter {
 	padding: 0.4rem 0.6rem;
 	border-radius: 4px;
-	border: 0.5px solid;
+
 	background-color: transparent;
 	text-align: center;
 	font-weight: 500;
@@ -3714,11 +3714,11 @@ input[type="button"]:disabled,
 }
 
 .agenda-card {
-	background: #fafafa0a;
+	background: var(--gray-1100);
 	border-radius: 4px;
 	padding: 1rem;
 	margin-bottom: 1rem;
-	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+
 	transition: all 0.2s ease;
 	cursor: pointer;
 }
@@ -4089,7 +4089,7 @@ input[type="button"]:disabled,
 }
 
 .danger {
-	background: var(--color-red-300);
+	background: var(--color-red-300) !important;
 	color: var(--gray-100);
 	padding: 0.5rem;
 	border: none;
@@ -4097,6 +4097,7 @@ input[type="button"]:disabled,
 	border-radius: 4px;
 	cursor: pointer;
 	margin-bottom: 0.5rem;
+	height: 44px; /* Match admin-add-user */
 }
 
 #admin-add-user {
@@ -4108,6 +4109,7 @@ input[type="button"]:disabled,
 	border-radius: 4px;
 	cursor: pointer;
 	margin-bottom: 0.5rem;
+	height: 44px;
 }
 
 .full-width {
@@ -4222,7 +4224,7 @@ input[type="button"]:disabled,
 	left: 50%;
 	transform: translateX(-50%);
 	background-color: var(--gray-1200);
-	background-color: transparent;
+
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
