@@ -4277,3 +4277,71 @@ body {
 	overflow-y: clip;
 	position: relative;
 }
+
+/* Loader & Spinner */
+
+#app-loader {
+	position: fixed;
+	inset: 0;
+	background: var(--gray-1100);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 9999;
+	transition: opacity 0.3s ease;
+}
+
+/* From Uiverse.io by TheAbieza */
+.container {
+	width: fit-content;
+	gap: 10px;
+}
+
+.folder {
+	width: min-content;
+	margin: auto;
+	animation: float 2s infinite linear;
+}
+
+.folder .top {
+	background-color: #ff8f56;
+	width: 45px;
+	height: 8px;
+	border-top-right-radius: 10px;
+	border-top-left-radius: 10px;
+}
+
+.folder .bottom {
+	background-color: #ffce63;
+	width: 60px;
+	height: 40px;
+	box-shadow: 5px 5px 0 0 #283149;
+	border-top-right-radius: 8px;
+}
+
+.container .title {
+	font-size: 0.9em;
+	color: var(--gray-300);
+	text-align: center;
+	margin-top: 15px;
+}
+
+@keyframes float {
+	0% {
+		transform: translatey(0px);
+	}
+
+	50% {
+		transform: translatey(-25px);
+	}
+
+	100% {
+		transform: translatey(0px);
+	}
+}
+
+#app-loader.hide {
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.1s ease;
+}
