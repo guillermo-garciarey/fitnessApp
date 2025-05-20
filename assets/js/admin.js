@@ -24,19 +24,6 @@ document
 	.getElementById("admin-modal-close")
 	.addEventListener("click", async () => {
 		document.getElementById("admin-modal").classList.remove("show");
-
-		// 🔄 Re-fetch latest bookings and classes
-		// const session = await getSession();
-		// const userId = session?.user?.id;
-
-		// if (!userId) return;
-
-		// allClasses = await getAvailableClasses();
-		// userBookings = await getUserBookings(userId);
-
-		// 🔁 Refresh views with fresh data
-		// renderAgenda(selectedDate);
-		// loadCalendar(allClasses, userBookings);
 	});
 
 export let currentClassId = null;
@@ -125,75 +112,7 @@ export async function openAdminModal(classId) {
 		});
 }
 
-// Remove user from class (Admin Only)
-
-document
-	.getElementById("admin-user-list")
-	.addEventListener("click", async (e) => {
-		const button = e.target.closest(".remove-user-btn");
-		if (!button) return;
-
-		const userId = button.dataset.userId;
-
-		const confirmed = await confirmAction(
-			"Remove this user and refund 1 credit?"
-		);
-		if (!confirmed) return;
-
-		try {
-			// 1. Remove booking
-			await supabase.from("bookings").delete().match({
-				user_id: userId,
-				class_id: currentClassId,
-			});
-
-			// 2. Add refund row
-			await supabase.from("payments").insert({
-				user_id: userId,
-				credits: 1,
-				reason: "Admin refund",
-				date: formatDate(new Date()),
-			});
-
-			// 3. Update credits in profile
-			const { error: creditUpdateError } = await adjustUserCredits(userId, +1);
-
-			if (creditUpdateError) {
-				console.error(
-					"❌ Failed to update credits via JS:",
-					creditUpdateError.message
-				);
-				showToast?.("Failed to update credits", "error");
-			}
-
-			// 4. Decrement booked_slots
-			const { data: classData, error: fetchError } = await supabase
-				.from("classes")
-				.select("booked_slots")
-				.eq("id", currentClassId)
-				.single();
-
-			if (!fetchError && classData) {
-				const newBookedCount = Math.max((classData.booked_slots || 0) - 1, 0);
-
-				await supabase
-					.from("classes")
-					.update({ booked_slots: newBookedCount })
-					.eq("id", currentClassId);
-			}
-
-			showToast("User removed and refunded.", "success");
-
-			// 🔁 Refresh modal content
-			openAdminModal(currentClassId);
-		} catch (err) {
-			console.error("❌ Failed to remove user:", err.message);
-			showToast("Error removing user.", "error");
-		}
-	});
-
-// Add user to class (Admin only)
-
+// Admin adds user to class via dropdown
 document
 	.getElementById("admin-add-user")
 	.addEventListener("click", async () => {
@@ -214,76 +133,14 @@ document
 		}
 
 		try {
-			// 1. Add booking
-			const { error: bookingError } = await supabase.from("bookings").insert({
-				user_id: userId,
+			const { error } = await supabase.rpc("admin_book_user_for_class", {
+				uid: userId,
 				class_id: currentClassId,
 			});
 
-			if (bookingError) {
-				console.error(
-					"❌ Failed to insert into bookings table:",
-					bookingError.message
-				);
-				showToast("Failed to create booking.", "error");
-				return;
-			}
-
-			// 2. Subtract 1 credit in payments
-			const { error: paymentError } = await supabase.from("payments").insert({
-				user_id: userId,
-				credits: -1,
-				reason: "Admin booking",
-				date: formatDate(new Date()),
-			});
-
-			if (paymentError) {
-				console.error("❌ Failed to insert payment row:", paymentError.message);
-				showToast("Failed to create payment record.", "error");
-				return;
-			}
-
-			// 3. Update profile credit
-			const { error: creditUpdateError } = await adjustUserCredits(userId, -1);
-
-			if (creditUpdateError) {
-				console.error(
-					"❌ Failed to update profile credits:",
-					creditUpdateError.message
-				);
-				showToast("Failed to deduct credits from user profile.", "error");
-				return;
-			}
-
-			// 4. Fetch and increment class's booked_slots
-			const { data: classData, error: fetchError } = await supabase
-				.from("classes")
-				.select("booked_slots")
-				.eq("id", currentClassId)
-				.single();
-
-			if (fetchError) {
-				console.error(
-					"❌ Failed to fetch class for booked_slots update:",
-					fetchError.message
-				);
-				showToast("Failed to fetch class details.", "error");
-				return;
-			}
-
-			const newBookedCount = (classData.booked_slots || 0) + 1;
-
-			const { error: updateError } = await supabase
-				.from("classes")
-				.update({ booked_slots: newBookedCount })
-				.eq("id", currentClassId);
-
-			if (updateError) {
-				console.error(
-					"❌ Failed to update booked_slots in class:",
-					updateError.message
-				);
-				showToast("Failed to update class booking count.", "error");
+			if (error) {
+				console.error("❌ Admin booking RPC failed:", error.message);
+				showToast("Failed to book user via admin.", "error");
 				return;
 			}
 
@@ -292,14 +149,81 @@ document
 				`✅ Successfully booked user (${userId}) for class (${currentClassId})`
 			);
 
-			// 🔁 Refresh modal content
+			openAdminModal(currentClassId); // Refresh modal
+		} catch (err) {
+			console.error("❌ Unexpected admin booking error:", err.message, err);
+			showToast("An unexpected error occurred.", "error");
+		}
+	});
+
+// Remove user from class (Admin)
+
+document
+	.getElementById("admin-user-list")
+	.addEventListener("click", async (e) => {
+		const button = e.target.closest(".remove-user-btn");
+		if (!button) return;
+
+		const userId = button.dataset.userId;
+
+		const confirmed = await confirmAction(
+			"Remove this user and refund 1 credit?"
+		);
+		if (!confirmed) return;
+
+		try {
+			const { error } = await supabase.rpc("admin_cancel_user_booking", {
+				uid: userId,
+				class_id: currentClassId,
+			});
+
+			if (error) {
+				console.error("❌ RPC failed:", error.message);
+				showToast("Error removing user via admin.", "error");
+				return;
+			}
+
+			showToast("User removed and refunded.", "success");
+
+			// 🔁 Refresh modal
 			openAdminModal(currentClassId);
 		} catch (err) {
-			console.error(
-				"❌ Unexpected error in admin booking flow:",
-				err.message,
-				err
-			);
-			showToast("An unexpected error occurred.", "error");
+			console.error("❌ Unexpected error:", err.message);
+			showToast("Error removing user.", "error");
+		}
+	});
+
+// Delete class (Admin only)
+document
+	.getElementById("admin-delete-class")
+	.addEventListener("click", async (e) => {
+		// Make sure we capture the button even if icon is clicked
+		const button = e.target.closest("#admin-delete-class");
+		if (!button) return;
+
+		const confirmed = await confirmAction(
+			"Are you sure? This will delete the class and refund all users."
+		);
+		if (!confirmed) return;
+
+		try {
+			const { error } = await supabase.rpc("admin_delete_class", {
+				class_id: currentClassId,
+			});
+
+			if (error) {
+				console.error("❌ Failed to delete class via RPC:", error.message);
+				showToast("Failed to delete class.", "error");
+				return;
+			}
+
+			showToast("✅ Class deleted and users refunded.", "success");
+
+			// You can redirect, reload, or just refresh your agenda
+			loadCalendar(allClasses, userBookings);
+			renderAgenda(selectedDate);
+		} catch (err) {
+			console.error("❌ Unexpected delete class error:", err.message);
+			showToast("Error deleting class.", "error");
 		}
 	});

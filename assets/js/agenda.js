@@ -194,14 +194,13 @@ export function renderAgenda(dateStr) {
 
 // Booking Function
 
-let bookingInProgress = new Set(); // Tracks classes being booked
+let bookingInProgress = new Set();
 
 export async function bookClass(classId) {
 	if (bookingInProgress.has(classId)) {
 		console.log("🚫 Booking already in progress for", classId);
 		return;
 	}
-
 	bookingInProgress.add(classId);
 
 	try {
@@ -209,98 +208,33 @@ export async function bookClass(classId) {
 		const userId = session?.user?.id;
 		if (!userId) throw new Error("Not logged in");
 
-		// 1. Insert booking row
-		const { error: bookingError } = await supabase
-			.from("bookings")
-			.insert([{ user_id: userId, class_id: classId }]);
+		// 🔁 Call the wrapped transaction
+		const { error } = await supabase.rpc("book_class_transaction", {
+			uid: userId,
+			class_id: classId,
+		});
 
-		if (bookingError) {
+		if (error) {
 			showToast("Booking failed.", "error");
-			console.error("❌ Booking insert failed:", bookingError.message);
-			// alert("Booking failed: " + bookingError.message);
-			return;
-		}
-
-		// 2. Insert payment row
-		const { error: paymentError } = await supabase.from("payments").insert([
-			{
-				user_id: userId,
-				credits: -1,
-				reason: "Class Booking",
-				date: new Date().formatDate(dateObj),
-			},
-		]);
-
-		if (paymentError) {
-			showToast("Booking failed during payment.", "error");
-			console.error("❌ Payment insert failed:", paymentError.message);
-			// alert("Booking failed during payment.");
-			return;
-		}
-
-		// 2.5 Update profile credits (add -1)
-		const { error: creditUpdateError } = await supabase.rpc(
-			"adjust_user_credits",
-			{
-				uid: userId,
-				delta: -1,
-			}
-		);
-
-		if (creditUpdateError) {
-			showToast("Booking failed while updating credits.", "error");
-			console.error(
-				"❌ Failed to update profile credits:",
-				creditUpdateError.message
-			);
-			return;
-		}
-
-		// 3. Fetch current class booked_slots
-		const { data: classData, error: fetchError } = await supabase
-			.from("classes")
-			.select("booked_slots")
-			.eq("id", classId)
-			.single();
-
-		if (fetchError || !classData) {
-			showToast("Booking failed while syncing class slots.", "error");
-			console.error("❌ Could not fetch class:", fetchError?.message);
-			// alert("Booking failed while syncing class slots.");
-			return;
-		}
-
-		// 4. Update booked_slots count
-		const newBookedCount = (classData.booked_slots || 0) + 1;
-
-		const { error: updateError } = await supabase
-			.from("classes")
-			.update({ booked_slots: newBookedCount })
-			.eq("id", classId);
-
-		if (updateError) {
-			showToast("Booking failed while updating class.", "error");
-			console.error("❌ Class update failed:", updateError.message);
-			// alert("Booking failed while updating class.");
+			console.error("❌ Booking transaction failed:", error.message);
 			return;
 		}
 
 		// ✅ Done
 		showToast("Class booked successfully!", "success");
 		loadCalendar(allClasses, userBookings);
-		renderAgenda(selectedDate); // Refresh agenda UI
+		renderAgenda(selectedDate);
 	} catch (err) {
 		showToast("Something went wrong.", "error");
 		console.error("❌ Unexpected booking error:", err.message);
-		alert("Something went wrong.");
 	} finally {
-		bookingInProgress.delete(classId); // Release guard
+		bookingInProgress.delete(classId);
 	}
 }
 
 // Cancellation
 
-let cancelInProgress = new Set(); // Optional safety guard
+let cancelInProgress = new Set();
 
 export async function cancelBooking(classId) {
 	if (cancelInProgress.has(classId)) {
@@ -315,84 +249,22 @@ export async function cancelBooking(classId) {
 		const userId = session?.user?.id;
 		if (!userId) throw new Error("Not logged in");
 
-		// 1. Remove the booking
-		const { error: deleteError } = await supabase
-			.from("bookings")
-			.delete()
-			.eq("user_id", userId)
-			.eq("class_id", classId);
+		// 🔁 Call Supabase RPC to cancel booking and refund
+		const { error } = await supabase.rpc("cancel_booking_transaction", {
+			uid: userId,
+			class_id: classId,
+		});
 
-		if (deleteError) {
+		if (error) {
 			showToast("Cancellation failed.", "error");
-			console.error("❌ Booking delete failed:", deleteError.message);
+			console.error("❌ RPC failed:", error.message);
 			return;
 		}
 
-		// 2. Insert positive payment row
-		const { error: paymentError } = await supabase.from("payments").insert([
-			{
-				user_id: userId,
-				credits: 1,
-				reason: "Booking Cancelled",
-				date: new Date().formatDate(dateObj),
-			},
-		]);
-
-		if (paymentError) {
-			showToast("Cancellation failed during refund.", "error");
-			console.error("❌ Payment insert failed:", paymentError.message);
-			return;
-		}
-
-		// 3. Update profile credits (+1)
-		const { error: creditUpdateError } = await supabase.rpc(
-			"adjust_user_credits",
-			{
-				uid: userId,
-				delta: 1,
-			}
-		);
-
-		if (creditUpdateError) {
-			showToast("Cancellation failed while updating credits.", "error");
-			console.error(
-				"❌ Failed to update profile credits:",
-				creditUpdateError.message
-			);
-			return;
-		}
-
-		// 4. Update class's booked_slots
-		const { data: classData, error: fetchError } = await supabase
-			.from("classes")
-			.select("booked_slots")
-			.eq("id", classId)
-			.single();
-
-		if (fetchError || !classData) {
-			showToast("Cancellation failed while syncing class slots.", "error");
-			console.error("❌ Could not fetch class:", fetchError?.message);
-			return;
-		}
-
-		const newCount = Math.max(data.booked_slots - 1, 0);
-
-		const { error: updateError } = await supabase
-			.from("classes")
-			.update({ booked_slots: newCount })
-			.eq("id", classId);
-
-		if (updateError) {
-			console.error("❌ Failed to update booked_slots:", updateError.message);
-			showToast("Failed to update booked_slots.", "error");
-		} else {
-			console.log("✅ booked_slots updated to:", newCount);
-		}
-
-		// ✅ Done
+		// ✅ Success
 		showToast("Booking cancelled and credit refunded!", "success");
 		loadCalendar(allClasses, userBookings);
-		renderAgenda(selectedDate); // Refresh agenda UI
+		renderAgenda(selectedDate);
 	} catch (err) {
 		showToast("Something went wrong during cancellation.", "error");
 		console.error("❌ Unexpected cancel error:", err.message);
