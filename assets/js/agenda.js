@@ -212,7 +212,7 @@ let bookingInProgress = new Set();
 
 export async function bookClass(classId) {
 	if (bookingInProgress.has(classId)) {
-		console.log("🚫 Booking already in progress for", classId);
+		console.log("Booking already in progress for", classId);
 		return;
 	}
 	bookingInProgress.add(classId);
@@ -230,7 +230,7 @@ export async function bookClass(classId) {
 
 		if (error) {
 			showToast("Booking failed.", "error");
-			console.error("❌ Booking transaction failed:", error.message);
+			console.error("❌ RPC failed:", error.message);
 			return;
 		}
 
@@ -265,23 +265,15 @@ export async function cancelBooking(classId) {
 
 		// 🔁 Call Supabase RPC to cancel booking and refund
 		const { error } = await supabase.rpc("cancel_booking_transaction", {
-			uid: userId,
-			class_id: classId,
+			p_uid: userId,
+			p_class_id: classId,
 		});
-
-		if (error) {
-			showToast("Cancellation failed.", "error");
-			console.error("❌ RPC failed:", error.message);
-			return;
-		}
 
 		// ✅ Success
 		showToast("Booking cancelled and credit refunded!", "success");
-		loadCalendar(allClasses, userBookings);
-		renderAgenda(selectedDate);
 	} catch (err) {
-		showToast("Something went wrong during cancellation.", "error");
 		console.error("❌ Unexpected cancel error:", err.message);
+		showToast("Something went wrong during cancellation.", "error");
 	} finally {
 		cancelInProgress.delete(classId);
 	}

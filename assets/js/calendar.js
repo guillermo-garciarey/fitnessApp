@@ -76,9 +76,6 @@ export function renderCalendar() {
 		const dateObj = new Date(Date.UTC(year, month, day));
 		const dateStr = formatDate(dateObj); // should also be UTC-safe
 
-		// Debug log to ensure correct mapping
-		console.log(`📅 ${dateStr} → weekday index ${dateObj.getUTCDay()}`);
-
 		const number = document.createElement("div");
 		number.className = "day-number";
 		number.textContent = day;
