@@ -168,6 +168,15 @@ export async function renderCalendar() {
 	}
 }
 
+// Chevron calendar
+
+document.getElementById("next-section").addEventListener("click", async () => {
+	const agendaEl = document.querySelector(".agenda-container");
+	if (agendaEl) {
+		agendaEl.scrollIntoView({ behavior: "smooth", block: "start" });
+	}
+});
+
 export async function loadCalendar(bookings = []) {
 	const now = new Date();
 	await fetchClassesForMonth(now); // Only initial month
@@ -219,3 +228,9 @@ document.getElementById("class-filter").addEventListener("change", async () => {
 
 	populateClassFilter(initialClasses);
 })();
+
+// Filter button
+document.getElementById("filter-fab").addEventListener("click", () => {
+	const filterMenu = document.querySelector(".calendar-filter");
+	filterMenu?.classList.toggle("visible");
+});

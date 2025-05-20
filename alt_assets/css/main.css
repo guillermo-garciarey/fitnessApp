@@ -3611,6 +3611,14 @@ input[type="button"]:disabled,
 	font-size: 1.25rem;
 }
 
+.calendar-header > i {
+	box-shadow: none !important;
+}
+
+#next-section {
+	box-shadow: none !important;
+}
+
 .calendar-header-row,
 .calendar-body {
 	display: grid;
@@ -3660,11 +3668,11 @@ input[type="button"]:disabled,
 	/* background-color: var(--color-amber-400); */
 	color: var(--color-amber-400) !important;
 	border-radius: 50%;
-	scale: 1.5;
 }
 
 .day-cell.selected .day-number {
 	color: var(--amber-400) !important;
+	scale: 1.25;
 }
 
 .day-cell.no-classes {
@@ -4359,4 +4367,29 @@ body {
 
 .image.main {
 	height: 20vh !important;
+}
+
+/* Test */
+
+#filter-fab {
+	position: fixed;
+	bottom: 12.5vh;
+	right: 20px;
+	aspect-ratio: 1;
+	height: 48px;
+	background: var(--gray-900);
+	color: var(--gray-200);
+	border: none;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	z-index: 1000;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* optional fab shadow */
+}
+
+#filter-fab > i {
+	font-size: 1.4rem;
+	pointer-events: none; /* optional: prevents accidental clicks */
 }
