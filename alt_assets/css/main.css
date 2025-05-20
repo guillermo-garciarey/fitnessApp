@@ -3576,6 +3576,7 @@ input[type="button"]:disabled,
 	justify-content: center;
 	margin-bottom: 1rem;
 	gap: 1rem;
+	display: none;
 }
 
 #generate-schedule {
@@ -3587,7 +3588,12 @@ input[type="button"]:disabled,
 }
 
 .calendar-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
 	margin: 0 0 2.25em 0;
+	height: 61vh;
 }
 
 #month-label {
@@ -3603,7 +3609,6 @@ input[type="button"]:disabled,
 	align-items: center;
 	gap: 1rem;
 	font-size: 1.25rem;
-	margin-bottom: 1rem;
 }
 
 .calendar-header-row,
@@ -3611,6 +3616,10 @@ input[type="button"]:disabled,
 	display: grid;
 	grid-template-columns: repeat(7, 1fr);
 	gap: 0.5rem;
+}
+
+.calendar-grid {
+	width: 100%;
 }
 
 .day-header {
@@ -3651,6 +3660,7 @@ input[type="button"]:disabled,
 	/* background-color: var(--color-amber-400); */
 	color: var(--color-amber-400) !important;
 	border-radius: 50%;
+	scale: 1.5;
 }
 
 .day-cell.selected .day-number {
@@ -3691,6 +3701,7 @@ input[type="button"]:disabled,
 }
 
 .calendar-filter {
+	display: none;
 	text-align: center;
 	margin-bottom: 1rem;
 }
@@ -3698,7 +3709,7 @@ input[type="button"]:disabled,
 #class-filter {
 	padding: 0.4rem 0.6rem;
 	border-radius: 4px;
-
+	border: none !important;
 	background-color: transparent;
 	text-align: center;
 	font-weight: 500;
@@ -3709,6 +3720,7 @@ input[type="button"]:disabled,
 
 .agenda-container {
 	padding-top: 2.25em;
+	padding-top: 1.25em;
 	margin: 0 0 2.25em 0;
 }
 
@@ -4343,4 +4355,8 @@ body {
 	opacity: 0;
 	pointer-events: none;
 	transition: opacity 0.1s ease;
+}
+
+.image.main {
+	height: 20vh !important;
 }
