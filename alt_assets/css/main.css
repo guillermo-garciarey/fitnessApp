@@ -3540,19 +3540,19 @@ input[type="button"]:disabled,
 /* Profile Picture */
 
 .avatar-placeholder {
-	width: 100%;
-	height: 100%;
+	aspect-ratio: 1;
 	border-radius: 50%;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	color: white;
 	font-weight: bold;
-	font-size: 1.2rem;
+	font-size: 2.25rem;
 	font-family: sans-serif;
 	text-transform: uppercase;
 	background-color: #999;
 	object-fit: cover;
+	border: solid 1px var(--gray-1100);
 }
 
 .avatar-container {
@@ -3731,7 +3731,17 @@ input[type="button"]:disabled,
 	z-index: 1;
 }
 
+.calendar-filter-container {
+	position: relative;
+	display: flex;
+	position: relative;
+	align-self: flex-end;
+	margin-right: 0.5em;
+}
+
 .calendar-filter {
+	z-index: 9999;
+	background-color: var(--gray-1100) !important;
 	text-align: center;
 	margin-bottom: 1rem;
 	position: absolute !important;
@@ -3753,6 +3763,11 @@ input[type="button"]:disabled,
 	font-weight: 500;
 	appearance: none;
 	width: 0;
+	z-index: 99999;
+}
+
+.filter-icon {
+	position: absolute !important;
 }
 
 /* Agenda */
@@ -4186,8 +4201,8 @@ input[type="button"]:disabled,
 	color: inherit;
 	border: none;
 	cursor: pointer;
-	transition: transform 0.2s ease-in, box-shadow 0.2s ease-in,
-		filter 0.2s ease-in;
+	transition: transform 0.1s ease-in, box-shadow 0.1s ease-in,
+		filter 0.1s ease-in;
 	box-shadow: 0 4px 8px var(--gray-1200);
 }
 

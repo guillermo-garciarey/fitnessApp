@@ -23,12 +23,16 @@ import {
 	const profile = await getUserProfile(userId);
 	const name = profile?.name || "User";
 	const surname = profile?.surname || "Surname";
-	const avatarUrl = profile?.avatar_url || "alt_images/default-avatar.jpg";
+	const avatarUrl = profile?.avatar_url;
 
 	// Set avatar image
 	const avatarImg = document.getElementById("avatar-preview");
 	if (avatarImg) {
-		avatarImg.src = avatarUrl;
+		if (!avatarUrl || avatarUrl.includes("avatar.jpg")) {
+			showLetterAvatar(name, surname);
+		} else {
+			avatarImg.src = avatarUrl;
+		}
 	}
 
 	// Set name in both logo and titleBar
@@ -37,11 +41,6 @@ import {
 	if (logoLink) logoLink.textContent = name + " " + surname;
 	if (titleName) titleName.textContent = name + " " + surname;
 })();
-
-// After loading user profile
-if (!profile.avatar_url || profile.avatar_url.includes("avatar.jpg")) {
-	showLetterAvatar(profile.name, profile.surname);
-}
 
 // Enable avatar picture upload
 const trigger = document.getElementById("avatar-trigger");
