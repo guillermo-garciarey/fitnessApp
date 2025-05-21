@@ -171,8 +171,6 @@ export async function renderAgenda(dateStr) {
 			);
 			if (!confirmed) return;
 
-			const scrollY = window.scrollY;
-
 			if (isBooked) {
 				// do the booking
 				await cancelBooking(classId);
@@ -181,16 +179,15 @@ export async function renderAgenda(dateStr) {
 				await bookClass(classId);
 			}
 			// restore position
-			window.scrollTo({ top: scrollY });
 
 			// 🔄 Update bookings
 			const session = await getSession();
 			const userId = session?.user?.id;
-			userBookings = await getUserBookings(userId);
+			const bookingClassIds = await getUserBookings(userId);
 
 			// 🔄 Re-render with updated class and booking data
 			await renderAgenda(selectedDate);
-			// loadCalendar(allClasses, userBookings);
+			await loadCalendar(bookingClassIds);
 		});
 
 		agendaClickListenerAttached = true;
@@ -211,6 +208,8 @@ export async function renderAgenda(dateStr) {
 	setAgendaData(classes, bookings);
 	renderAgenda(selectedDate);
 })();
+
+// Booking
 
 let bookingInProgress = new Set();
 
@@ -242,11 +241,10 @@ export async function bookClass(classId) {
 		showToast("Class booked successfully!", "success");
 
 		// No need to redeclare — just reuse userId
-		const bookingClassIds = await getUserBookings(userId);
-		console.log("Mapped class IDs:", bookingClassIds);
+		// const bookingClassIds = await getUserBookings(userId);
+		// console.log("Mapped class IDs:", bookingClassIds);
 
-		await loadCalendar(bookingClassIds);
-		await renderAgenda(selectedDate);
+		// await loadCalendar(bookingClassIds);
 	} catch (err) {
 		showToast("Something went wrong.", "error");
 		console.error("❌ Unexpected booking error:", err.message);
@@ -287,11 +285,10 @@ export async function cancelBooking(classId) {
 		// ✅ Success
 		showToast("Booking cancelled and credit refunded!", "success");
 
-		const bookingClassIds = await getUserBookings(userId);
-		console.log("Mapped class IDs:", bookingClassIds);
+		// const bookingClassIds = await getUserBookings(userId);
+		// console.log("Mapped class IDs:", bookingClassIds);
 
-		await loadCalendar(bookingClassIds);
-		await renderAgenda(selectedDate);
+		// await loadCalendar(bookingClassIds);
 	} catch (err) {
 		console.error("❌ Unexpected cancel error:", err.message);
 		showToast("Something went wrong during cancellation.", "error");
