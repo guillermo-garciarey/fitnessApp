@@ -9,17 +9,27 @@ import {
 	confirmAction,
 	getAvailableClasses,
 	formatDate,
+	groupClassesByDate,
 } from "./utils.js";
 
-import { loadCalendar, renderCalendar } from "./calendar.js";
+import {
+	loadCalendar,
+	renderCalendar,
+	refreshCalendarDots,
+	updateCalendarDots,
+	userBookings, // ✅ imported from calendar.js
+} from "./calendar.js";
 
 import { openAdminModal } from "./admin.js";
 
 let allClasses = [];
-let userBookings = [];
 let selectedDate = getLocalDateStr();
-console.log("Agenda script loaded");
+let agendaClickListenerAttached = false;
 export let userRole = "user"; // default
+
+export function getLocalDateStr(date = new Date()) {
+	return date.toLocaleDateString("sv-SE"); // "sv-SE" = YYYY-MM-DD format
+}
 
 export async function fetchUserRole() {
 	const session = await getSession();
@@ -44,16 +54,9 @@ export async function fetchUserRole() {
 	console.log("👤 Role from profiles table:", userRole);
 }
 
-export function getLocalDateStr(date = new Date()) {
-	return date.toLocaleDateString("sv-SE"); // "sv-SE" = YYYY-MM-DD format
-}
-
-export function setAgendaData(classes, bookings) {
+export function setAgendaData(classes) {
 	allClasses = classes;
-	userBookings = bookings;
 }
-
-let agendaClickListenerAttached = false;
 
 export async function renderAgenda(dateStr) {
 	selectedDate = dateStr;
@@ -72,7 +75,7 @@ export async function renderAgenda(dateStr) {
 		return;
 	}
 
-	allClasses = latestClasses; // 🔁 Update global cache
+	allClasses = latestClasses;
 
 	// ✅ Step 2: Continue with render logic
 	const dayClasses = allClasses.filter((cls) => cls.date === selectedDate);
@@ -113,12 +116,20 @@ export async function renderAgenda(dateStr) {
 		const dot = document.createElement("span");
 		dot.classList.add("agenda-dot");
 
-		if (isBooked) {
-			dot.style.background = "var(--color-green-300)";
-		} else if (isMatch) {
-			dot.style.background = "var(--color-amber-400)";
+		if (userRole === "admin") {
+			if (cls.booked_slots > 0) {
+				dot.style.background = "var(--color-red-400)"; // Admin dot for booked class
+			} else {
+				dot.style.background = "var(--gray-900)";
+			}
 		} else {
-			dot.style.background = "var(--gray-900)";
+			if (isBooked) {
+				dot.style.background = "var(--color-green-300)";
+			} else if (isMatch) {
+				dot.style.background = "var(--color-amber-400)";
+			} else {
+				dot.style.background = "var(--gray-900)";
+			}
 		}
 
 		card.innerHTML = `
@@ -163,7 +174,6 @@ export async function renderAgenda(dateStr) {
 			}
 
 			const isBooked = userBookings.includes(classId);
-
 			const confirmed = await confirmAction(
 				isBooked
 					? "Are you sure you want to cancel this class?"
@@ -172,24 +182,16 @@ export async function renderAgenda(dateStr) {
 			if (!confirmed) return;
 
 			if (isBooked) {
-				// do the booking
 				await cancelBooking(classId);
 			} else {
-				// do the booking
 				await bookClass(classId);
 			}
-			// restore position
 
-			// 🔄 Update bookings
 			const session = await getSession();
 			const userId = session?.user?.id;
-			const bookingClassIds = await getUserBookings(userId);
-
-			// 🔄 Re-render with updated class and booking data
+			await updateCalendarDots(userId);
 			await renderAgenda(selectedDate);
-			await loadCalendar(bookingClassIds);
 		});
-
 		agendaClickListenerAttached = true;
 	}
 }
@@ -203,21 +205,15 @@ export async function renderAgenda(dateStr) {
 
 	const { getAvailableClasses } = await import("./utils.js");
 	const classes = await getAvailableClasses();
-	const bookings = await getUserBookings(userId);
 
-	setAgendaData(classes, bookings);
+	setAgendaData(classes);
 	renderAgenda(selectedDate);
 })();
-
-// Booking
 
 let bookingInProgress = new Set();
 
 export async function bookClass(classId) {
-	if (bookingInProgress.has(classId)) {
-		console.log("Booking already in progress for", classId);
-		return;
-	}
+	if (bookingInProgress.has(classId)) return;
 	bookingInProgress.add(classId);
 
 	try {
@@ -225,7 +221,6 @@ export async function bookClass(classId) {
 		const userId = session?.user?.id;
 		if (!userId) throw new Error("Not logged in");
 
-		// 🔁 Call the wrapped transaction
 		const { error } = await supabase.rpc("book_class_transaction", {
 			uid: userId,
 			class_id: classId,
@@ -237,14 +232,7 @@ export async function bookClass(classId) {
 			return;
 		}
 
-		// ✅ Done
 		showToast("Class booked successfully!", "success");
-
-		// No need to redeclare — just reuse userId
-		// const bookingClassIds = await getUserBookings(userId);
-		// console.log("Mapped class IDs:", bookingClassIds);
-
-		// await loadCalendar(bookingClassIds);
 	} catch (err) {
 		showToast("Something went wrong.", "error");
 		console.error("❌ Unexpected booking error:", err.message);
@@ -253,16 +241,10 @@ export async function bookClass(classId) {
 	}
 }
 
-// Cancellation
-
 let cancelInProgress = new Set();
 
 export async function cancelBooking(classId) {
-	if (cancelInProgress.has(classId)) {
-		console.log("🚫 Cancellation already in progress for", classId);
-		return;
-	}
-
+	if (cancelInProgress.has(classId)) return;
 	cancelInProgress.add(classId);
 
 	try {
@@ -270,7 +252,6 @@ export async function cancelBooking(classId) {
 		const userId = session?.user?.id;
 		if (!userId) throw new Error("Not logged in");
 
-		// 🔁 Call Supabase RPC to cancel booking and refund
 		const { error } = await supabase.rpc("cancel_booking_transaction", {
 			p_uid: userId,
 			p_class_id: classId,
@@ -282,13 +263,7 @@ export async function cancelBooking(classId) {
 			return;
 		}
 
-		// ✅ Success
 		showToast("Booking cancelled and credit refunded!", "success");
-
-		// const bookingClassIds = await getUserBookings(userId);
-		// console.log("Mapped class IDs:", bookingClassIds);
-
-		// await loadCalendar(bookingClassIds);
 	} catch (err) {
 		console.error("❌ Unexpected cancel error:", err.message);
 		showToast("Something went wrong during cancellation.", "error");

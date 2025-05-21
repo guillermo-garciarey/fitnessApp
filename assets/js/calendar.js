@@ -19,8 +19,8 @@ import { renderAgenda, fetchUserRole } from "./agenda.js";
 let viewDate = new Date();
 let selectedDate = formatDate(new Date());
 let allClasses = [];
-let groupedByDate = {};
-let userBookings = [];
+export let userBookings = [];
+export let groupedByDate = {};
 
 const calendarBody = document.getElementById("calendar");
 const monthLabel = document.getElementById("month-label");
@@ -125,6 +125,7 @@ export async function renderCalendar() {
 
 		const dateObj = new Date(Date.UTC(year, month, day));
 		const dateStr = formatDate(dateObj);
+		cell.dataset.date = dateStr;
 
 		const number = document.createElement("div");
 		number.className = "day-number";
@@ -136,31 +137,27 @@ export async function renderCalendar() {
 			cell.classList.add("no-classes");
 		}
 
+		let showDot = false;
 		const selectedFilter =
 			document.getElementById("class-filter")?.value ?? "bookings";
-		let showGreenDot = false;
 
-		classes.forEach((cls) => {
-			const classId = cls.id;
+		if (userRole === "admin") {
+			// ✅ Admin sees a dot if any class has at least 1 booking
+			showDot = classes.some((cls) => cls.booked_slots > 0);
+		} else {
+			// 👤 Users see dot based on their bookings or selected filter
+			showDot = classes.some((cls) => {
+				if (selectedFilter === "bookings") {
+					return userBookings.includes(cls.id);
+				}
+				return cls.name === selectedFilter;
+			});
+		}
 
-			if (selectedFilter === "bookings") {
-				console.log("userBookings:", userBookings);
-				console.log("classId:", cls.id);
-			}
-
-			if (selectedFilter === "bookings" && userBookings.includes(cls.id)) {
-				showGreenDot = true;
-			}
-
-			if (selectedFilter !== "bookings" && cls.name === selectedFilter) {
-				showGreenDot = true;
-			}
-		});
-
-		if (showGreenDot) {
-			const greenDot = document.createElement("div");
-			greenDot.classList.add("dot", "green-dot");
-			cell.appendChild(greenDot);
+		if (showDot) {
+			const dot = document.createElement("div");
+			dot.classList.add("dot", "green-dot");
+			cell.appendChild(dot);
 		}
 
 		if (dateStr === selectedDate) {
@@ -250,3 +247,60 @@ document.getElementById("class-filter").addEventListener("change", async () => {
 
 	populateClassFilter(initialClasses);
 })();
+
+// Refresh calendar slots without rendering calendar again
+
+import { userRole } from "./agenda.js"; // ✅ Make sure this import exists at the top
+
+export function refreshCalendarDots() {
+	const selectedFilter =
+		document.getElementById("class-filter")?.value ?? "bookings";
+
+	const cells = document.querySelectorAll(".day-cell:not(.empty)");
+
+	cells.forEach((cell) => {
+		const dateStr = cell.dataset.date;
+		const classes = groupedByDate[dateStr] || [];
+
+		// Remove existing dots
+		cell.querySelectorAll(".dot").forEach((dot) => dot.remove());
+
+		let showDot = false;
+
+		for (const cls of classes) {
+			if (userRole === "admin") {
+				// ✅ Admin sees a dot for *any* class on the day
+				showDot = true;
+				break;
+			}
+
+			// ✅ Normal user logic
+			if (
+				(selectedFilter === "bookings" && userBookings.includes(cls.id)) ||
+				(selectedFilter !== "bookings" && cls.name === selectedFilter)
+			) {
+				showDot = true;
+				break;
+			}
+		}
+
+		if (showDot) {
+			const dot = document.createElement("div");
+			dot.classList.add("dot");
+
+			if (userRole === "admin") {
+				dot.classList.add("admin-dot");
+			} else {
+				dot.classList.add("green-dot");
+			}
+
+			cell.appendChild(dot);
+		}
+	});
+}
+
+export async function updateCalendarDots(userId) {
+	userBookings = await getUserBookings(userId);
+	groupedByDate = groupClassesByDate(allClasses);
+	refreshCalendarDots();
+}
