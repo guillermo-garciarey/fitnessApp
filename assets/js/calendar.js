@@ -236,7 +236,7 @@ document.getElementById("class-filter").addEventListener("change", async () => {
 (async () => {
 	setTimeout(() => {
 		document.getElementById("app-loader")?.classList.add("hide");
-	}, 3500);
+	}, 2500);
 	const session = await getSession();
 	const userId = session?.user?.id;
 
