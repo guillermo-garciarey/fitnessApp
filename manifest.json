@@ -2,7 +2,7 @@
 	"name": "Fitness Booking App",
 	"short_name": "FitnessApp",
 	"start_url": "index.html",
-"scope": "./"
+	"scope": "./",
 	"display": "standalone",
 	"background_color": "#ffffff",
 	"theme_color": "#222222",
