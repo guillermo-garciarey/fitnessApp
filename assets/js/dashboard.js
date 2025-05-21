@@ -7,6 +7,7 @@ import {
 	isClassBooked,
 	groupClassesByDate,
 	formatDate,
+	showLetterAvatar,
 } from "./utils.js";
 
 // Check for user login & set up profile information (name & avatar)
@@ -36,6 +37,11 @@ import {
 	if (logoLink) logoLink.textContent = name + " " + surname;
 	if (titleName) titleName.textContent = name + " " + surname;
 })();
+
+// After loading user profile
+if (!profile.avatar_url || profile.avatar_url.includes("avatar.jpg")) {
+	showLetterAvatar(profile.name, profile.surname);
+}
 
 // Enable avatar picture upload
 const trigger = document.getElementById("avatar-trigger");

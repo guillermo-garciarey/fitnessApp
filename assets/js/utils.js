@@ -373,3 +373,38 @@ navIcons.forEach((icon) => {
 		document.body.classList.remove("header-visible");
 	});
 });
+
+// Profile generation
+
+export function stringToColor(str) {
+	const palette = [
+		"#EF4444",
+		"#F59E0B",
+		"#10B981",
+		"#3B82F6",
+		"#8B5CF6",
+		"#EC4899",
+		"#14B8A6",
+		"#F43F5E",
+	];
+	let hash = 0;
+	for (let i = 0; i < str.length; i++) {
+		hash = str.charCodeAt(i) + ((hash << 5) - hash);
+	}
+	return palette[Math.abs(hash) % palette.length];
+}
+
+export function showLetterAvatar(name = "", surname = "") {
+	const initials = `${name[0] || ""}${surname[0] || ""}`.toUpperCase();
+	const bgColor = stringToColor(name + surname);
+
+	const avatarEl = document.getElementById("avatar-preview");
+	if (!avatarEl) return;
+
+	const fallback = document.createElement("div");
+	fallback.className = "avatar-placeholder";
+	fallback.textContent = initials;
+	fallback.style.backgroundColor = bgColor;
+
+	avatarEl.replaceWith(fallback);
+}
