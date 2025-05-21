@@ -3591,7 +3591,7 @@ input[type="button"]:disabled,
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: space-between;
+	justify-content: space-evenly;
 	margin: 0 0 2.25em 0;
 	height: 61vh;
 }
@@ -3617,6 +3617,7 @@ input[type="button"]:disabled,
 
 #next-section {
 	box-shadow: none !important;
+	display: none;
 }
 
 .calendar-header-row,
@@ -3717,7 +3718,7 @@ input[type="button"]:disabled,
 .calendar-filter {
 	text-align: center;
 	margin-bottom: 1rem;
-	position: absolute;
+	position: absolute !important;
 	right: 60px;
 	bottom: 0;
 	display: flex;
