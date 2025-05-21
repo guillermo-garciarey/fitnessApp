@@ -1,5 +1,29 @@
 import { supabase } from "./supabaseClient.js";
 
+// utils.js
+
+let userRole = "user"; // default
+
+export async function fetchAndSetUserRole(supabase) {
+	const session = await supabase.auth.getSession();
+	const userId = session?.data?.session?.user?.id;
+	if (!userId) return;
+
+	const { data, error } = await supabase
+		.from("profiles")
+		.select("role")
+		.eq("id", userId)
+		.single();
+
+	if (!error && data?.role) {
+		userRole = data.role;
+	}
+}
+
+export function getUserRole() {
+	return userRole;
+}
+
 // Get current session
 export async function getSession() {
 	const {

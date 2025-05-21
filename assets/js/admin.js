@@ -12,13 +12,21 @@ import {
 	formatDate,
 } from "./utils.js";
 
-import { loadCalendar, renderCalendar } from "./calendar.js";
+import {
+	loadCalendar,
+	renderCalendar,
+	refreshCalendarAfterAdminAction,
+} from "./calendar.js";
 
-import { setAgendaData, getLocalDateStr, renderAgenda } from "./agenda.js";
+import {
+	selectedDate,
+	setAgendaData,
+	getLocalDateStr,
+	renderAgenda,
+} from "./agenda.js";
 
 let allClasses = [];
 let userBookings = [];
-let selectedDate = getLocalDateStr();
 
 document
 	.getElementById("admin-modal-close")
@@ -151,8 +159,9 @@ document
 
 			openAdminModal(currentClassId); // Refresh modal
 			// You can redirect, reload, or just refresh your agenda
-			const bookingClassIds = await getUserBookings(userId); // returns strings
-			await loadCalendar(bookingClassIds); // uses strings
+			// const bookingClassIds = await getUserBookings(userId);
+			// await loadCalendar(bookingClassIds);
+			await refreshCalendarAfterAdminAction();
 			await renderAgenda(selectedDate);
 		} catch (err) {
 			console.error("❌ Unexpected admin booking error:", err.message, err);
@@ -189,8 +198,9 @@ document
 
 			showToast("User removed and refunded.", "success");
 			// You can redirect, reload, or just refresh your agenda
-			const bookingClassIds = await getUserBookings(userId); // returns strings
-			await loadCalendar(bookingClassIds); // uses strings
+			// const bookingClassIds = await getUserBookings(userId);
+			// await loadCalendar(bookingClassIds);
+			await refreshCalendarAfterAdminAction();
 			await renderAgenda(selectedDate);
 
 			// 🔁 Refresh modal
@@ -232,8 +242,9 @@ document
 			const userId = session?.user?.id;
 
 			if (userId) {
-				const updatedBookings = await getUserBookings(userId);
-				await loadCalendar(updatedBookings);
+				// const updatedBookings = await getUserBookings(userId);
+				// await loadCalendar(updatedBookings);
+				await refreshCalendarAfterAdminAction();
 				await renderAgenda(selectedDate);
 			}
 		} catch (err) {

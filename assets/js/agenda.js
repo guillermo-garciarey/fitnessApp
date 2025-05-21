@@ -23,9 +23,13 @@ import {
 import { openAdminModal } from "./admin.js";
 
 let allClasses = [];
-let selectedDate = getLocalDateStr();
+export let selectedDate = getLocalDateStr();
 let agendaClickListenerAttached = false;
-export let userRole = "user"; // default
+
+export let internalUserRole = "user";
+export function getUserRole() {
+	return internalUserRole;
+}
 
 export function getLocalDateStr(date = new Date()) {
 	return date.toLocaleDateString("sv-SE"); // "sv-SE" = YYYY-MM-DD format
@@ -50,8 +54,8 @@ export async function fetchUserRole() {
 		return;
 	}
 
-	userRole = data.role || "user";
-	console.log("👤 Role from profiles table:", userRole);
+	internalUserRole = data.role || "user";
+	console.log("👤 Role from profiles table:", internalUserRole);
 }
 
 export function setAgendaData(classes) {
@@ -59,6 +63,7 @@ export function setAgendaData(classes) {
 }
 
 export async function renderAgenda(dateStr) {
+	console.log("Rendering agenda for:", dateStr);
 	selectedDate = dateStr;
 	const agendaContainer = document.getElementById("agenda");
 	agendaContainer.innerHTML = "";
@@ -116,7 +121,7 @@ export async function renderAgenda(dateStr) {
 		const dot = document.createElement("span");
 		dot.classList.add("agenda-dot");
 
-		if (userRole === "admin") {
+		if (internalUserRole === "admin") {
 			if (cls.booked_slots > 0) {
 				dot.style.background = "var(--color-red-400)"; // Admin dot for booked class
 			} else {
@@ -168,7 +173,7 @@ export async function renderAgenda(dateStr) {
 
 			const classId = card.dataset.id;
 
-			if (userRole === "admin") {
+			if (internalUserRole === "admin") {
 				openAdminModal(classId);
 				return;
 			}

@@ -12,9 +12,10 @@ import {
 	showToast,
 	confirmAction,
 	formatDate,
+	getUserRole,
 } from "./utils.js";
 
-import { renderAgenda, fetchUserRole } from "./agenda.js";
+import { renderAgenda, fetchUserRole, internalUserRole } from "./agenda.js";
 
 let viewDate = new Date();
 let selectedDate = formatDate(new Date());
@@ -141,7 +142,7 @@ export async function renderCalendar() {
 		const selectedFilter =
 			document.getElementById("class-filter")?.value ?? "bookings";
 
-		if (userRole === "admin") {
+		if (getUserRole() === "admin") {
 			// ✅ Admin sees a dot if any class has at least 1 booking
 			showDot = classes.some((cls) => cls.booked_slots > 0);
 		} else {
@@ -250,8 +251,6 @@ document.getElementById("class-filter").addEventListener("change", async () => {
 
 // Refresh calendar slots without rendering calendar again
 
-import { userRole } from "./agenda.js"; // ✅ Make sure this import exists at the top
-
 export function refreshCalendarDots() {
 	const selectedFilter =
 		document.getElementById("class-filter")?.value ?? "bookings";
@@ -268,7 +267,7 @@ export function refreshCalendarDots() {
 		let showDot = false;
 
 		for (const cls of classes) {
-			if (userRole === "admin") {
+			if (getUserRole() === "admin") {
 				// ✅ Admin sees a dot for *any* class on the day
 				showDot = true;
 				break;
@@ -288,7 +287,7 @@ export function refreshCalendarDots() {
 			const dot = document.createElement("div");
 			dot.classList.add("dot");
 
-			if (userRole === "admin") {
+			if (getUserRole() === "admin") {
 				dot.classList.add("admin-dot");
 			} else {
 				dot.classList.add("green-dot");
@@ -302,5 +301,18 @@ export function refreshCalendarDots() {
 export async function updateCalendarDots(userId) {
 	userBookings = await getUserBookings(userId);
 	groupedByDate = groupClassesByDate(allClasses);
+	refreshCalendarDots();
+}
+
+export async function refreshCalendarAfterAdminAction() {
+	// Re-fetch class data for this month
+	const now = new Date();
+	await fetchClassesForMonth(now);
+
+	// Update the global class list and grouped data
+	allClasses = Object.values(classCache).flat();
+	groupedByDate = groupClassesByDate(allClasses);
+
+	// Just re-run dot logic
 	refreshCalendarDots();
 }
