@@ -151,8 +151,9 @@ document
 
 			openAdminModal(currentClassId); // Refresh modal
 			// You can redirect, reload, or just refresh your agenda
-			loadCalendar(allClasses, userBookings);
-			renderAgenda(selectedDate);
+			const bookingClassIds = await getUserBookings(userId); // returns strings
+			await loadCalendar(bookingClassIds); // uses strings
+			await renderAgenda(selectedDate);
 		} catch (err) {
 			console.error("❌ Unexpected admin booking error:", err.message, err);
 			showToast("An unexpected error occurred.", "error");
@@ -176,8 +177,8 @@ document
 
 		try {
 			const { error } = await supabase.rpc("admin_cancel_user_booking", {
-				uid: userId,
-				class_id: currentClassId,
+				p_uid: userId,
+				p_class_id: currentClassId,
 			});
 
 			if (error) {
@@ -188,8 +189,9 @@ document
 
 			showToast("User removed and refunded.", "success");
 			// You can redirect, reload, or just refresh your agenda
-			loadCalendar(allClasses, userBookings);
-			renderAgenda(selectedDate);
+			const bookingClassIds = await getUserBookings(userId); // returns strings
+			await loadCalendar(bookingClassIds); // uses strings
+			await renderAgenda(selectedDate);
 
 			// 🔁 Refresh modal
 			openAdminModal(currentClassId);
@@ -214,7 +216,7 @@ document
 
 		try {
 			const { error } = await supabase.rpc("admin_delete_class", {
-				class_id: currentClassId,
+				p_class_id: currentClassId,
 			});
 
 			if (error) {
@@ -223,13 +225,19 @@ document
 				return;
 			}
 
-			showToast("✅ Class deleted and users refunded.", "success");
+			showToast("Class deleted and refunds issued.", "success");
 
-			// You can redirect, reload, or just refresh your agenda
-			loadCalendar(allClasses, userBookings);
-			renderAgenda(selectedDate);
+			// Optional: reload calendar if admin is viewing their own bookings
+			const session = await getSession();
+			const userId = session?.user?.id;
+
+			if (userId) {
+				const updatedBookings = await getUserBookings(userId);
+				await loadCalendar(updatedBookings);
+				await renderAgenda(selectedDate);
+			}
 		} catch (err) {
 			console.error("❌ Unexpected delete class error:", err.message);
-			showToast("Error deleting class.", "error");
+			showToast("Something went wrong while deleting the class.", "error");
 		}
 	});

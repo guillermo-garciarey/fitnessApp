@@ -32,6 +32,7 @@ function updateMonthLabel() {
 
 function populateClassFilter(classList) {
 	const filter = document.getElementById("class-filter");
+
 	const uniqueNames = [...new Set(classList.map((cls) => cls.name))]
 		.filter(Boolean)
 		.sort((a, b) => a.localeCompare(b));
@@ -41,6 +42,11 @@ function populateClassFilter(classList) {
 		.querySelectorAll("option:not([value='bookings'])")
 		.forEach((opt) => opt.remove());
 
+	// ✅ Re-label the "bookings" option
+	const bookingsOption = filter.querySelector("option[value='bookings']");
+	if (bookingsOption) bookingsOption.textContent = "My Bookings";
+
+	// Add all unique class names
 	uniqueNames.forEach((name) => {
 		const opt = document.createElement("option");
 		opt.value = name;
@@ -100,7 +106,7 @@ export async function renderCalendar() {
 	const month = viewDate.getUTCMonth();
 
 	const viewMonthDate = new Date(Date.UTC(year, month, 1));
-	await fetchClassesForMonth(viewMonthDate); // Ensure this month is loaded
+	await fetchClassesForMonth(viewMonthDate);
 
 	const firstDay = new Date(Date.UTC(year, month, 1));
 	const daysInMonth = new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
@@ -130,13 +136,22 @@ export async function renderCalendar() {
 			cell.classList.add("no-classes");
 		}
 
-		const selectedFilter = document.getElementById("class-filter").value;
+		const selectedFilter =
+			document.getElementById("class-filter")?.value ?? "bookings";
 		let showGreenDot = false;
 
 		classes.forEach((cls) => {
+			const classId = cls.id;
+
+			if (selectedFilter === "bookings") {
+				console.log("userBookings:", userBookings);
+				console.log("classId:", cls.id);
+			}
+
 			if (selectedFilter === "bookings" && userBookings.includes(cls.id)) {
 				showGreenDot = true;
 			}
+
 			if (selectedFilter !== "bookings" && cls.name === selectedFilter) {
 				showGreenDot = true;
 			}
@@ -159,7 +174,6 @@ export async function renderCalendar() {
 			await renderCalendar();
 			await renderAgenda(dateStr);
 
-			// ✅ Scroll to agenda section
 			const agendaEl = document.querySelector(".agenda-container");
 			if (agendaEl) {
 				agendaEl.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -179,8 +193,16 @@ document.getElementById("next-section").addEventListener("click", async () => {
 
 export async function loadCalendar(bookings = []) {
 	const now = new Date();
-	await fetchClassesForMonth(now); // Only initial month
-	userBookings = bookings;
+	await fetchClassesForMonth(now);
+
+	allClasses = Object.values(classCache).flat();
+	groupedByDate = groupClassesByDate(allClasses);
+
+	// ✅ Defensive fix: ensure all values are class IDs
+	userBookings = bookings
+		.map((b) => (typeof b === "object" && b?.class_id ? b.class_id : b))
+		.filter(Boolean);
+
 	updateMonthLabel();
 	await renderCalendar();
 }
@@ -228,9 +250,3 @@ document.getElementById("class-filter").addEventListener("change", async () => {
 
 	populateClassFilter(initialClasses);
 })();
-
-// Filter button
-document.getElementById("filter-fab").addEventListener("click", () => {
-	const filterMenu = document.querySelector(".calendar-filter");
-	filterMenu?.classList.toggle("visible");
-});

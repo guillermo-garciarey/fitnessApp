@@ -3709,7 +3709,6 @@ input[type="button"]:disabled,
 }
 
 .calendar-filter {
-	display: none;
 	text-align: center;
 	margin-bottom: 1rem;
 }

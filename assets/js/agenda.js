@@ -190,7 +190,7 @@ export async function renderAgenda(dateStr) {
 
 			// 🔄 Re-render with updated class and booking data
 			await renderAgenda(selectedDate);
-			loadCalendar(allClasses, userBookings);
+			// loadCalendar(allClasses, userBookings);
 		});
 
 		agendaClickListenerAttached = true;
@@ -211,8 +211,6 @@ export async function renderAgenda(dateStr) {
 	setAgendaData(classes, bookings);
 	renderAgenda(selectedDate);
 })();
-
-// Booking Function
 
 let bookingInProgress = new Set();
 
@@ -242,8 +240,13 @@ export async function bookClass(classId) {
 
 		// ✅ Done
 		showToast("Class booked successfully!", "success");
-		loadCalendar(allClasses, userBookings);
-		renderAgenda(selectedDate);
+
+		// No need to redeclare — just reuse userId
+		const bookingClassIds = await getUserBookings(userId);
+		console.log("Mapped class IDs:", bookingClassIds);
+
+		await loadCalendar(bookingClassIds);
+		await renderAgenda(selectedDate);
 	} catch (err) {
 		showToast("Something went wrong.", "error");
 		console.error("❌ Unexpected booking error:", err.message);
@@ -275,10 +278,20 @@ export async function cancelBooking(classId) {
 			p_class_id: classId,
 		});
 
+		if (error) {
+			showToast("Cancellation failed.", "error");
+			console.error("❌ RPC failed:", error.message);
+			return;
+		}
+
 		// ✅ Success
 		showToast("Booking cancelled and credit refunded!", "success");
-		loadCalendar(allClasses, userBookings);
-		renderAgenda(selectedDate);
+
+		const bookingClassIds = await getUserBookings(userId);
+		console.log("Mapped class IDs:", bookingClassIds);
+
+		await loadCalendar(bookingClassIds);
+		await renderAgenda(selectedDate);
 	} catch (err) {
 		console.error("❌ Unexpected cancel error:", err.message);
 		showToast("Something went wrong during cancellation.", "error");

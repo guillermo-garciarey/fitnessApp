@@ -52,7 +52,9 @@ export async function getUserBookings(userId) {
 		return [];
 	}
 
-	return data.map((b) => b.class_id);
+	const result = data.map((b) => b.class_id);
+	console.log("📦 getUserBookings →", result);
+	return result;
 }
 
 // Get All Users (admin use)
