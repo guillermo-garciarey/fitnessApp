@@ -2039,13 +2039,13 @@ textarea:focus {
 }
 
 select {
-	background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' preserveAspectRatio='none' viewBox='0 0 40 40'%3E%3Cpath d='M9.4,12.3l10.4,10.4l10.4-10.4c0.2-0.2,0.5-0.4,0.9-0.4c0.3,0,0.6,0.1,0.9,0.4l3.3,3.3c0.2,0.2,0.4,0.5,0.4,0.9 c0,0.4-0.1,0.6-0.4,0.9L20.7,31.9c-0.2,0.2-0.5,0.4-0.9,0.4c-0.3,0-0.6-0.1-0.9-0.4L4.3,17.3c-0.2-0.2-0.4-0.5-0.4-0.9 c0-0.4,0.1-0.6,0.4-0.9l3.3-3.3c0.2-0.2,0.5-0.4,0.9-0.4S9.1,12.1,9.4,12.3z' fill='%23e4e4e4' /%3E%3C/svg%3E");
+	/* background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' preserveAspectRatio='none' viewBox='0 0 40 40'%3E%3Cpath d='M9.4,12.3l10.4,10.4l10.4-10.4c0.2-0.2,0.5-0.4,0.9-0.4c0.3,0,0.6,0.1,0.9,0.4l3.3,3.3c0.2,0.2,0.4,0.5,0.4,0.9 c0,0.4-0.1,0.6-0.4,0.9L20.7,31.9c-0.2,0.2-0.5,0.4-0.9,0.4c-0.3,0-0.6-0.1-0.9-0.4L4.3,17.3c-0.2-0.2-0.4-0.5-0.4-0.9 c0-0.4,0.1-0.6,0.4-0.9l3.3-3.3c0.2-0.2,0.5-0.4,0.9-0.4S9.1,12.1,9.4,12.3z' fill='%23e4e4e4' /%3E%3C/svg%3E");
 	background-size: 1.25em;
 	background-repeat: no-repeat;
 	background-position: calc(100% - 1em) center;
 	height: 2.75em;
 	padding-right: 2.75em;
-	text-overflow: ellipsis;
+	text-overflow: ellipsis; */
 }
 
 select option {
@@ -3717,6 +3717,14 @@ input[type="button"]:disabled,
 .calendar-filter {
 	text-align: center;
 	margin-bottom: 1rem;
+	position: absolute;
+	right: 60px;
+	bottom: 0;
+	display: flex;
+	padding-inline: 1em;
+	border-radius: 30px;
+	align-items: center;
+	justify-content: center;
 }
 
 #class-filter {
@@ -3727,6 +3735,7 @@ input[type="button"]:disabled,
 	text-align: center;
 	font-weight: 500;
 	appearance: none;
+	width: 0;
 }
 
 /* Agenda */
@@ -4386,15 +4395,15 @@ body {
 	color: var(--gray-200);
 	border: none;
 	border-radius: 50%;
-	display: flex;
+	display: none;
 	align-items: center;
 	justify-content: center;
 	cursor: pointer;
 	z-index: 1000;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* optional fab shadow */
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 #filter-fab > i {
 	font-size: 1.4rem;
-	pointer-events: none; /* optional: prevents accidental clicks */
+	pointer-events: none;
 }

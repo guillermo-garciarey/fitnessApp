@@ -1,8 +1,7 @@
+import { internalUserRole } from "./agenda.js";
 import { supabase } from "./supabaseClient.js";
 
 // utils.js
-
-let userRole = "user"; // default
 
 export async function fetchAndSetUserRole(supabase) {
 	const session = await supabase.auth.getSession();
@@ -21,7 +20,7 @@ export async function fetchAndSetUserRole(supabase) {
 }
 
 export function getUserRole() {
-	return userRole;
+	return internalUserRole;
 }
 
 // Get current session

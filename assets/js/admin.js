@@ -10,12 +10,16 @@ import {
 	getAvailableClasses,
 	adjustUserCredits,
 	formatDate,
+	groupClassesByDate,
 } from "./utils.js";
 
 import {
 	loadCalendar,
 	renderCalendar,
 	refreshCalendarAfterAdminAction,
+	refreshCalendarDots,
+	classCache,
+	setGroupedByDate,
 } from "./calendar.js";
 
 import {
@@ -118,6 +122,23 @@ export async function openAdminModal(classId) {
 			option.textContent = `${u.name} ${u.surname} (${u.credits} cr)`;
 			userSelect.appendChild(option);
 		});
+	// ✅ Refresh class cache with updated class
+	const key = `${new Date(cls.date).getUTCFullYear()}-${String(
+		new Date(cls.date).getUTCMonth() + 1
+	).padStart(2, "0")}`;
+
+	if (classCache[key]) {
+		const index = classCache[key].findIndex((c) => c.id === classId);
+		if (index !== -1) {
+			classCache[key][index] = cls;
+
+			// Update global groupedByDate
+			setGroupedByDate(groupClassesByDate(Object.values(classCache).flat()));
+		}
+	}
+
+	// Optional: update dots visually
+	refreshCalendarDots();
 }
 
 // Admin adds user to class via dropdown
@@ -145,6 +166,7 @@ document
 				uid: userId,
 				class_id: currentClassId,
 			});
+			// 🧪 Add this:
 
 			if (error) {
 				console.error("❌ Admin booking RPC failed:", error.message);
@@ -156,12 +178,26 @@ document
 			console.log(
 				`✅ Successfully booked user (${userId}) for class (${currentClassId})`
 			);
+			const classResponse = await supabase
+				.from("classes")
+				.select("id, booked_slots")
+				.eq("id", currentClassId)
+				.single();
+
+			if (classResponse.error) {
+				console.error(
+					"❌ Error fetching updated class:",
+					classResponse.error.message
+				);
+			} else {
+				console.log("✅ Updated class info:", classResponse.data);
+			}
 
 			openAdminModal(currentClassId); // Refresh modal
 			// You can redirect, reload, or just refresh your agenda
 			// const bookingClassIds = await getUserBookings(userId);
 			// await loadCalendar(bookingClassIds);
-			await refreshCalendarAfterAdminAction();
+			await renderCalendar();
 			await renderAgenda(selectedDate);
 		} catch (err) {
 			console.error("❌ Unexpected admin booking error:", err.message, err);
@@ -200,7 +236,7 @@ document
 			// You can redirect, reload, or just refresh your agenda
 			// const bookingClassIds = await getUserBookings(userId);
 			// await loadCalendar(bookingClassIds);
-			await refreshCalendarAfterAdminAction();
+			await renderCalendar();
 			await renderAgenda(selectedDate);
 
 			// 🔁 Refresh modal
@@ -244,7 +280,7 @@ document
 			if (userId) {
 				// const updatedBookings = await getUserBookings(userId);
 				// await loadCalendar(updatedBookings);
-				await refreshCalendarAfterAdminAction();
+				await renderCalendar();
 				await renderAgenda(selectedDate);
 			}
 		} catch (err) {

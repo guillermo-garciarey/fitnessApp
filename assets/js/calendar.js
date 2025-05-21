@@ -23,6 +23,10 @@ let allClasses = [];
 export let userBookings = [];
 export let groupedByDate = {};
 
+export function setGroupedByDate(newData) {
+	groupedByDate = newData;
+}
+
 const calendarBody = document.getElementById("calendar");
 const monthLabel = document.getElementById("month-label");
 
@@ -58,7 +62,7 @@ function populateClassFilter(classList) {
 
 // Caching mechanism
 const loadedMonths = new Set(); // e.g. "2025-05"
-const classCache = {}; // { "2025-05": [ ...classes ] }
+export const classCache = {}; // { "2025-05": [ ...classes ] }
 
 // Format YYYY-MM string
 function getMonthKey(date) {
@@ -255,11 +259,18 @@ export function refreshCalendarDots() {
 	const selectedFilter =
 		document.getElementById("class-filter")?.value ?? "bookings";
 
+	console.log("🔄 Refreshing calendar dots");
+	console.log("🔍 Current filter:", selectedFilter);
+	console.log("🔍 User role:", getUserRole());
+
 	const cells = document.querySelectorAll(".day-cell:not(.empty)");
+	console.log("🧱 Day cells found:", cells.length);
 
 	cells.forEach((cell) => {
 		const dateStr = cell.dataset.date;
 		const classes = groupedByDate[dateStr] || [];
+
+		console.log(`📅 ${dateStr}: ${classes.length} classes`);
 
 		// Remove existing dots
 		cell.querySelectorAll(".dot").forEach((dot) => dot.remove());
@@ -267,13 +278,15 @@ export function refreshCalendarDots() {
 		let showDot = false;
 
 		for (const cls of classes) {
+			console.log("🆔 Class:", cls.id, "Booked slots:", cls.booked_slots);
+
 			if (getUserRole() === "admin") {
-				// ✅ Admin sees a dot for *any* class on the day
-				showDot = true;
-				break;
+				if (cls.booked_slots > 0) {
+					showDot = true;
+					break;
+				}
 			}
 
-			// ✅ Normal user logic
 			if (
 				(selectedFilter === "bookings" && userBookings.includes(cls.id)) ||
 				(selectedFilter !== "bookings" && cls.name === selectedFilter)
@@ -294,25 +307,59 @@ export function refreshCalendarDots() {
 			}
 
 			cell.appendChild(dot);
+			console.log(`✅ Dot added for ${dateStr}`);
+		} else {
+			console.log(`🚫 No dot for ${dateStr}`);
 		}
 	});
 }
 
 export async function updateCalendarDots(userId) {
-	userBookings = await getUserBookings(userId);
-	groupedByDate = groupClassesByDate(allClasses);
+	const now = new Date();
+	console.log("📆 Forcing class refresh for:", now.toISOString());
+
+	await forceRefreshClassesForMonth(now);
+
+	console.log("📦 Updated allClasses:", allClasses);
+	console.log("📦 Updated groupedByDate keys:", Object.keys(groupedByDate));
+
+	if (getUserRole() !== "admin") {
+		userBookings = await getUserBookings(userId);
+		console.log("👤 Updated userBookings:", userBookings);
+	} else {
+		console.log("🛠 Admin detected — skipping userBookings fetch");
+	}
+
 	refreshCalendarDots();
 }
 
 export async function refreshCalendarAfterAdminAction() {
-	// Re-fetch class data for this month
 	const now = new Date();
+	const key = getMonthKey(now);
+
+	// ❌ Remove old cache entry to force fresh fetch
+	loadedMonths.delete(key);
+
+	// 🔁 Re-fetch and update global class list
 	await fetchClassesForMonth(now);
 
-	// Update the global class list and grouped data
 	allClasses = Object.values(classCache).flat();
 	groupedByDate = groupClassesByDate(allClasses);
 
-	// Just re-run dot logic
+	// ✅ Refresh the visible dots using updated data
 	refreshCalendarDots();
+}
+
+// Force Refresh even if classes are already loaded
+
+export async function forceRefreshClassesForMonth(date) {
+	const key = getMonthKey(date);
+
+	// 🔁 Remove the cache so the month gets re-fetched
+	loadedMonths.delete(key);
+	delete classCache[key];
+
+	console.log(`♻️ Forcing refetch for month ${key}`);
+
+	await fetchClassesForMonth(date);
 }

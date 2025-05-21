@@ -17,7 +17,9 @@ import {
 	renderCalendar,
 	refreshCalendarDots,
 	updateCalendarDots,
-	userBookings, // ✅ imported from calendar.js
+	userBookings,
+	groupedByDate,
+	setGroupedByDate,
 } from "./calendar.js";
 
 import { openAdminModal } from "./admin.js";
@@ -68,22 +70,28 @@ export async function renderAgenda(dateStr) {
 	const agendaContainer = document.getElementById("agenda");
 	agendaContainer.innerHTML = "";
 
-	// ✅ Step 1: Refresh classes from DB
-	const { data: latestClasses, error } = await supabase
+	// ✅ Step 1: Refresh classes from DB for this date
+	const { data: latest, error } = await supabase
 		.from("classes")
-		.select("*");
+		.select("*")
+		.eq("date", selectedDate);
 
-	if (error || !latestClasses) {
+	if (error || !latest) {
 		console.error("❌ Failed to fetch latest classes:", error?.message);
 		agendaContainer.innerHTML =
 			'<p class="error-msg">Could not load classes. Try again later.</p>';
 		return;
 	}
 
-	allClasses = latestClasses;
+	// ✅ Replace existing classes for this date only
+	allClasses = allClasses
+		.filter((cls) => cls.date !== selectedDate)
+		.concat(latest);
+
+	setGroupedByDate(groupClassesByDate(allClasses));
 
 	// ✅ Step 2: Continue with render logic
-	const dayClasses = allClasses.filter((cls) => cls.date === selectedDate);
+	const dayClasses = groupedByDate[selectedDate] || [];
 	const sortedClasses = dayClasses.sort((a, b) => a.time.localeCompare(b.time));
 
 	if (sortedClasses.length === 0) {
@@ -123,7 +131,7 @@ export async function renderAgenda(dateStr) {
 
 		if (internalUserRole === "admin") {
 			if (cls.booked_slots > 0) {
-				dot.style.background = "var(--color-red-400)"; // Admin dot for booked class
+				dot.style.background = "var(--color-red-400)";
 			} else {
 				dot.style.background = "var(--gray-900)";
 			}
