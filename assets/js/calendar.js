@@ -231,6 +231,7 @@ document.getElementById("prev-month").addEventListener("click", async () => {
 
 document.getElementById("class-filter").addEventListener("change", async () => {
 	await renderCalendar();
+	window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
 (async () => {
@@ -363,3 +364,5 @@ export async function forceRefreshClassesForMonth(date) {
 
 	await fetchClassesForMonth(date);
 }
+
+//

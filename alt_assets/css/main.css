@@ -3429,7 +3429,7 @@ input[type="button"]:disabled,
 	/* Main */
 
 	#main > section > .container {
-		padding: 2em 0 0 0;
+		padding: 1.5em 0 0 0;
 	}
 
 	/* Footer */
@@ -3735,21 +3735,21 @@ input[type="button"]:disabled,
 	position: relative;
 	display: flex;
 	position: relative;
-	align-self: flex-end;
-	margin-right: 0.5em;
+	align-self: center;
+
+	justify-self: center;
 }
 
 .calendar-filter {
 	z-index: 9999;
-	background-color: var(--gray-1100) !important;
+
 	text-align: center;
 	margin-bottom: 1rem;
-	position: absolute !important;
-	right: 10px;
+
 	bottom: 0;
 	display: flex;
 	padding-inline: 1em;
-	border-radius: 30px;
+
 	align-items: center;
 	justify-content: center;
 }
@@ -3762,12 +3762,9 @@ input[type="button"]:disabled,
 	text-align: center;
 	font-weight: 500;
 	appearance: none;
-	width: 0;
-	z-index: 99999;
-}
+	text-decoration: dotted underline;
 
-.filter-icon {
-	position: absolute !important;
+	z-index: 99999;
 }
 
 /* Agenda */
