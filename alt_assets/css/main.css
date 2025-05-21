@@ -4408,3 +4408,9 @@ body {
 	font-size: 1.4rem;
 	pointer-events: none;
 }
+
+.select {
+	appearance: none !important;
+	-webkit-appearance: none !important;
+	-moz-appearance: none !important;
+}
