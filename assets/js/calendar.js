@@ -237,7 +237,7 @@ filterOptions.addEventListener("click", async (e) => {
 	if (!value) return;
 
 	selectedFilter = value;
-	filterButton.textContent = `${e.target.textContent} ▾`;
+	filterButton.textContent = `${e.target.textContent}`;
 	filterOptions.classList.add("hidden");
 
 	await renderCalendar();

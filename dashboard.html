@@ -146,18 +146,25 @@
 									style="cursor: pointer"
 								></i>
 							</div>
-							<div class="calendar-filter-container">
-								<div class="calendar-filter">
-									<select id="class-filter">
-										<option
-											value="bookings"
-											selected
-										>
-											My Bookings
-										</option>
-									</select>
-								</div>
+							<div class="filter-dropdown">
+								<button
+									class="pressable"
+									id="filter-button"
+								>
+									<i class="fa-solid fa-sliders"></i>
+								</button>
+
+								<!-- <button id="filter-button">My Bookings</button> -->
+
+								<ul
+									id="filter-options"
+									class="dropdown hidden"
+								>
+									<li data-value="bookings">My Bookings</li>
+									<!-- The other options will be injected dynamically -->
+								</ul>
 							</div>
+
 							<div class="calendar-admin-actions">
 								<i
 									id="generate-class"
@@ -184,16 +191,6 @@
 									class="calendar-body"
 									id="calendar"
 								></div>
-							</div>
-							<div class="filter-dropdown">
-								<button id="filter-button">My Bookings ▾</button>
-								<ul
-									id="filter-options"
-									class="dropdown hidden"
-								>
-									<li data-value="bookings">My Bookings</li>
-									<!-- The other options will be injected dynamically -->
-								</ul>
 							</div>
 
 							<i
