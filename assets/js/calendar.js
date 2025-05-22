@@ -165,22 +165,17 @@ export async function renderCalendar() {
 			await renderCalendar();
 			await renderAgenda(dateStr);
 
-			const agendaEl = document.querySelector(".agenda-container");
-			if (agendaEl) {
-				agendaEl.scrollIntoView({ behavior: "smooth", block: "start" });
-			}
+			const element = document.querySelector(".altsection");
+
+			element.scrollIntoView({
+				behavior: "smooth",
+				block: "start",
+			});
 		});
 	}
 }
 
 // Chevron calendar
-
-document.getElementById("next-section").addEventListener("click", async () => {
-	const agendaEl = document.querySelector(".agenda-container");
-	if (agendaEl) {
-		agendaEl.scrollIntoView({ behavior: "smooth", block: "start" });
-	}
-});
 
 export async function loadCalendar(bookings = []) {
 	const now = new Date();
@@ -238,6 +233,19 @@ filterOptions.addEventListener("click", async (e) => {
 	await renderCalendar();
 	await renderAgenda(selectedDate);
 	window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+document.addEventListener("click", (e) => {
+	const dropdown = document.getElementById("filter-options");
+	const button = document.getElementById("filter-button");
+
+	// If dropdown is not open, do nothing
+	if (dropdown.classList.contains("hidden")) return;
+
+	// If click is outside both the button and the dropdown, close it
+	if (!dropdown.contains(e.target) && !button.contains(e.target)) {
+		dropdown.classList.add("hidden");
+	}
 });
 
 (async () => {

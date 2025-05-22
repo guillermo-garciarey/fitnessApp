@@ -1,100 +1,50 @@
 @import url("fontawesome-all.min.css");
 @import url("https://fonts.googleapis.com/css?family=Lato:400,400italic,700,700italic|Source+Code+Pro:400");
 
-:root {
-	--gray-50: #fafafa;
-	--gray-100: #f5f5f5;
-	--gray-200: #eeeeee;
-	--gray-300: #e0e0e0;
-	--gray-400: #d1d1d1;
-	--gray-500: #bdbdbd;
-	--gray-600: #9e9e9e;
-	--gray-700: #7d7d7d;
-	--gray-800: #616161;
-	--gray-900: #424242;
-	--gray-1000: #303030;
-	--gray-1100: #212121;
-	--gray-1200: #1a1a1a;
-	--gray-1300: #141414;
-	--gray-1400: #0a0a0a;
-
-	--gray-1100-rgb: 33, 33, 33;
-
-	--cream-100: #fffdf7;
-	--cream-200: #fef7e9;
-	--cream-300: #fcefd4;
-	--cream-400: #f9e4b5;
-	--cream-500: #f5d88d;
-
-	--cream-muted-100: #fdfcfa;
-	--cream-muted-200: #f6f3ef;
-	--cream-muted-300: #ece7dd;
-	--cream-muted-400: #dfd6c4;
-	--cream-muted-500: #cbbd9f;
-
-	--forest-100: #e8f2ee;
-	--forest-200: #c4e1d9;
-	--forest-300: #7ab79c;
-	--forest-400: #3d7c60;
-	--forest-500: #1e3c2b;
-
-	--forest-muted-100: #edf2f0;
-	--forest-muted-200: #d6dedb;
-	--forest-muted-300: #aebcb6;
-	--forest-muted-400: #768d84;
-	--forest-muted-500: #4b5d54;
-
-	/* RED - Error, Destructive */
-	--color-red-100: #fdecea;
-	--color-red-200: #f8c1bd;
-	--color-red-300: #e85c50;
-	--color-red-400: #c0392b;
-
-	/* AMBER - Warning, Attention */
-	--color-amber-100: #fff8e1;
-	--color-amber-200: #ffe082;
-	--color-amber-300: #ffca28;
-	--color-amber-400: #ffa000;
-
-	/* GREEN - Success, Confirmation */
-	--color-green-100: #e6f4ea;
-	--color-green-200: #a5d6a7;
-	--color-green-300: #66bb6a;
-	--color-green-400: #388e3c;
-
-	/* Grayscale — inspired by Slack's UI background, sidebar, modals */
-
-	--slack-gray-50: #f8f8f8;
-	--slack-gray-100: #f3f3f3;
-	--slack-gray-200: #e8e8e8;
-	--slack-gray-300: #d5d5d5;
-	--slack-gray-400: #b3b3b3;
-	--slack-gray-500: #8a8a8a;
-	--slack-gray-600: #6b6b6b;
-	--slack-gray-700: #4a4a4a;
-	--slack-gray-800: #2e2e2e;
-	--slack-gray-900: #1a1a1a;
-
-	/* Primary — Slack’s branding purple-indigo */
-	--slack-primary-100: #eae6ff;
-	--slack-primary-200: #c5baff;
-	--slack-primary-300: #8e7dff;
-	--slack-primary-400: #6e5dc6;
-	--slack-primary-500: #4a154b;
-
-	/* Accent — Slack’s teal/cyan UI highlights */
-	--slack-accent-100: #e0f7f7;
-	--slack-accent-200: #b2ebf2;
-	--slack-accent-300: #4dd0e1;
-	--slack-accent-400: #26c6da;
-	--slack-accent-500: #007a78;
-}
-
 /*
 	Read Only by Pixelarity
 	pixelarity.com | hello@pixelarity.com
 	License: pixelarity.com/license
 */
+
+:root {
+	/* Backgrounds */
+
+	--bg1: hsl(0, 0%, 100%); /* Main background (page) */
+	--bg2: hsl(0, 0%, 97%); /* Card/panel background */
+	--bg3: hsl(0, 0%, 91%); /* Hover/active surfaces */
+	--bg4: hsl(200, 9%, 20%); /* Darker accent / contrast bg */
+
+	/* Text */
+	--text1: hsl(0, 0%, 43%); /* Primary text */
+	--text2: hsl(0, 0%, 60%); /* Secondary text */
+
+	/* Borders & shadows */
+	--border: hsl(0, 0%, 91%);
+	--bordershadow: hsl(0, 0%, 56%, 0.2);
+
+	/* Accents */
+
+	/* ✅ Success (Green) */
+	--success-100: hsl(156, 73%, 85%); /* light green */
+	--success-500: hsl(156, 53%, 41%); /* base green */
+	--success-700: hsl(156, 72%, 25%); /* dark green */
+
+	/* ⚠️ Warning (Amber) */
+	--warning-100: hsl(45, 97%, 88%); /* light amber */
+	--warning-500: hsl(38, 92%, 53%); /* base amber */
+	--warning-700: hsl(36, 73%, 37%); /* dark amber */
+
+	/* ❌ Danger (Red) */
+	--danger-100: hsl(0, 86%, 90%); /* light red */
+	--danger-500: hsl(0, 84%, 60%); /* base red */
+	--danger-700: hsl(0, 70%, 40%); /* dark red */
+
+	/* ℹ️ Info (Blue) */
+	--info-100: hsl(217, 94%, 92%); /* light blue */
+	--info-500: hsl(217, 91%, 60%); /* base blue */
+	--info-700: hsl(221, 83%, 44%); /* dark blue */
+}
 
 * {
 	-webkit-tap-highlight-color: transparent;
@@ -266,7 +216,7 @@ html {
 }
 
 body {
-	background: var(--gray-1100);
+	background: var(--bg1);
 }
 
 body.is-preload *,
@@ -286,7 +236,7 @@ body,
 input,
 select,
 textarea {
-	color: var(--gray-500);
+	color: var(--text1);
 	font-family: "Lato", sans-serif;
 	font-size: 16pt;
 	font-weight: 400;
@@ -329,7 +279,7 @@ h3,
 h4,
 h5,
 h6 {
-	color: var(--gray-100);
+	color: var(--text1);
 	font-weight: 700;
 	line-height: 1em;
 	margin: 0 0 0.5625em 0;
@@ -2890,8 +2840,8 @@ input[type="button"]:disabled,
 	-webkit-justify-content: space-between;
 	-ms-justify-content: space-between;
 	justify-content: space-between;
-	background: var(--cream-300);
-	color: var(--gray-900);
+	background: var(--bg4);
+	color: var(--text2);
 	height: 100%;
 	overflow-y: auto;
 	position: fixed;
@@ -2907,7 +2857,7 @@ input[type="button"]:disabled,
 #header h4,
 #header h5,
 #header h6 {
-	color: var(--gray-1000);
+	color: var(--bg1);
 }
 
 #header h1 a,
@@ -2916,19 +2866,19 @@ input[type="button"]:disabled,
 #header h4 a,
 #header h5 a,
 #header h6 a {
-	color: var(--gray-1000);
+	color: var(--bg1);
 }
 
 #header header p {
-	color: #b7eadc;
+	color: var(--text2);
 }
 
 #header a {
-	color: var(--gray-900);
+	color: var(--bg1);
 }
 
 #header a:hover {
-	color: var(--gray-1000) !important;
+	color: var(--bg2) !important;
 }
 
 #header > header {
@@ -2989,7 +2939,7 @@ input[type="button"]:disabled,
 }
 
 #header > nav ul li {
-	border-top: solid 2px var(--cream-200);
+	border-top: solid 2px var(--bg4);
 	display: block;
 	padding: 0;
 }
@@ -3000,15 +2950,15 @@ input[type="button"]:disabled,
 	-ms-transition: none;
 	transition: none;
 	border: 0;
-	color: var(--gray-1000) !important;
+	color: var(--bg1) !important;
 	display: block;
 	padding: 0.85em 0;
 	text-decoration: none;
 }
 
 #header > nav ul li a.active {
-	background: var(--gray-1100);
-	color: var(--cream-200) !important;
+	background: var(--bg1);
+	color: var(--text1) !important;
 }
 
 #header > nav ul li:first-child {
@@ -3608,12 +3558,12 @@ input[type="button"]:disabled,
 	flex-direction: column;
 	align-items: center;
 	justify-content: space-evenly;
-	margin: 0 0 2.25em 0;
-	height: 61vh;
+	/* margin: 0 0 2.25em 0; */
+	height: 65vh;
 }
 
 #month-label {
-	color: var(--cream-200);
+	color: var(--text1);
 	text-transform: uppercase;
 	letter-spacing: 0.25em;
 	font-weight: 600;
@@ -3651,10 +3601,11 @@ input[type="button"]:disabled,
 	text-align: center;
 	font-weight: bold;
 	padding-bottom: 0.5rem;
-	color: var(--cream-200);
+	color: var(--text1);
 }
 
 .day-cell {
+	color: var(--text2);
 	position: relative;
 	aspect-ratio: 1;
 	display: flex;
@@ -3682,20 +3633,18 @@ input[type="button"]:disabled,
 }
 
 .day-cell.selected {
-	/* background-color: var(--color-amber-400); */
-	color: var(--color-amber-400) !important;
+	color: var(--warning-500) !important;
 	border-radius: 50%;
 }
 
 .day-cell.selected .day-number {
-	color: var(--amber-400) !important;
+	color: var(--warning-500) !important;
 	scale: 1.25;
 }
 
 .day-cell.no-classes {
 	opacity: 0.75;
-	color: var(--gray-400);
-	color: var(--color-red-300);
+	color: var(--danger-700);
 }
 
 .dot {
@@ -3714,13 +3663,13 @@ input[type="button"]:disabled,
 }
 
 .green-dot {
-	background-color: var(--color-amber-400);
+	background-color: var(--success-700);
 
 	z-index: 2;
 }
 
 .admin-dot {
-	background-color: var(--color-red-400);
+	background-color: var(--danger-700);
 
 	z-index: 2;
 }
@@ -3770,13 +3719,15 @@ input[type="button"]:disabled,
 /* Agenda */
 
 .agenda-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
 	padding-top: 2.25em;
-	padding-top: 1.25em;
-	margin: 0 0 2.25em 0;
 }
 
 .agenda-card {
-	background: var(--gray-1100);
+	background: var(--bg1) !important;
+	border: solid 1px var(--border);
 	border-radius: 4px;
 	padding: 1rem;
 	margin-bottom: 1rem;
@@ -3802,7 +3753,7 @@ input[type="button"]:disabled,
 .agenda-dot {
 	width: 8px;
 	height: 8px;
-	background: var(--gray-900);
+	background: var(--text2);
 	border-radius: 50%;
 	margin-right: 0.5rem;
 }
@@ -3810,24 +3761,25 @@ input[type="button"]:disabled,
 .agenda-name {
 	flex: 1;
 	font-weight: bold;
-	color: var(--cream-200);
+	color: var(--text1);
 }
 
 .agenda-time {
-	color: var(--gray-500);
+	color: var(--text2);
 	font-size: 0.9rem;
 	font-weight: 500;
 }
 
 .agenda-description {
 	font-size: 0.85rem;
-	color: var(--gray-700);
+	color: var(--text2);
 	margin-bottom: 0.25rem;
 }
 
 .agenda-participants {
 	font-size: 0.75rem;
-	color: var(--gray-600);
+
+	color: var(--text2);
 }
 
 .no-classes-msg {
@@ -4196,11 +4148,10 @@ input[type="button"]:disabled,
 	position: relative;
 	background: inherit; /* or inherit */
 	color: inherit;
-	border: none;
 	cursor: pointer;
 	transition: transform 0.1s ease-in, box-shadow 0.1s ease-in,
 		filter 0.1s ease-in;
-	box-shadow: 0 4px 8px var(--gray-1200);
+	box-shadow: 0 4px 8px var(--bordershadow);
 }
 
 .pressable:active {
@@ -4240,25 +4191,6 @@ input[type="button"]:disabled,
 
 /* Section Expanding */
 
-/* .panel {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	opacity: 0;
-	transform: translateX(100%);
-	transition: opacity 0.4s ease, transform 0.4s ease;
-	pointer-events: none;
-	z-index: 0;
-}
-
-.panel.active {
-	opacity: 1;
-	transform: translateX(0);
-	pointer-events: auto;
-	z-index: 1;
-} */
-
 .panel {
 	position: absolute;
 	top: 0;
@@ -4270,7 +4202,7 @@ input[type="button"]:disabled,
 	transition: opacity 0.4s ease, transform 0.4s ease;
 	pointer-events: none;
 	z-index: 0;
-	overflow-y: auto;
+	/* overflow-y: auto; */
 }
 
 .panel.active {
@@ -4285,7 +4217,7 @@ input[type="button"]:disabled,
 	bottom: 0;
 	left: 50%;
 	transform: translateX(-50%);
-	background-color: var(--gray-1200);
+	background-color: var(--bg4);
 
 	display: flex;
 	justify-content: space-around;
@@ -4299,7 +4231,7 @@ input[type="button"]:disabled,
 .nav-btn {
 	background: none;
 	border: none;
-	color: var(--gray-300);
+	color: var(--bg1);
 	font-size: 1.5rem;
 	position: relative;
 	padding: 10px;
@@ -4337,7 +4269,6 @@ body {
 
 #main {
 	flex: 1;
-	overflow-y: clip;
 	position: relative;
 }
 
@@ -4346,12 +4277,13 @@ body {
 #app-loader {
 	position: fixed;
 	inset: 0;
-	background: var(--gray-1100);
+	background: var(--bg4);
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	z-index: 9999;
 	transition: opacity 0.3s ease;
+	color: var(--bg2);
 }
 
 /* From Uiverse.io by TheAbieza */
@@ -4454,15 +4386,15 @@ body {
 }
 
 #filter-button {
-	background-color: var(--gray-1100);
-	color: var(--gray-500);
+	background-color: transparent;
+	color: var(--text2);
 	border: none;
 	padding: 8px 12px;
 	border-radius: 6px;
 	cursor: pointer;
 	display: flex !important;
 	gap: 1rem;
-	font-size: smaller;
+	font-size: medium;
 	text-decoration: dotted underline;
 }
 
@@ -4476,7 +4408,8 @@ body {
 
 	width: max-content;
 	z-index: 100;
-	background: var(--gray-1000);
+	background: var(--bg2);
+	color: var(--text2);
 	border-radius: 4px;
 	padding: 0.5rem 0;
 	overflow: hidden;
@@ -4503,17 +4436,38 @@ body {
 }
 
 #filter-options li {
-	background-color: var(--gray-1000);
-	color: var(--gray-400);
+	background-color: var(--bg2);
+	color: var(--text2);
 	padding: 0.5rem 1rem;
 	cursor: pointer;
 	transition: background 0.2s ease;
 }
 
 #filter-options li:hover {
-	background: var(--gray-900); /* or another highlight */
+	background: var(--bg3); /* or another highlight */
 }
 
 .hidden {
 	display: none;
+}
+
+/* Section containers */
+
+.mainsection {
+	width: 100%;
+	background-color: var(--bg1);
+	padding: 0 0 2.25em 0;
+	border-bottom: solid 1px var(--border);
+	/* overflow: auto; */
+}
+
+.altsection {
+	width: 100%;
+	background-color: var(--bg2);
+	padding: 0 0 2.25em 0;
+	/* overflow: auto; */
+}
+
+.container {
+	/* overflow: auto; */
 }

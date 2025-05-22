@@ -330,7 +330,7 @@ export async function adjustUserCredits(userId, delta) {
 	return true;
 }
 
-// Expand Panel
+// Bottom Nav Expand Panel
 
 const navIcons = document.querySelectorAll(".nav-btn");
 const sections = document.querySelectorAll(".panel");
@@ -370,6 +370,46 @@ navIcons.forEach((icon) => {
 		});
 
 		// Remove sidebar if coming from "four"
+		document.body.classList.remove("header-visible");
+	});
+});
+
+// Sidebar Nav
+
+const sidebarLinks = document.querySelectorAll("#nav a");
+
+sidebarLinks.forEach((link) => {
+	link.addEventListener("click", () => {
+		const targetId = link.dataset.target;
+		console.log("Clicked sidebar link for:", targetId);
+
+		const targetSection = document.getElementById(targetId);
+		if (!targetSection) {
+			console.warn("Target section not found:", targetId);
+			return;
+		}
+
+		// Switch active sidebar link
+		sidebarLinks.forEach((l) => l.classList.remove("active"));
+		link.classList.add("active");
+
+		// Also update the icon nav if it's visible
+		navIcons.forEach((i) => i.classList.remove("active"));
+		const matchingIcon = [...navIcons].find(
+			(i) => i.dataset.target === targetId
+		);
+		if (matchingIcon) matchingIcon.classList.add("active");
+
+		// Activate the selected panel
+		sections.forEach((section) => {
+			if (section.id === targetId) {
+				section.classList.add("active");
+				section.scrollTop = 0;
+			} else {
+				section.classList.remove("active");
+			}
+		});
+
 		document.body.classList.remove("header-visible");
 	});
 });

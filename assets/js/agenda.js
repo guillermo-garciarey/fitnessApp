@@ -133,17 +133,17 @@ export async function renderAgenda(dateStr) {
 
 		if (internalUserRole === "admin") {
 			if (cls.booked_slots > 0) {
-				dot.style.background = "var(--color-red-400)";
+				dot.style.background = "var(--danger-500)";
 			} else {
-				dot.style.background = "var(--gray-900)";
+				dot.style.background = "var(--text2)";
 			}
 		} else {
 			if (isBooked) {
-				dot.style.background = "var(--color-green-300)";
+				dot.style.background = "var(--success-700)";
 			} else if (isMatch) {
-				dot.style.background = "var(--color-amber-400)";
+				dot.style.background = "var(--warning-500)";
 			} else {
-				dot.style.background = "var(--gray-900)";
+				dot.style.background = "var(--text2)";
 			}
 		}
 
@@ -362,7 +362,7 @@ export async function renderBookedAgenda(selector = "#landing-agenda") {
 
 			card.innerHTML = `
 				<div class="agenda-card-header">
-					<span class="agenda-dot" style="background: var(--color-green-300);"></span>
+					<span class="agenda-dot" style="background: var(--success-500);"></span>
 					<span class="agenda-name">${cls.name}</span>
 					<span class="agenda-time">${timeFormatted}</span>
 				</div>
