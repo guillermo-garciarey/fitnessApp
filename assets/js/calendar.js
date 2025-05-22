@@ -20,6 +20,7 @@ import { renderAgenda, fetchUserRole, internalUserRole } from "./agenda.js";
 let viewDate = new Date();
 let selectedDate = formatDate(new Date());
 let allClasses = [];
+export let selectedFilter = "bookings";
 export let userBookings = [];
 export let groupedByDate = {};
 
@@ -35,28 +36,23 @@ function updateMonthLabel() {
 	monthLabel.textContent = viewDate.toLocaleDateString("en-US", options);
 }
 
-function populateClassFilter(classList) {
-	const filter = document.getElementById("class-filter");
+export function populateClassFilter(classList) {
+	const filterList = document.getElementById("filter-options");
+
+	// Remove all options except My Bookings
+	filterList
+		.querySelectorAll("li:not([data-value='bookings'])")
+		.forEach((el) => el.remove());
 
 	const uniqueNames = [...new Set(classList.map((cls) => cls.name))]
 		.filter(Boolean)
 		.sort((a, b) => a.localeCompare(b));
 
-	// Clear previous options except "My Bookings"
-	filter
-		.querySelectorAll("option:not([value='bookings'])")
-		.forEach((opt) => opt.remove());
-
-	// ✅ Re-label the "bookings" option
-	const bookingsOption = filter.querySelector("option[value='bookings']");
-	if (bookingsOption) bookingsOption.textContent = "My Bookings";
-
-	// Add all unique class names
 	uniqueNames.forEach((name) => {
-		const opt = document.createElement("option");
-		opt.value = name;
-		opt.textContent = name;
-		filter.appendChild(opt);
+		const li = document.createElement("li");
+		li.dataset.value = name;
+		li.textContent = name;
+		filterList.appendChild(li);
 	});
 }
 
@@ -143,8 +139,6 @@ export async function renderCalendar() {
 		}
 
 		let showDot = false;
-		const selectedFilter =
-			document.getElementById("class-filter")?.value ?? "bookings";
 
 		if (getUserRole() === "admin") {
 			// ✅ Admin sees a dot if any class has at least 1 booking
@@ -229,8 +223,25 @@ document.getElementById("prev-month").addEventListener("click", async () => {
 	await goToPrevMonth();
 });
 
-document.getElementById("class-filter").addEventListener("change", async () => {
+// Dropdown filter
+
+const filterButton = document.getElementById("filter-button");
+const filterOptions = document.getElementById("filter-options");
+
+filterButton.addEventListener("click", () => {
+	filterOptions.classList.toggle("hidden");
+});
+
+filterOptions.addEventListener("click", async (e) => {
+	const value = e.target.dataset.value;
+	if (!value) return;
+
+	selectedFilter = value;
+	filterButton.textContent = `${e.target.textContent} ▾`;
+	filterOptions.classList.add("hidden");
+
 	await renderCalendar();
+	await renderAgenda(selectedDate);
 	window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
@@ -257,9 +268,6 @@ document.getElementById("class-filter").addEventListener("change", async () => {
 // Refresh calendar slots without rendering calendar again
 
 export function refreshCalendarDots() {
-	const selectedFilter =
-		document.getElementById("class-filter")?.value ?? "bookings";
-
 	console.log("🔄 Refreshing calendar dots");
 	console.log("🔍 Current filter:", selectedFilter);
 	console.log("🔍 User role:", getUserRole());

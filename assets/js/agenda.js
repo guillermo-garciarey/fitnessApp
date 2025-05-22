@@ -20,6 +20,7 @@ import {
 	userBookings,
 	groupedByDate,
 	setGroupedByDate,
+	selectedFilter,
 } from "./calendar.js";
 
 import { openAdminModal } from "./admin.js";
@@ -99,7 +100,8 @@ export async function renderAgenda(dateStr) {
 		return;
 	}
 
-	const selectedFilter = document.getElementById("class-filter").value;
+	// const selectedFilter = document.getElementById("class-filter").value;
+	console.log("📦 selectedFilter from calendar.js:", selectedFilter);
 
 	sortedClasses.forEach((cls) => {
 		const card = document.createElement("div");
