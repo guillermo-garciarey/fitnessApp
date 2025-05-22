@@ -223,6 +223,7 @@ export async function renderAgenda(dateStr) {
 
 	setAgendaData(classes);
 	renderAgenda(selectedDate);
+	renderBookedAgenda("#landing-agenda");
 })();
 
 let bookingInProgress = new Set();
@@ -284,5 +285,139 @@ export async function cancelBooking(classId) {
 		showToast("Something went wrong during cancellation.", "error");
 	} finally {
 		cancelInProgress.delete(classId);
+	}
+}
+
+// Landing Page Agenda (RenderedBookedAgenda)
+
+export async function renderBookedAgenda(selector = "#landing-agenda") {
+	const container = document.querySelector(selector);
+	if (!container) return;
+
+	const session = await getSession();
+	const userId = session?.user?.id;
+	if (!userId) return;
+
+	const all = await getAvailableClasses();
+	const bookings = await getUserBookings(userId);
+	const bookedClassIds = bookings.map((b) => b.class_id || b);
+
+	const now = new Date();
+
+	const upcomingBooked = all
+		.filter((cls) => {
+			const classDateTime = new Date(`${cls.date}T${cls.time}`);
+			return classDateTime >= now && bookedClassIds.includes(cls.id);
+		})
+		.sort(
+			(a, b) => a.date.localeCompare(b.date) || a.time.localeCompare(b.time)
+		);
+
+	if (upcomingBooked.length === 0) {
+		container.innerHTML = "<p>No upcoming classes booked.</p>";
+		return;
+	}
+
+	container.innerHTML = "";
+
+	// 🧠 Group by date
+	const groupedByDate = {};
+	upcomingBooked.forEach((cls) => {
+		if (!groupedByDate[cls.date]) groupedByDate[cls.date] = [];
+		groupedByDate[cls.date].push(cls);
+	});
+
+	for (const date in groupedByDate) {
+		const group = groupedByDate[date];
+
+		const dayContainer = document.createElement("div");
+		dayContainer.className = "agenda-day-group";
+
+		const dateHeading = document.createElement("h4");
+		dateHeading.className = "agenda-date";
+		dateHeading.textContent = new Date(date).toLocaleDateString(undefined, {
+			weekday: "long",
+			month: "long",
+			day: "numeric",
+		});
+		dayContainer.appendChild(dateHeading);
+
+		group.forEach((cls) => {
+			const card = document.createElement("div");
+			card.className = "agenda-card pressable";
+			card.dataset.id = cls.id;
+
+			const classDateTime = new Date(`${cls.date}T${cls.time}`);
+			if (classDateTime < now) {
+				card.classList.add("expired-class");
+			}
+
+			const timeFormatted = new Date(
+				`1970-01-01T${cls.time}`
+			).toLocaleTimeString([], {
+				hour: "numeric",
+				minute: "2-digit",
+				hour12: true,
+			});
+
+			card.innerHTML = `
+				<div class="agenda-card-header">
+					<span class="agenda-dot" style="background: var(--color-green-300);"></span>
+					<span class="agenda-name">${cls.name}</span>
+					<span class="agenda-time">${timeFormatted}</span>
+				</div>
+				${
+					cls.description
+						? `<div class="agenda-description">${cls.description}</div>`
+						: ""
+				}
+				<div class="agenda-participants">${cls.booked_slots} / ${
+				cls.capacity
+			} participants</div>
+			`;
+
+			dayContainer.appendChild(card);
+		});
+
+		container.appendChild(dayContainer);
+	}
+
+	// Attach click handler to landing agenda
+	if (!window.landingAgendaClickListenerAttached) {
+		const landingAgendaContainer = document.getElementById("landing-agenda");
+
+		landingAgendaContainer.addEventListener("click", async (e) => {
+			const card = e.target.closest(".agenda-card");
+			if (!card) return;
+
+			const classId = card.dataset.id;
+
+			if (internalUserRole === "admin") {
+				openAdminModal(classId);
+				return;
+			}
+
+			const isBooked = userBookings.includes(classId);
+			const confirmed = await confirmAction(
+				isBooked
+					? "Are you sure you want to cancel this class?"
+					: "Book this class?"
+			);
+			if (!confirmed) return;
+
+			if (isBooked) {
+				await cancelBooking(classId);
+			} else {
+				await bookClass(classId);
+			}
+
+			const session = await getSession();
+			const userId = session?.user?.id;
+			await updateCalendarDots(userId);
+			await renderBookedAgenda("#landing-agenda");
+			await renderAgenda(selectedDate);
+		});
+
+		window.landingAgendaClickListenerAttached = true;
 	}
 }

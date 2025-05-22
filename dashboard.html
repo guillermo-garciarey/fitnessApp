@@ -126,10 +126,29 @@
 			<!-- Main -->
 			<div id="main">
 				<!-- One -->
-
 				<section
 					class="panel active"
 					id="one"
+				>
+					<div class="container">
+						<h2>Profile section to be made</h2>
+						<!-- Landing Page Upcoming Bookings -->
+						<div
+							id="landing"
+							class="app-section"
+						>
+							<div
+								id="landing-agenda"
+								class="agenda-container"
+							></div>
+						</div>
+					</div>
+				</section>
+				<!-- Two -->
+
+				<section
+					class="panel"
+					id="two"
 				>
 					<div class="container">
 						<div class="calendar-container">
@@ -148,10 +167,10 @@
 							</div>
 							<div class="filter-dropdown">
 								<button
-									class="pressable"
+									class=""
 									id="filter-button"
 								>
-									<i class="fa-solid fa-sliders"></i>
+									Select a class
 								</button>
 
 								<!-- <button id="filter-button">My Bookings</button> -->
@@ -160,7 +179,13 @@
 									id="filter-options"
 									class="dropdown hidden"
 								>
-									<li data-value="bookings">My Bookings</li>
+									<li
+										data-value=""
+										class="disabled"
+									>
+										Select a class type…
+									</li>
+									<!-- <li data-value="bookings">My Bookings</li> -->
 									<!-- The other options will be injected dynamically -->
 								</ul>
 							</div>
@@ -208,10 +233,10 @@
 					</div>
 				</section>
 
-				<!-- Two -->
+				<!-- Three -->
 				<section
 					class="panel"
-					id="two"
+					id="three"
 				>
 					<div class="container">
 						<h3>Data & Analytics</h3>
@@ -231,9 +256,11 @@
 						</ul>
 					</div>
 				</section>
+
+				<!-- Four -->
 				<section
 					class="panel"
-					id="three"
+					id="four"
 				>
 					<div class="container">
 						<h3>Payments & Transactions</h3>
@@ -262,80 +289,9 @@
 					</div>
 				</section>
 
-				<!-- Three -->
-
-				<!-- Four -->
-				<section
-					class="panel"
-					id="five"
-				>
-					<div class="container">
-						<h3>Contact Me</h3>
-						<p>
-							Integer eu ante ornare amet commetus vestibulum blandit integer in
-							curae ac faucibus integer non. Adipiscing cubilia elementum
-							integer. Integer eu ante ornare amet commetus.
-						</p>
-						<form
-							method="post"
-							action="#"
-						>
-							<div class="row gtr-uniform">
-								<div class="col-6 col-12-xsmall">
-									<input
-										type="text"
-										name="name"
-										id="name"
-										placeholder="Name"
-									/>
-								</div>
-								<div class="col-6 col-12-xsmall">
-									<input
-										type="email"
-										name="email"
-										id="email"
-										placeholder="Email"
-									/>
-								</div>
-								<div class="col-12">
-									<input
-										type="text"
-										name="subject"
-										id="subject"
-										placeholder="Subject"
-									/>
-								</div>
-								<div class="col-12">
-									<textarea
-										name="message"
-										id="message"
-										placeholder="Message"
-										rows="6"
-									></textarea>
-								</div>
-								<div class="col-12">
-									<ul class="actions">
-										<li>
-											<input
-												type="submit"
-												class="primary"
-												value="Send Message"
-											/>
-										</li>
-										<li>
-											<input
-												type="reset"
-												value="Reset Form"
-											/>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</form>
-					</div>
-				</section>
+				<!-- Five -->
 			</div>
-			<div class="fade-down"></div>
+
 			<div id="toast-container"></div>
 			<div
 				id="confirm-modal"
@@ -420,22 +376,27 @@
 			<button id="filter-fab"><i class="fa-solid fa-sliders"></i></button>
 			<nav class="nav-bottom">
 				<i
-					class="pressable fa-solid fa-calendar-days nav-btn active"
+					class="pressable fa-solid fa-bolt nav-btn active"
 					data-target="one"
 				></i>
 
 				<i
-					class="pressable fa-regular fa-floppy-disk nav-btn"
+					class="pressable fa-regular fa-calendar nav-btn"
 					data-target="two"
 				></i>
 
 				<i
-					class="pressable fa-regular fa-credit-card nav-btn"
+					class="pressable fa-regular fa-floppy-disk nav-btn"
 					data-target="three"
 				></i>
+
 				<i
-					class="pressable fa-solid fa-user nav-btn"
+					class="pressable fa-regular fa-credit-card nav-btn"
 					data-target="four"
+				></i>
+				<i
+					class="pressable fa-regular fa-user nav-btn"
+					data-target="sidebar"
 				></i>
 			</nav>
 		</div>

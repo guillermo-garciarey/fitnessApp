@@ -342,7 +342,7 @@ navIcons.forEach((icon) => {
 		const targetId = icon.dataset.target;
 		console.log("Clicked nav icon for:", targetId);
 
-		if (targetId === "four") {
+		if (targetId === "sidebar") {
 			console.log("Toggling class 'header-visible' on body");
 			document.body.classList.toggle("header-visible");
 			return;

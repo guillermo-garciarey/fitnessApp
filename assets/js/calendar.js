@@ -20,7 +20,7 @@ import { renderAgenda, fetchUserRole, internalUserRole } from "./agenda.js";
 let viewDate = new Date();
 let selectedDate = formatDate(new Date());
 let allClasses = [];
-export let selectedFilter = "bookings";
+export let selectedFilter = null;
 export let userBookings = [];
 export let groupedByDate = {};
 
@@ -39,10 +39,8 @@ function updateMonthLabel() {
 export function populateClassFilter(classList) {
 	const filterList = document.getElementById("filter-options");
 
-	// Remove all options except My Bookings
-	filterList
-		.querySelectorAll("li:not([data-value='bookings'])")
-		.forEach((el) => el.remove());
+	// Remove all existing filter options
+	filterList.innerHTML = "";
 
 	const uniqueNames = [...new Set(classList.map((cls) => cls.name))]
 		.filter(Boolean)
@@ -145,12 +143,9 @@ export async function renderCalendar() {
 			showDot = classes.some((cls) => cls.booked_slots > 0);
 		} else {
 			// 👤 Users see dot based on their bookings or selected filter
-			showDot = classes.some((cls) => {
-				if (selectedFilter === "bookings") {
-					return userBookings.includes(cls.id);
-				}
-				return cls.name === selectedFilter;
-			});
+			showDot = selectedFilter
+				? classes.some((cls) => cls.name === selectedFilter)
+				: false;
 		}
 
 		if (showDot) {
@@ -268,13 +263,6 @@ filterOptions.addEventListener("click", async (e) => {
 // Refresh calendar slots without rendering calendar again
 
 export function refreshCalendarDots() {
-	console.log("🔄 Refreshing calendar dots");
-	console.log("🔍 Current filter:", selectedFilter);
-	console.log("🔍 User role:", getUserRole());
-
-	const cells = document.querySelectorAll(".day-cell:not(.empty)");
-	console.log("🧱 Day cells found:", cells.length);
-
 	cells.forEach((cell) => {
 		const dateStr = cell.dataset.date;
 		const classes = groupedByDate[dateStr] || [];
@@ -296,10 +284,7 @@ export function refreshCalendarDots() {
 				}
 			}
 
-			if (
-				(selectedFilter === "bookings" && userBookings.includes(cls.id)) ||
-				(selectedFilter !== "bookings" && cls.name === selectedFilter)
-			) {
+			if (selectedFilter && cls.name === selectedFilter) {
 				showDot = true;
 				break;
 			}
@@ -325,18 +310,12 @@ export function refreshCalendarDots() {
 
 export async function updateCalendarDots(userId) {
 	const now = new Date();
-	console.log("📆 Forcing class refresh for:", now.toISOString());
 
 	await forceRefreshClassesForMonth(now);
 
-	console.log("📦 Updated allClasses:", allClasses);
-	console.log("📦 Updated groupedByDate keys:", Object.keys(groupedByDate));
-
 	if (getUserRole() !== "admin") {
 		userBookings = await getUserBookings(userId);
-		console.log("👤 Updated userBookings:", userBookings);
 	} else {
-		console.log("🛠 Admin detected — skipping userBookings fetch");
 	}
 
 	refreshCalendarDots();
