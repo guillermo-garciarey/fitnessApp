@@ -4414,9 +4414,8 @@ body {
 
 #filter-button {
 	background-color: transparent;
-	color: var(--warning-500);
+	color: var(--text1);
 	border: none;
-
 	border-radius: 6px;
 	cursor: pointer;
 	display: flex !important;
@@ -4427,22 +4426,20 @@ body {
 
 #filter-options {
 	position: absolute;
-	top: 100%;
+	top: 0%;
 	left: 50%;
-	transform: translateX(-50%);
+	transform: translate(-50%, -105%);
 	margin-top: 4px;
 	list-style: none;
-
 	width: max-content;
 	z-index: 100;
-	background: var(--bg2);
+	background: var(--bg1);
 	color: var(--text2);
 	border-radius: 4px;
 	padding: 0.5rem 0;
-	overflow: hidden;
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+	height: 300px;
+	border: solid 1px var(--border);
 	z-index: 9999; /* in case it's under something */
-
 	overflow-y: auto;
 }
 
@@ -4451,7 +4448,7 @@ body {
 }
 
 #filter-options::-webkit-scrollbar-thumb {
-	background-color: var(--gray-1100);
+	background-color: hsl(0, 0%, 62%, 0.1);
 }
 
 #filter-options::-webkit-scrollbar-track {
@@ -4463,15 +4460,14 @@ body {
 }
 
 #filter-options li {
-	background-color: var(--bg2);
+	background-color: var(--bg1);
 	color: var(--text2);
 	padding: 0.5rem 1rem;
 	cursor: pointer;
-	transition: background 0.2s ease;
 }
 
 #filter-options li:hover {
-	background: var(--bg3); /* or another highlight */
+	background: var(--bg2); /* or another highlight */
 }
 
 .hidden {
