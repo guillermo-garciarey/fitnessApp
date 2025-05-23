@@ -190,30 +190,6 @@
 										style="cursor: pointer"
 									></i>
 								</div>
-								<div class="filter-dropdown">
-									<button
-										class=""
-										id="filter-button"
-									>
-										Select a class
-									</button>
-
-									<!-- <button id="filter-button">My Bookings</button> -->
-
-									<ul
-										id="filter-options"
-										class="dropdown hidden"
-									>
-										<li
-											data-value=""
-											class="disabled"
-										>
-											Select a class type…
-										</li>
-										<!-- <li data-value="bookings">My Bookings</li> -->
-										<!-- The other options will be injected dynamically -->
-									</ul>
-								</div>
 
 								<div class="calendar-admin-actions">
 									<i
@@ -242,6 +218,31 @@
 										id="calendar"
 									></div>
 								</div>
+
+								<div class="filter-dropdown">
+									<button
+										class=""
+										id="filter-button"
+									>
+										Select a class
+									</button>
+
+									<!-- <button id="filter-button">My Bookings</button> -->
+
+									<ul
+										id="filter-options"
+										class="dropdown hidden"
+									>
+										<li
+											data-value=""
+											class="disabled"
+										>
+											Select a class type…
+										</li>
+
+										<!-- The other options will be injected dynamically -->
+									</ul>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -264,7 +265,7 @@
 					class="panel"
 					id="data"
 				>
-					<div class="mainsection">
+					<div class="altsection">
 						<div class="container">
 							<h3>Data & Analytics</h3>
 							<p>
@@ -432,8 +433,10 @@
 					</div>
 				</section>
 			</div>
-			<!-- Five -->
+			<!-- Toast Container -->
 			<div id="toast-container"></div>
+
+			<!-- Confirmation Modal -->
 			<div
 				id="confirm-modal"
 				class="hidden modal"
@@ -458,6 +461,8 @@
 				</div>
 			</div>
 
+			<!-- Admin Modal -->
+
 			<div
 				id="admin-modal"
 				class="admin-modal-overlay"
@@ -468,15 +473,13 @@
 						<button
 							id="admin-modal-close"
 							class="close-btn"
-						>
-							×
-						</button>
+						></button>
 					</div>
 
 					<div class="admin-modal-body">
 						<p>
 							<span id="admin-modal-date"></span>
-							at
+
 							<span id="admin-modal-time"></span>
 						</p>
 
@@ -493,20 +496,22 @@
 						</select>
 						<button
 							id="admin-add-user"
-							class="pressable"
+							class=""
 						>
 							<i class="fa-solid fa-user-plus"></i>
 						</button>
 
 						<button
 							id="admin-delete-class"
-							class="pressable danger full-width"
+							class="danger full-width"
 						>
 							<i class="fa-solid fa-trash-can"></i>
 						</button>
 					</div>
 				</div>
 			</div>
+
+			<!-- Initial loader graphic -->
 			<div id="app-loader">
 				<div class="container">
 					<div class="folder">
@@ -517,14 +522,16 @@
 				</div>
 			</div>
 
+			<!-- Loading Spinner -->
+
+			<div
+				id="loading-spinner"
+				class="spinner-overlay hidden"
+			>
+				<div class="spinner"></div>
+			</div>
+
 			<!-- Footer -->
-			<!-- <section id="footer">
-				<div class="container">
-					<ul class="copyright">
-						<li>&copy; Guillermo Garcia. All rights reserved.</li>
-					</ul>
-				</div>
-			</section> -->
 
 			<button id="filter-fab"><i class="fa-solid fa-sliders"></i></button>
 			<nav class="nav-bottom">

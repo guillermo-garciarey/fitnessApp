@@ -1,4 +1,4 @@
-import { getSession, showToast } from "./utils.js";
+import { getSession, showToast, withSpinner } from "./utils.js";
 import { supabase } from "./supabaseClient.js";
 
 const colors = [

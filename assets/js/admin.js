@@ -11,6 +11,7 @@ import {
 	adjustUserCredits,
 	formatDate,
 	groupClassesByDate,
+	withSpinner,
 } from "./utils.js";
 
 import {
@@ -20,6 +21,7 @@ import {
 	refreshCalendarDots,
 	classCache,
 	setGroupedByDate,
+	updateCalendarDots,
 } from "./calendar.js";
 
 import {
@@ -32,11 +34,25 @@ import {
 let allClasses = [];
 let userBookings = [];
 
+// Click on X to close
 document
 	.getElementById("admin-modal-close")
 	.addEventListener("click", async () => {
 		document.getElementById("admin-modal").classList.remove("show");
 	});
+
+// Close outside to click
+
+document.getElementById("admin-modal").addEventListener("click", async (e) => {
+	const modalBox = document.querySelector(".admin-modal");
+
+	// If click is outside the modal box, close the overlay
+	if (!modalBox.contains(e.target)) {
+		document.getElementById("admin-modal").classList.remove("show");
+
+		await loadCalendar();
+	}
+});
 
 export let currentClassId = null;
 
@@ -47,8 +63,8 @@ export async function openAdminModal(classId) {
 	}, 500);
 
 	const titleEl = document.getElementById("admin-modal-title");
-	const dateEl = document.getElementById("admin-modal-date");
-	const timeEl = document.getElementById("admin-modal-time");
+	// const dateEl = document.getElementById("admin-modal-date");
+	// const timeEl = document.getElementById("admin-modal-time");
 
 	const userList = document.getElementById("admin-user-list");
 	const userSelect = document.getElementById("admin-user-select");
@@ -69,24 +85,7 @@ export async function openAdminModal(classId) {
 		return;
 	}
 
-	const dateFormatted = new Date(cls.date).toLocaleDateString("en-GB", {
-		weekday: "long",
-		day: "numeric",
-		month: "long",
-	});
-
-	const timeFormatted = new Date(`1970-01-01T${cls.time}`).toLocaleTimeString(
-		"en-GB",
-		{
-			hour: "numeric",
-			minute: "2-digit",
-			hour12: true,
-		}
-	);
-
 	titleEl.textContent = cls.name;
-	dateEl.textContent = dateFormatted;
-	timeEl.textContent = timeFormatted;
 
 	// 🔹 Fetch booked users
 	const { data: bookings } = await supabase
@@ -193,13 +192,12 @@ document
 			} else {
 				console.log("✅ Updated class info:", classResponse.data);
 			}
-
-			openAdminModal(currentClassId); // Refresh modal
-			// You can redirect, reload, or just refresh your agenda
-			// const bookingClassIds = await getUserBookings(userId);
-			// await loadCalendar(bookingClassIds);
-			await renderCalendar();
-			await renderAgenda(selectedDate);
+			await withSpinner(async () => {
+				await openAdminModal(currentClassId);
+			}); // Refresh modal
+			await withSpinner(async () => {
+				await renderAgenda(selectedDate);
+			});
 		} catch (err) {
 			console.error("❌ Unexpected admin booking error:", err.message, err);
 			showToast("An unexpected error occurred.", "error");
@@ -235,14 +233,13 @@ document
 			}
 
 			showToast("User removed and refunded.", "success");
-			// You can redirect, reload, or just refresh your agenda
-			// const bookingClassIds = await getUserBookings(userId);
-			// await loadCalendar(bookingClassIds);
-			await renderCalendar();
+
 			await renderAgenda(selectedDate);
 
 			// 🔁 Refresh modal
-			openAdminModal(currentClassId);
+			await withSpinner(async () => {
+				await openAdminModal(currentClassId);
+			});
 		} catch (err) {
 			console.error("❌ Unexpected error:", err.message);
 			showToast("Error removing user.", "error");
@@ -276,16 +273,17 @@ document
 
 			showToast("Class deleted and refunds issued.", "success");
 
-			// Optional: reload calendar if admin is viewing their own bookings
-			const session = await getSession();
-			const userId = session?.user?.id;
-
-			if (userId) {
-				// const updatedBookings = await getUserBookings(userId);
-				// await loadCalendar(updatedBookings);
-				await renderCalendar();
-				await renderAgenda(selectedDate);
+			// ✅ Remove the deleted class from the correct cache entry
+			for (const key in classCache) {
+				const index = classCache[key].findIndex((c) => c.id === currentClassId);
+				if (index !== -1) {
+					classCache[key].splice(index, 1);
+					break;
+				}
 			}
+
+			await loadCalendar();
+			await renderAgenda(selectedDate);
 		} catch (err) {
 			console.error("❌ Unexpected delete class error:", err.message);
 			showToast("Something went wrong while deleting the class.", "error");

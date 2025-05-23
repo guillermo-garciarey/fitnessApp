@@ -4031,6 +4031,25 @@ input[type="button"]:disabled,
 
 /* Admin Modal */
 
+#admin-modal {
+	transform: translateY(100%);
+	opacity: 0;
+	pointer-events: none;
+}
+
+/* Show the modal */
+#admin-modal.show {
+	transform: translateY(0);
+
+	background-color: rgba(0, 0, 0, 0.5); /* or whatever you want */
+	transition: transform 0.3s ease, opacity 0.3s ease,
+		background-color 0.3s ease 0.3s; /* delay bg-color */
+	opacity: 1;
+	pointer-events: auto;
+}
+
+/* Optional: modal background layer */
+
 .admin-modal-overlay {
 	position: fixed;
 	top: 0;
@@ -4045,17 +4064,18 @@ input[type="button"]:disabled,
 }
 
 .admin-modal {
-	background: var(--gray-1200);
-	color: rgb(255, 255, 255);
+	background: var(--bg1);
+	color: var(--text2);
 	border-radius: 4px;
 	width: 90%;
 	max-width: 400px;
 	padding: 1rem;
 	max-height: 70vh;
+	border: solid 1px var(--border);
 }
 
 .admin-modal-header {
-	color: rgb(255, 255, 255);
+	color: var(--text1);
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -4069,7 +4089,7 @@ input[type="button"]:disabled,
 }
 
 #admin-user-select {
-	background-color: var(--gray-1100);
+	background-color: var(--bg1);
 	margin-bottom: 0.5rem;
 	border: 0.5px solid;
 	border-radius: 4px;
@@ -4083,7 +4103,7 @@ input[type="button"]:disabled,
 .admin-modal-body p {
 	margin-block: 1rem !important;
 	padding-left: 1rem;
-	color: var(--gray-600);
+	color: var(--text2);
 }
 
 .admin-actions {
@@ -4095,7 +4115,7 @@ input[type="button"]:disabled,
 .close-btn {
 	background: none;
 	border: none;
-	color: white;
+	color: var(--text1);
 	font-size: 1.5rem;
 	cursor: pointer;
 }
@@ -4107,15 +4127,17 @@ input[type="button"]:disabled,
 }
 
 .user-list li {
-	color: var(--gray-600);
+	color: var(--text2);
 	display: flex;
 	justify-content: space-between;
-	padding: 0.3rem 0;
+	padding: 0.5rem;
+	background: var(--bg1);
+	cursor: pointer;
 }
 
 .danger {
-	background: var(--color-red-300) !important;
-	color: var(--gray-100);
+	background: var(--danger-500) !important;
+	color: var(--bg1);
 	padding: 0.5rem;
 	border: none;
 	width: 100%;
@@ -4126,8 +4148,8 @@ input[type="button"]:disabled,
 }
 
 #admin-add-user {
-	background: var(--gray-900);
-	color: var(--gray-100);
+	background: var(--text1);
+	color: var(--bg1);
 	padding: 0.5rem;
 	border: none;
 	width: 100%;
@@ -4169,35 +4191,6 @@ input[type="button"]:disabled,
 	transform: translateY(2px);
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 	filter: brightness(0.95);
-}
-
-/* Modal Animations */
-
-/* Modal base styles */
-#admin-modal {
-	transition: transform 0.3s ease, opacity 0.3s ease;
-	transform: translateY(100%);
-	opacity: 0;
-	pointer-events: none;
-}
-
-/* Show the modal */
-#admin-modal.show {
-	transform: translateY(0);
-	opacity: 1;
-	pointer-events: auto;
-}
-
-/* Optional: modal background layer */
-.admin-modal-overlay {
-	transition: opacity 0.3s ease;
-	opacity: 0;
-	pointer-events: none;
-}
-
-.admin-modal-overlay.show {
-	opacity: 1;
-	pointer-events: auto;
 }
 
 /* Section Expanding */
@@ -4263,8 +4256,25 @@ input[type="button"]:disabled,
 }
 
 @media screen and (min-width: 1024px) {
+	.container {
+		width: 75%;
+	}
 	.nav-bottom {
 		display: none;
+	}
+
+	.calendar-container {
+		height: auto;
+	}
+
+	#main {
+		padding-bottom: 0;
+		background-color: var(--bg2);
+		height: 100vh;
+	}
+
+	#wrapper {
+		padding-bottom: 0 !important;
 	}
 }
 
@@ -4305,9 +4315,7 @@ body {
 	color: var(--bg2);
 }
 
-/* From Uiverse.io by TheAbieza */
 .container {
-	width: fit-content;
 	gap: 10px;
 }
 
@@ -4499,7 +4507,10 @@ body {
 }
 
 .block {
-	margin-bottom: 0.75rem;
+	margin-bottom: 1.75rem;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
 }
 
 .block > * {
@@ -4518,13 +4529,6 @@ input[type="text"] {
 	list-style: none;
 	padding: 0;
 	margin: 0 0 1rem 0;
-}
-
-.user-list li {
-	padding: 0.5rem;
-	background: #f3f3f3;
-	border-bottom: 1px solid #ddd;
-	cursor: pointer;
 }
 
 .payment-methods {
@@ -4633,3 +4637,5 @@ input[type="text"] {
 .method-card > span {
 	font-size: x-small;
 }
+
+/* Spinner */

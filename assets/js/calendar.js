@@ -13,6 +13,7 @@ import {
 	confirmAction,
 	formatDate,
 	getUserRole,
+	withSpinner,
 } from "./utils.js";
 
 import { renderAgenda, fetchUserRole, internalUserRole } from "./agenda.js";
@@ -55,8 +56,8 @@ export function populateClassFilter(classList) {
 }
 
 // Caching mechanism
-const loadedMonths = new Set(); // e.g. "2025-05"
-export const classCache = {}; // { "2025-05": [ ...classes ] }
+const loadedMonths = new Set(); //
+export const classCache = {}; //
 
 // Format YYYY-MM string
 function getMonthKey(date) {

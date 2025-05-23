@@ -451,3 +451,18 @@ export function showLetterAvatar(name = "", surname = "") {
 
 	avatarEl.replaceWith(fallback);
 }
+
+// Spinner
+
+export async function withSpinner(callback) {
+	const spinner = document.getElementById("loading-spinner");
+	if (!spinner) return await callback(); // fallback if missing
+
+	spinner.classList.remove("hidden");
+
+	try {
+		await callback();
+	} finally {
+		spinner.classList.add("hidden");
+	}
+}
