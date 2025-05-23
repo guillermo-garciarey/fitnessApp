@@ -59,29 +59,29 @@
 						<a
 							href="javascript:void(0)"
 							class="active"
-							data-target="one"
+							data-target="dashboard"
 							>Dashboard</a
 						>
 					</li>
 					<li>
 						<a
 							href="javascript:void(0)"
-							data-target="two"
+							data-target="class_schedule"
 							>Class Schedule</a
 						>
 					</li>
 					<li>
 						<a
 							href="javascript:void(0)"
-							data-target="three"
-							>Payments</a
+							data-target="data"
+							>Data & Analytics</a
 						>
 					</li>
 					<li>
 						<a
 							href="javascript:void(0)"
-							data-target="settings"
-							>Settings</a
+							data-target="transactions"
+							>Payments & Transactions</a
 						>
 					</li>
 				</ul>
@@ -148,7 +148,7 @@
 				<!-- One -->
 				<section
 					class="panel active"
-					id="one"
+					id="dashboard"
 				>
 					<div class="container">
 						<h2>Profile section to be made</h2>
@@ -164,11 +164,12 @@
 						</div>
 					</div>
 				</section>
+
 				<!-- Two -->
 
 				<section
 					class="panel"
-					id="two"
+					id="class_schedule"
 				>
 					<div class="mainsection">
 						<div class="container">
@@ -258,7 +259,7 @@
 				<!-- Three -->
 				<section
 					class="panel"
-					id="three"
+					id="data"
 				>
 					<div class="container">
 						<h3>Data & Analytics</h3>
@@ -280,31 +281,148 @@
 				<!-- Four -->
 				<section
 					class="panel"
-					id="four"
+					id="transactions"
 				>
-					<div class="container">
-						<h3>Payments & Transactions</h3>
-						<p>
-							Users with a negative balance are visible by default. Searching
-							allows for all users regardless of balance to appear.
-						</p>
+					<div class="mainsection">
+						<div class="container">
+							<h3>Payments & Transactions</h3>
+							<p>
+								Users with a negative balance are visible by default. Searching
+								allows for all users regardless of balance to appear.
+							</p>
 
-						<!-- Search bar -->
-						<div class="pressable table-search-bar">
-							<input
-								type="text"
-								id="userSearch"
-								placeholder="Search users..."
-							/>
-							<i class="fa-solid fa-magnifying-glass"></i>
+							<!-- Search bar -->
+							<div class="pressable table-search-bar">
+								<input
+									type="text"
+									id="userSearch"
+									placeholder="Search users..."
+								/>
+								<i class="fa-solid fa-magnifying-glass"></i>
+							</div>
+
+							<!-- User list container -->
+							<div
+								id="balance-table-body"
+								class="user-list-container"
+							>
+								<!-- JS will dynamically insert .user-row elements here -->
+							</div>
 						</div>
+					</div>
 
-						<!-- User list container -->
-						<div
-							id="balance-table-body"
-							class="user-list-container"
-						>
-							<!-- JS will dynamically insert .user-row elements here -->
+					<div class="altsection">
+						<div class="container">
+							<div class="admin-topup-form">
+								<h3>Add Payment</h3>
+								<p>
+									Use this panel to manually log a payment for a selected user.
+
+									<br />
+									<br />Selecting "Manual Correction" will flag the entry for
+									internal adjustments or balance fixes.
+								</p>
+								<div class="block">
+									<h4>Credits</h4>
+									<p>
+										How many credits would you like to give
+										<span id="selected-username"></span>?
+									</p>
+									<input
+										type="number"
+										id="credit-value"
+										min="-99"
+										step="1"
+										placeholder="-"
+										class="paid-input"
+									/>
+								</div>
+
+								<div class="block">
+									<h4>Paid Amount</h4>
+
+									<div class="currency-input">
+										<input
+											type="number"
+											id="amount-value"
+											min="0"
+											step="1"
+											placeholder="-"
+											class="paid-amount-input"
+										/>
+									</div>
+								</div>
+
+								<div class="block">
+									<h4>Payment Method</h4>
+									<div class="payment-methods">
+										<div
+											class="method-card"
+											data-method="revolut"
+										>
+											<img
+												src="images/logos/revolut.svg"
+												alt="Revolut"
+											/>
+											<div class="method-check"></div>
+										</div>
+										<div
+											class="method-card"
+											data-method="credit_card"
+										>
+											<img
+												src="images/logos/mastercard.svg"
+												alt="Mastercard"
+											/>
+											<div class="method-check"></div>
+										</div>
+										<div
+											class="method-card"
+											data-method="Paypal"
+										>
+											<img
+												src="images/logos/paypal.svg"
+												alt="PayPal"
+											/>
+											<div class="method-check"></div>
+										</div>
+										<div
+											class="method-card"
+											data-method="Cash"
+										>
+											<img
+												src="images/logos/cash.svg"
+												alt="Cash"
+											/>
+											<div class="method-check"></div>
+										</div>
+										<div
+											class="method-card"
+											data-method="Bank Transfer"
+										>
+											<img
+												src="images/logos/Bank.svg"
+												alt="Bank Transfer"
+											/>
+											<div class="method-check"></div>
+										</div>
+										<div
+											class="method-card"
+											data-method="Manual Correction"
+										>
+											<span class="method-label">Manual Correction</span>
+											<div class="method-check"></div>
+										</div>
+									</div>
+								</div>
+
+								<div class="block">
+									<div class="form-buttons">
+										<button id="confirm-topup">Confirm</button>
+										<button id="reset-form">Reset</button>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</section>
@@ -395,22 +513,22 @@
 			<nav class="nav-bottom">
 				<i
 					class="pressable fa-solid fa-bolt nav-btn active"
-					data-target="one"
+					data-target="dashboard"
 				></i>
 
 				<i
 					class="pressable fa-regular fa-calendar nav-btn"
-					data-target="two"
+					data-target="class_schedule"
 				></i>
 
 				<i
 					class="pressable fa-regular fa-floppy-disk nav-btn"
-					data-target="three"
+					data-target="data"
 				></i>
 
 				<i
 					class="pressable fa-regular fa-credit-card nav-btn"
-					data-target="four"
+					data-target="transactions"
 				></i>
 				<i
 					class="pressable fa-regular fa-user nav-btn"

@@ -1,6 +1,4 @@
-// transactions js
-
-import { getSession } from "./utils.js";
+import { getSession, showToast } from "./utils.js";
 import { supabase } from "./supabaseClient.js";
 
 const colors = [
@@ -12,66 +10,162 @@ const colors = [
 	"#e91e63",
 ];
 
+let selectedUserId = null;
+let allUsers = [];
+let searchInput;
+let tableBody;
+
+function renderTable() {
+	const query = searchInput.value.trim().toLowerCase();
+	tableBody.innerHTML = "";
+
+	const filtered = allUsers.filter((user) => {
+		const fullName = `${user.name} ${user.surname}`.toLowerCase();
+		const isNegative = user.credits < 0;
+		const matches = fullName.includes(query);
+		return query ? matches : isNegative;
+	});
+
+	filtered.forEach((user) => {
+		const color = colors[Math.floor(Math.random() * colors.length)];
+		const initials = user.name?.[0]?.toUpperCase() || "?";
+		const fullName = `${user.name} ${user.surname}`;
+
+		const row = document.createElement("div");
+		row.className = "user-row";
+		row.dataset.userid = user.id;
+		row.dataset.username = fullName;
+		row.dataset.credit = user.credits;
+
+		row.innerHTML = `
+        <div class="user-avatar">
+          <div class="table_avatar" style="background: ${color};">${initials}</div>
+        </div>
+        <div class="user-info">
+          <span class="name-text">${fullName}</span>
+        </div>
+        <div class="user-icon">
+          <i class="fas fa-cog"></i>
+        </div>
+      `;
+
+		tableBody.appendChild(row);
+	});
+}
+
+async function fetchProfiles() {
+	const { data, error } = await supabase
+		.from("profiles")
+		.select("id, name, surname, credits");
+
+	if (error) {
+		console.error("❌ Error fetching profiles:", error.message);
+		return;
+	}
+
+	allUsers = data;
+	renderTable();
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
-	const searchInput = document.getElementById("userSearch");
-	const tableBody = document.getElementById("balance-table-body");
+	searchInput = document.getElementById("userSearch");
+	tableBody = document.getElementById("balance-table-body");
 
-	let allUsers = [];
+	await fetchProfiles();
 
-	async function fetchProfiles() {
-		const { data, error } = await supabase
-			.from("profiles")
-			.select("name, surname, credits");
+	// ✅ Click to select a user and populate the top-up form
+	tableBody.addEventListener("click", (e) => {
+		const row = e.target.closest(".user-row");
+		if (!row) return;
 
-		if (error) {
-			console.error("❌ Error fetching profiles:", error.message);
-			return;
-		}
-
-		allUsers = data;
-		renderTable(); // show initial filtered data
-	}
-
-	function renderTable() {
-		const query = searchInput.value.trim().toLowerCase();
-		tableBody.innerHTML = "";
-
-		const filtered = allUsers.filter((user) => {
-			const fullName = `${user.name} ${user.surname}`.toLowerCase();
-			const isNegative = user.credits < 0;
-			const matches = fullName.includes(query);
-			return query ? matches : isNegative;
+		document.querySelectorAll(".user-row").forEach((el) => {
+			el.classList.remove("selected");
 		});
 
-		filtered.forEach((user) => {
-			const color = colors[Math.floor(Math.random() * colors.length)];
-			const initials = user.name?.[0]?.toUpperCase() || "?";
-			const fullName = `${user.name} ${user.surname}`;
-			const isNegative = user.credits < 0;
-			const statusClass = isNegative ? "negative" : "positive";
+		row.classList.add("selected");
+		selectedUserId = row.dataset.userid;
 
-			const row = document.createElement("div");
-			row.className = "user-row";
-			row.dataset.name = fullName.toLowerCase();
-			row.dataset.credit = user.credits;
-
-			row.innerHTML = `
-  <div class="user-avatar">
-    <div class="table_avatar" style="background: ${color};">${initials}</div>
-  </div>
-  <div class="user-info">
-    <span class="name-text">${fullName}</span>
-   
-  </div>
-  <div class="user-icon">
-    <i class="fas fa-cog"></i>
-  </div>
-`;
-
-			tableBody.appendChild(row);
-		});
-	}
+		const nameEl = document.getElementById("selected-username");
+		if (nameEl) nameEl.textContent = row.dataset.username;
+		// ✅ Scroll to top-up form
+		const topupForm = document.querySelector(".admin-topup-form");
+		topupForm?.scrollIntoView({ behavior: "smooth", block: "start" });
+	});
 
 	searchInput.addEventListener("input", renderTable);
-	await fetchProfiles();
 });
+
+// Track credit value and method
+let creditValue = 1;
+let selectedPaymentMethod = null;
+
+const creditDisplay = document.getElementById("credit-value");
+
+const methodCards = document.querySelectorAll(".method-card");
+const confirmBtn = document.getElementById("confirm-topup");
+const resetBtn = document.getElementById("reset-form");
+const manualCheckbox = document.getElementById("manual-checkbox");
+
+// Payment method selection
+methodCards.forEach((card) => {
+	card.addEventListener("click", () => {
+		methodCards.forEach((c) => c.classList.remove("selected"));
+		card.classList.add("selected");
+		selectedPaymentMethod = card.dataset.method;
+	});
+});
+
+confirmBtn.addEventListener("click", async () => {
+	const creditInput = document.getElementById("credit-value");
+	const amountInput = document.getElementById("amount-value");
+
+	const credits = parseInt(creditInput?.value, 10);
+	const amount = parseInt(amountInput?.value, 10);
+
+	if (!selectedUserId) {
+		showToast("Please select a user.", "error");
+		return;
+	}
+
+	if (!selectedPaymentMethod) {
+		showToast("Please select a payment method.", "error");
+		return;
+	}
+
+	// ✅ Call Supabase RPC
+	const { error } = await supabase.rpc("admin_topup", {
+		user_id: selectedUserId,
+		credits,
+		amount,
+		payment_method: selectedPaymentMethod,
+		reason:
+			selectedPaymentMethod === "Manual Correction"
+				? "Manual Correction"
+				: "Subscription",
+	});
+
+	if (error) {
+		console.error("❌ Payment failed:", error.message);
+		showToast("Failed to add payment. Try again.", "error");
+		return;
+	}
+
+	// ✅ Success
+	showToast("✅ Payment added successfully!", "success");
+	resetTopupForm();
+	await fetchProfiles();
+	document.getElementById("main")?.scrollTo({
+		top: 0,
+		behavior: "smooth",
+	});
+});
+
+// Reset form
+function resetTopupForm() {
+	document.getElementById("credit-value").value = "1";
+	document.getElementById("amount-value").value = "1";
+	selectedPaymentMethod = null;
+	methodCards.forEach((c) => c.classList.remove("selected"));
+}
+
+resetBtn.addEventListener("click", resetTopupForm);
