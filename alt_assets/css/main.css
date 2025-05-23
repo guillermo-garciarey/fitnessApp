@@ -3559,14 +3559,14 @@ input[type="button"]:disabled,
 	align-items: center;
 	justify-content: space-evenly;
 	/* margin: 0 0 2.25em 0; */
-	height: 65vh;
+	height: 61.5vh;
 }
 
 #month-label {
 	color: var(--text1);
-	text-transform: uppercase;
+	/* text-transform: uppercase;
 	letter-spacing: 0.25em;
-	font-weight: 600;
+	font-weight: 600; */
 }
 
 .calendar-header {
@@ -3574,11 +3574,16 @@ input[type="button"]:disabled,
 	justify-content: center;
 	align-items: center;
 	gap: 1rem;
-	font-size: 1.25rem;
+	/* font-size: 1.25rem; */
 }
 
 .calendar-header > i {
 	box-shadow: none !important;
+}
+
+#prev-month,
+#next-month {
+	color: var(--text2);
 }
 
 #next-section {
@@ -3640,11 +3645,13 @@ input[type="button"]:disabled,
 .day-cell.selected .day-number {
 	color: var(--warning-500) !important;
 	scale: 1.25;
+	font-weight: bold;
 }
 
 .day-cell.no-classes {
 	opacity: 0.75;
 	color: var(--danger-700);
+	font-weight: bold;
 }
 
 .dot {
@@ -3964,7 +3971,7 @@ input[type="button"]:disabled,
 	font-size: 0.9rem;
 }
 
-.status-dot {
+/* .status-dot {
 	width: 10px;
 	height: 10px;
 	border-radius: 50%;
@@ -3977,7 +3984,7 @@ input[type="button"]:disabled,
 
 .status-dot.positive {
 	background: var(--color-green-300);
-}
+} */
 
 .user-icon {
 	display: flex;
@@ -4023,6 +4030,11 @@ input[type="button"]:disabled,
 	flex-direction: column;
 	gap: 0.5rem;
 	margin: 0 0 2.25em 0;
+}
+
+.credit-text.negative {
+	color: var(--warning-500);
+	font-weight: bold;
 }
 
 /* Admin Modal */
@@ -4224,20 +4236,27 @@ input[type="button"]:disabled,
 	bottom: 0;
 	left: 50%;
 	transform: translateX(-50%);
-	background-color: var(--bg4);
+	background-color: var(--bg2);
 
 	display: flex;
-	justify-content: space-around;
+	justify-content: end;
 	align-items: center;
-	padding: 12px 24px;
-	height: 10vh;
+	border-top: solid 1px var(--border);
+	height: 7.5vh;
 	width: 100vw;
 	z-index: 999;
 }
 
 .nav-btn {
+	box-shadow: none !important;
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	aspect-ratio: 1;
+	height: 7.5vh;
 	background: none;
 	border: none;
+	background-color: var(--bg4);
 	color: var(--bg1);
 	font-size: 1.5rem;
 	position: relative;
@@ -4271,7 +4290,7 @@ body {
 	display: flex;
 	flex-direction: column;
 	height: 100vh;
-	padding-bottom: 10vh;
+	padding-bottom: 7.5vh;
 }
 
 #main {
@@ -4394,14 +4413,14 @@ body {
 
 #filter-button {
 	background-color: transparent;
-	color: var(--text2);
+	color: var(--warning-500);
 	border: none;
-	padding: 8px 12px;
+
 	border-radius: 6px;
 	cursor: pointer;
 	display: flex !important;
 	gap: 1rem;
-	font-size: medium;
+	font-size: smaller;
 	text-decoration: dotted underline;
 }
 
@@ -4530,7 +4549,8 @@ input[type="text"] {
 	align-items: center;
 	flex-wrap: wrap;
 	width: 30%;
-	padding: 0.5rem;
+	height: 60px;
+
 	text-align: center;
 	border: 1px solid var(--border);
 	border-radius: 4px;

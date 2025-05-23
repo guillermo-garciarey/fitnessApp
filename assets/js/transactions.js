@@ -30,6 +30,8 @@ function renderTable() {
 		const color = colors[Math.floor(Math.random() * colors.length)];
 		const initials = user.name?.[0]?.toUpperCase() || "?";
 		const fullName = `${user.name} ${user.surname}`;
+		const credits = user.credits;
+		const creditClass = credits < 0 ? "credit-text negative" : "credit-text";
 
 		const row = document.createElement("div");
 		row.className = "user-row";
@@ -44,8 +46,8 @@ function renderTable() {
         <div class="user-info">
           <span class="name-text">${fullName}</span>
         </div>
-        <div class="user-icon">
-          <i class="fas fa-cog"></i>
+		<div class="user-info">
+          <span class="${creditClass}">${credits}</span>
         </div>
       `;
 
