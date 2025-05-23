@@ -133,13 +133,13 @@ export async function renderAgenda(dateStr) {
 
 		if (internalUserRole === "admin") {
 			if (cls.booked_slots > 0) {
-				dot.style.background = "var(--danger-500)";
+				dot.style.background = "var(--warning-500)";
 			} else {
 				dot.style.background = "var(--text2)";
 			}
 		} else {
 			if (isBooked) {
-				dot.style.background = "var(--success-700)";
+				dot.style.background = "var(--success-500)";
 			} else if (isMatch) {
 				dot.style.background = "var(--warning-500)";
 			} else {

@@ -27,7 +27,7 @@
 
 	/* ✅ Success (Green) */
 	--success-100: hsl(156, 73%, 85%); /* light green */
-	--success-500: hsl(156, 53%, 41%); /* base green */
+	--success-500: hsl(125, 65%, 45%); /* base green */
 	--success-700: hsl(156, 72%, 25%); /* dark green */
 
 	/* ⚠️ Warning (Amber) */
@@ -3663,7 +3663,7 @@ input[type="button"]:disabled,
 }
 
 .green-dot {
-	background-color: var(--success-700);
+	background-color: var(--warning-500);
 
 	z-index: 2;
 }
