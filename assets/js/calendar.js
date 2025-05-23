@@ -232,18 +232,24 @@ filterOptions.addEventListener("click", async (e) => {
 
 	await renderCalendar();
 	await renderAgenda(selectedDate);
-	window.scrollTo({ top: 0, behavior: "smooth" });
+	// window.scrollTo({ top: 0, behavior: "smooth" });
+	const targetSection = document.querySelector(".mainsection");
+	targetSection?.scrollIntoView({ behavior: "smooth", block: "start" });
 });
 
 document.addEventListener("click", (e) => {
 	const dropdown = document.getElementById("filter-options");
 	const button = document.getElementById("filter-button");
 
+	const isDropdownOpen = !dropdown.classList.contains("hidden");
+	const clickedInsideDropdown = dropdown.contains(e.target);
+	const clickedButton = button.contains(e.target);
+
 	// If dropdown is not open, do nothing
-	if (dropdown.classList.contains("hidden")) return;
+	if (!isDropdownOpen) return;
 
 	// If click is outside both the button and the dropdown, close it
-	if (!dropdown.contains(e.target) && !button.contains(e.target)) {
+	if (!clickedInsideDropdown && !clickedButton) {
 		dropdown.classList.add("hidden");
 	}
 });
