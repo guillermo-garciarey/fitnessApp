@@ -188,12 +188,20 @@ export async function renderAgenda(dateStr) {
 				return;
 			}
 
+			// 🛑 Block interaction if expired
+			if (card.classList.contains("expired-class")) {
+				showToast("You can't interact with an expired class.", "error");
+				return;
+			}
+
 			const isBooked = userBookings.includes(classId);
 			const confirmed = await confirmAction(
 				isBooked
-					? "Are you sure you want to cancel this class?"
-					: "Book this class?"
+					? "Are we absolutely positive about this? Take your time, it's a big decision..."
+					: "Look at you go! I'm proud of you for jumping on the health train!",
+				isBooked ? "Cancel Class" : "Book Class"
 			);
+
 			if (!confirmed) return;
 
 			if (isBooked) {
@@ -400,8 +408,9 @@ export async function renderBookedAgenda(selector = "#landing-agenda") {
 			const isBooked = userBookings.includes(classId);
 			const confirmed = await confirmAction(
 				isBooked
-					? "Are you sure you want to cancel this class?"
-					: "Book this class?"
+					? "Are we absolutely positive about this? Take your time, it's a big decision..."
+					: "Look at you go! I'm proud of you for jumping on the health train!",
+				isBooked ? "Cancel Class" : "Book Class"
 			);
 			if (!confirmed) return;
 

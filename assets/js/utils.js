@@ -160,15 +160,17 @@ export function showToast(message, type = "success") {
 
 // Confirmation Modal
 
-export function confirmAction(message) {
+export function confirmAction(message, title) {
 	return new Promise((resolve) => {
 		const modal = document.getElementById("confirm-modal");
 		const msg = document.getElementById("confirm-message");
 		const yes = document.getElementById("confirm-yes");
 		const no = document.getElementById("confirm-no");
+		const ttl = document.getElementById("confirm-title");
 
 		msg.textContent = message;
 		modal.classList.remove("hidden");
+		ttl.textContent = title;
 
 		const cleanup = () => {
 			modal.classList.add("hidden");
@@ -232,7 +234,8 @@ document
 		}
 
 		const confirmed = await confirmAction(
-			`This will generate a full class schedule for ${monthName} ${year}.\n\nAre you sure you want to continue?`
+			`This will generate a full class schedule for ${monthName} ${year}.\n\nAre you sure you want to continue?`,
+			"Generate Schedule"
 		);
 
 		if (!confirmed) return;

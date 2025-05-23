@@ -277,6 +277,7 @@ document.addEventListener("click", (e) => {
 // Refresh calendar slots without rendering calendar again
 
 export function refreshCalendarDots() {
+	const cells = document.querySelectorAll(".calendar-cell"); // ✅ Add this line
 	cells.forEach((cell) => {
 		const dateStr = cell.dataset.date;
 		const classes = groupedByDate[dateStr] || [];

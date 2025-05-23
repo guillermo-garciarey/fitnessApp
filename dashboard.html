@@ -150,17 +150,19 @@
 					class="panel active"
 					id="dashboard"
 				>
-					<div class="container">
-						<h2>Profile section to be made</h2>
-						<!-- Landing Page Upcoming Bookings -->
-						<div
-							id="landing"
-							class="app-section"
-						>
+					<div class="mainsection">
+						<div class="container">
+							<h2>Profile section to be made</h2>
+							<!-- Landing Page Upcoming Bookings -->
 							<div
-								id="landing-agenda"
-								class="agenda-container"
-							></div>
+								id="landing"
+								class="app-section"
+							>
+								<div
+									id="landing-agenda"
+									class="agenda-container"
+								></div>
+							</div>
 						</div>
 					</div>
 				</section>
@@ -333,7 +335,7 @@
 										type="number"
 										id="credit-value"
 										min="-99"
-										step="1"
+										step=""
 										placeholder="-"
 										class="paid-input"
 									/>
@@ -347,7 +349,7 @@
 											type="number"
 											id="amount-value"
 											min="0"
-											step="1"
+											step=""
 											placeholder="-"
 											class="paid-amount-input"
 										/>
@@ -432,16 +434,28 @@
 			<div id="toast-container"></div>
 			<div
 				id="confirm-modal"
-				class="modal hidden"
+				class="hidden modal"
 			>
 				<div class="modal-content">
+					<h3 id="confirm-title">Title</h3>
 					<p id="confirm-message">Are you sure?</p>
 					<div class="modal-actions">
-						<button id="confirm-yes">Yes</button>
-						<button id="confirm-no">No</button>
+						<button id="confirm-yes">
+							<img
+								src="images/icons/confirm.png"
+								alt="Yes"
+							/>
+						</button>
+						<button id="confirm-no">
+							<img
+								src="images/icons/cancel.png"
+								alt="No"
+							/>
+						</button>
 					</div>
 				</div>
 			</div>
+
 			<div
 				id="admin-modal"
 				class="admin-modal-overlay"

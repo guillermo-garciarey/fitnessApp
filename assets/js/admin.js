@@ -154,7 +154,8 @@ document
 		}
 
 		const confirmed = await confirmAction(
-			"Add this user to the class and deduct 1 credit?"
+			"Add this user to the class and deduct 1 credit?",
+			"Add User"
 		);
 		if (!confirmed) {
 			console.log("🚫 Admin cancelled booking confirmation");
@@ -216,7 +217,8 @@ document
 		const userId = button.dataset.userId;
 
 		const confirmed = await confirmAction(
-			"Remove this user and refund 1 credit?"
+			"Remove this user and refund 1 credit?",
+			"Remove User"
 		);
 		if (!confirmed) return;
 
@@ -256,7 +258,8 @@ document
 		if (!button) return;
 
 		const confirmed = await confirmAction(
-			"Are you sure? This will delete the class and refund all users."
+			"Are you sure? This will delete the class and refund all users.",
+			"Delete Class"
 		);
 		if (!confirmed) return;
 

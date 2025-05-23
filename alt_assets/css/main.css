@@ -14,6 +14,7 @@
 	--bg2: hsl(0, 0%, 97%); /* Card/panel background */
 	--bg3: hsl(0, 0%, 91%); /* Hover/active surfaces */
 	--bg4: hsl(200, 9%, 20%); /* Darker accent / contrast bg */
+	--bg5: hsl(180, 5.5%, 11%); /* Darker accent / contrast bg */
 
 	/* Text */
 	--text1: hsl(0, 0%, 43%); /* Primary text */
@@ -3828,15 +3829,15 @@ input[type="button"]:disabled,
 }
 
 .toast-success {
-	background: var(--color-green-300);
+	background: var(--success-500);
 }
 
 .toast-error {
-	background: var(--color-red-300);
+	background: var(--danger-500);
 }
 
 .toast-warning {
-	background: var(--color-amber-300);
+	background: var(--warning-500);
 }
 
 @keyframes toastFadeUp {
@@ -3881,8 +3882,9 @@ input[type="button"]:disabled,
 	padding: 1.5rem;
 	border-radius: 4px;
 	text-align: center;
-	background: var(--gray-1200);
-	color: rgb(255, 255, 255);
+	background: var(--bg1);
+	border: solid 1px var(--border);
+	color: var(--text1);
 	border-radius: 4px;
 	width: 90%;
 	max-width: 400px;
@@ -3896,33 +3898,22 @@ input[type="button"]:disabled,
 	gap: 1rem;
 }
 
-/* Fade Down Overlay */
-
-/* .fade-down {
-	position: fixed;
-	bottom: 10vh;
-	height: 15vh;
-	width: 100%;
-	pointer-events: none;
+.modal-actions button {
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	padding: 0.5em;
+	transition: transform 0.2s ease;
 }
 
-.fade-down::after {
-	content: "";
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	width: 100%;
-	height: 15vh;
-	pointer-events: none;
-	background: linear-gradient(
-		to bottom,
-		rgba(var(--gray-1100-rgb), 0) 0%,
-		rgba(var(--gray-1100-rgb), 0.1) 30%,
-		rgba(var(--gray-1100-rgb), 0.4) 55%,
-		rgba(var(--gray-1100-rgb), 0.75) 80%,
-		rgba(var(--gray-1100-rgb), 1) 100%
-	);
-} */
+.modal-actions button:hover {
+	transform: scale(1.1);
+}
+
+.modal-actions img {
+	width: 48px;
+	height: 48px;
+}
 
 @media screen and (min-width: 1024px) {
 	#header {
@@ -4236,12 +4227,12 @@ input[type="button"]:disabled,
 	bottom: 0;
 	left: 50%;
 	transform: translateX(-50%);
-	background-color: var(--bg2);
+	background-color: var(--bg5);
 
 	display: flex;
 	justify-content: end;
 	align-items: center;
-	border-top: solid 1px var(--border);
+	/* border-top: solid 1px var(--border); */
 	height: 7.5vh;
 	width: 100vw;
 	z-index: 999;
@@ -4287,6 +4278,7 @@ body {
 }
 
 #wrapper {
+	background-color: var(--bg4);
 	display: flex;
 	flex-direction: column;
 	height: 100vh;
