@@ -357,6 +357,7 @@ export async function renderBookedAgenda(selector = "#landing-agenda") {
 		group.forEach((cls) => {
 			const card = document.createElement("div");
 			card.className = "agenda-card pressable";
+			card.classList.add("matches-filter");
 			card.dataset.id = cls.id;
 
 			const classDateTime = new Date(`${cls.date}T${cls.time}`);
