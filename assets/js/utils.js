@@ -385,6 +385,8 @@ sidebarLinks.forEach((link) => {
 	link.addEventListener("click", () => {
 		const scheduleoverlay = document.getElementById("schedule-overlay");
 		scheduleoverlay.classList.remove("active");
+		const main = document.getElementById("main");
+		main.classList.remove("no-scroll");
 		const targetId = link.dataset.target;
 		console.log("Clicked sidebar link for:", targetId);
 
@@ -469,18 +471,21 @@ export async function withSpinner(callback) {
 	}
 }
 
-// Schedule overlay vertical panel
-
-document.querySelectorAll(".examplecard").forEach((card) => {
+// Schedule overlay open
+document.querySelectorAll(".browseclasscard").forEach((card) => {
 	card.addEventListener("click", () => {
+		const main = document.getElementById("main");
 		const overlay = document.getElementById("schedule-overlay");
 		overlay.classList.add("active");
 		overlay.scrollTop = 0;
+		main.classList.add("no-scroll");
 	});
 });
 
 // Close schedule
-
 document.getElementById("close-schedule").addEventListener("click", () => {
-	document.getElementById("schedule-overlay").classList.remove("active");
+	const main = document.getElementById("main");
+	const overlay = document.getElementById("schedule-overlay");
+	overlay.classList.remove("active");
+	main.classList.add("no-scroll");
 });

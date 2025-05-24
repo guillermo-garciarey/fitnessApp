@@ -238,6 +238,8 @@ filterOptions.addEventListener("click", async (e) => {
 	targetSection?.scrollIntoView({ behavior: "smooth", block: "start" });
 });
 
+// Close dropdown when clicking outside
+
 document.addEventListener("click", (e) => {
 	const dropdown = document.getElementById("filter-options");
 	const button = document.getElementById("filter-button");
@@ -369,3 +371,30 @@ export async function forceRefreshClassesForMonth(date) {
 }
 
 //
+
+// Browse Class Card Click → Trigger Calendar Filter + Open Overlay
+
+document.querySelectorAll(".browseclasscard").forEach((card) => {
+	card.addEventListener("click", () => {
+		const selectedValue = card.dataset.value;
+
+		// Find matching <li> in the filter dropdown
+		const li = document.querySelector(
+			`#filter-options li[data-value="${selectedValue}"]`
+		);
+		if (!li) {
+			console.warn(`No filter option found for value: ${selectedValue}`);
+			return;
+		}
+
+		// Simulate click to apply filter + update button label
+		li.click();
+
+		// Show the schedule overlay if it exists
+		const overlay = document.getElementById("schedule-overlay");
+		if (overlay) {
+			overlay.classList.add("active");
+			overlay.scrollTop = 0;
+		}
+	});
+});
