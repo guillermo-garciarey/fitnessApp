@@ -63,13 +63,7 @@
 							>Dashboard</a
 						>
 					</li>
-					<li>
-						<a
-							href="javascript:void(0)"
-							data-target="class_schedule"
-							>Class Schedule</a
-						>
-					</li>
+
 					<li>
 						<a
 							href="javascript:void(0)"
@@ -152,7 +146,99 @@
 				>
 					<div class="mainsection">
 						<div class="container">
-							<h2>Profile section to be made</h2>
+							<h2>Home</h2>
+
+							<div class="examplecontainer">
+								<div class="examplecard">Example 1</div>
+								<div class="examplecard">Example 2</div>
+							</div>
+
+							<div id="schedule-overlay">
+								<div class="mainsection">
+									<div class="container">
+										<i
+											id="close-schedule"
+											class="fa-solid fa-xmark"
+										></i>
+										<div class="calendar-container">
+											<div class="calendar-header">
+												<i
+													id="prev-month"
+													class="pressable fas fa-chevron-left"
+													style="cursor: pointer"
+												></i>
+												<span id="month-label">Month YYYY</span>
+												<i
+													id="next-month"
+													class="pressable fas fa-chevron-right"
+													style="cursor: pointer"
+												></i>
+											</div>
+
+											<div class="calendar-admin-actions">
+												<i
+													id="generate-schedule"
+													class="fa-solid fa-calendar-days"
+												></i>
+											</div>
+
+											<div class="calendar-grid">
+												<div class="calendar-header-row">
+													<div class="day-header">Mon</div>
+													<div class="day-header">Tue</div>
+													<div class="day-header">Wed</div>
+													<div class="day-header">Thu</div>
+													<div class="day-header">Fri</div>
+													<div class="day-header">Sat</div>
+													<div class="day-header">Sun</div>
+												</div>
+
+												<div
+													class="calendar-body"
+													id="calendar"
+												></div>
+											</div>
+
+											<div class="filter-dropdown">
+												<button
+													class=""
+													id="filter-button"
+												>
+													Select a class
+												</button>
+
+												<!-- <button id="filter-button">My Bookings</button> -->
+
+												<ul
+													id="filter-options"
+													class="dropdown hidden"
+												>
+													<li
+														data-value=""
+														class="disabled"
+													>
+														Select a class type…
+													</li>
+
+													<!-- The other options will be injected dynamically -->
+												</ul>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="altsection">
+									<div class="container">
+										<!-- Agenda container -->
+										<div
+											id="agenda"
+											class="agenda-container"
+										>
+											<!-- Agenda cards will be dynamically inserted here -->
+										</div>
+									</div>
+								</div>
+							</div>
 							<!-- Landing Page Upcoming Bookings -->
 							<div
 								id="landing"
@@ -168,93 +254,6 @@
 				</section>
 
 				<!-- Two -->
-
-				<section
-					class="panel"
-					id="class_schedule"
-				>
-					<div class="mainsection">
-						<div class="container">
-							<h3>Class Schedule</h3>
-							<div class="calendar-container">
-								<div class="calendar-header">
-									<i
-										id="prev-month"
-										class="pressable fas fa-chevron-left"
-										style="cursor: pointer"
-									></i>
-									<span id="month-label">Month YYYY</span>
-									<i
-										id="next-month"
-										class="pressable fas fa-chevron-right"
-										style="cursor: pointer"
-									></i>
-								</div>
-
-								<div class="calendar-admin-actions">
-									<i
-										id="generate-schedule"
-										class="fa-solid fa-calendar-days"
-									></i>
-								</div>
-
-								<div class="calendar-grid">
-									<div class="calendar-header-row">
-										<div class="day-header">Mon</div>
-										<div class="day-header">Tue</div>
-										<div class="day-header">Wed</div>
-										<div class="day-header">Thu</div>
-										<div class="day-header">Fri</div>
-										<div class="day-header">Sat</div>
-										<div class="day-header">Sun</div>
-									</div>
-
-									<div
-										class="calendar-body"
-										id="calendar"
-									></div>
-								</div>
-
-								<div class="filter-dropdown">
-									<button
-										class=""
-										id="filter-button"
-									>
-										Select a class
-									</button>
-
-									<!-- <button id="filter-button">My Bookings</button> -->
-
-									<ul
-										id="filter-options"
-										class="dropdown hidden"
-									>
-										<li
-											data-value=""
-											class="disabled"
-										>
-											Select a class type…
-										</li>
-
-										<!-- The other options will be injected dynamically -->
-									</ul>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="altsection">
-						<div class="container">
-							<!-- Agenda container -->
-							<div
-								id="agenda"
-								class="agenda-container"
-							>
-								<!-- Agenda cards will be dynamically inserted here -->
-							</div>
-						</div>
-					</div>
-				</section>
 
 				<!-- Three -->
 				<section
@@ -531,26 +530,6 @@
 
 			<button id="filter-fab"><i class="fa-solid fa-sliders"></i></button>
 			<nav class="nav-bottom">
-				<!-- <i
-					class="pressable fa-solid fa-bolt nav-btn active"
-					data-target="dashboard"
-				></i>
-
-				<i
-					class="pressable fa-regular fa-calendar nav-btn"
-					data-target="class_schedule"
-				></i>
-
-				<i
-					class="pressable fa-regular fa-floppy-disk nav-btn"
-					data-target="data"
-				></i>
-
-				<i
-					class="pressable fa-regular fa-credit-card nav-btn"
-					data-target="transactions"
-				></i> -->
-
 				<i
 					class="pressable fa-solid fa-bars nav-btn"
 					data-target="sidebar"

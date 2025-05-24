@@ -383,6 +383,8 @@ const sidebarLinks = document.querySelectorAll("#nav a");
 
 sidebarLinks.forEach((link) => {
 	link.addEventListener("click", () => {
+		const scheduleoverlay = document.getElementById("schedule-overlay");
+		scheduleoverlay.classList.remove("active");
 		const targetId = link.dataset.target;
 		console.log("Clicked sidebar link for:", targetId);
 
@@ -466,3 +468,19 @@ export async function withSpinner(callback) {
 		spinner.classList.add("hidden");
 	}
 }
+
+// Schedule overlay vertical panel
+
+document.querySelectorAll(".examplecard").forEach((card) => {
+	card.addEventListener("click", () => {
+		const overlay = document.getElementById("schedule-overlay");
+		overlay.classList.add("active");
+		overlay.scrollTop = 0;
+	});
+});
+
+// Close schedule
+
+document.getElementById("close-schedule").addEventListener("click", () => {
+	document.getElementById("schedule-overlay").classList.remove("active");
+});
