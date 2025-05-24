@@ -487,5 +487,5 @@ document.getElementById("close-schedule").addEventListener("click", () => {
 	const main = document.getElementById("main");
 	const overlay = document.getElementById("schedule-overlay");
 	overlay.classList.remove("active");
-	main.classList.add("no-scroll");
+	main.classList.remove("no-scroll");
 });
