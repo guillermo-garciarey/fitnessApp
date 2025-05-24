@@ -150,6 +150,7 @@ export async function renderCalendar() {
 		}
 
 		if (showDot) {
+			cell.classList.add("has-class");
 			const dot = document.createElement("div");
 			dot.classList.add("dot", "green-dot");
 			cell.appendChild(dot);
@@ -309,6 +310,7 @@ export function refreshCalendarDots() {
 		}
 
 		if (showDot) {
+			cell.classList.add("has-class");
 			const dot = document.createElement("div");
 			dot.classList.add("dot");
 
