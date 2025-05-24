@@ -3754,9 +3754,13 @@ input[type="button"]:disabled,
 	border-radius: 4px;
 	padding: 1rem;
 	margin-bottom: 1rem;
-
 	transition: all 0.2s ease;
 	cursor: pointer;
+	display: none;
+}
+
+.agenda-card.matches-filter {
+	display: block;
 }
 
 .agenda-card.highlighted.agenda-dot {
@@ -4451,8 +4455,6 @@ body {
 	background: var(--bg1);
 	color: var(--text2);
 	border-radius: 4px;
-	padding: 0.5rem 0;
-	height: 300px;
 	border: solid 1px var(--border);
 	z-index: 9999; /* in case it's under something */
 	overflow-y: auto;

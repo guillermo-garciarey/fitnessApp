@@ -134,14 +134,17 @@ export async function renderAgenda(dateStr) {
 
 		if (internalUserRole === "admin") {
 			if (cls.booked_slots > 0) {
+				card.classList.add("matches-filter");
 				dot.style.background = "var(--warning-500)";
 			} else {
+				card.classList.add("matches-filter");
 				dot.style.background = "var(--text2)";
 			}
 		} else {
 			if (isBooked) {
 				dot.style.background = "var(--success-500)";
 			} else if (isMatch) {
+				card.classList.add("matches-filter");
 				dot.style.background = "var(--warning-500)";
 			} else {
 				dot.style.background = "var(--text2)";
