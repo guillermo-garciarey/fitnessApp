@@ -3726,12 +3726,16 @@ input[type="button"]:disabled,
 
 /* Agenda */
 
+#landing-agenda {
+	padding-top: 2.25em;
+}
+
 .agenda-container {
 	min-height: 72.5vh;
 	display: flex;
 	flex-direction: column;
 	justify-content: start;
-	padding-top: 2.25em;
+	/* padding-top: 2.25em; */
 }
 
 .agenda-card {
@@ -4488,7 +4492,7 @@ body {
 .altsection {
 	width: 100%;
 	background-color: var(--bg2);
-	padding: 0 0 2.25em 0;
+	padding: 2.25em 0 2.25em 0;
 	/* overflow: auto; */
 }
 
@@ -4680,7 +4684,7 @@ input[type="text"] {
 .browseclasses_wrapper {
 	width: 100%;
 	display: flex;
-
+	padding-bottom: 2.25em;
 	align-items: center;
 	justify-content: center;
 	overflow: auto;
@@ -4696,6 +4700,15 @@ input[type="text"] {
 	padding-inline: 1.75em;
 	scroll-snap-type: x;
 	scroll-behavior: smooth;
+}
+
+.browseclasses_container {
+	scrollbar-width: none; /* Firefox */
+	-ms-overflow-style: none; /* IE and Edge */
+}
+
+.browseclasses_container::-webkit-scrollbar {
+	display: none; /* Chrome, Safari, Opera */
 }
 
 .browseclasscard {
