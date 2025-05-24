@@ -76,7 +76,7 @@
 						<a
 							href="javascript:void(0)"
 							data-target="transactions"
-							>Payments & Transactions</a
+							>Payments</a
 						>
 					</li>
 				</ul>
@@ -148,6 +148,10 @@
 					<div class="mainsection">
 						<div class="container">
 							<h2>Welcome Guillermo!</h2>
+							<p>
+								Browse the classes below to see what’s available. Tap on any
+								card to view upcoming sessions and book your spot.
+							</p>
 						</div>
 						<div class="browseclasses_wrapper">
 							<div class="browseclasses_container">
@@ -169,7 +173,7 @@
 									data-value="HIIT"
 								>
 									<img
-										src="images/classes/running.webp"
+										src="images/classes/hiit.webp"
 										alt=""
 									/>
 									<div class="card-gradient"></div>
@@ -178,17 +182,75 @@
 								</div>
 								<div
 									class="browseclasscard"
-									data-value="HIIT"
+									data-value="Strength & Conditioning"
 								>
-									<h4>Class 3</h4>
-									<p>High intensity training.</p>
+									<img
+										src="images/classes/strength.webp"
+										alt=""
+									/>
+									<div class="card-gradient"></div>
+									<h4>Strength & Conditioning</h4>
+									<p>Lorem ipsum dolor sit amet.</p>
 								</div>
 								<div
 									class="browseclasscard"
-									data-value="HIIT"
+									data-value="LOVE2RUN"
 								>
-									<h4>Class 4</h4>
-									<p>High intensity training.</p>
+									<img
+										src="images/classes/running.webp"
+										alt=""
+									/>
+									<div class="card-gradient"></div>
+									<h4>Love 2 Run</h4>
+									<p>Lorem ipsum dolor sit amet consectetur.</p>
+								</div>
+								<div
+									class="browseclasscard"
+									data-value="Pilates"
+								>
+									<img
+										src="images/classes/pilates.webp"
+										alt=""
+									/>
+									<div class="card-gradient"></div>
+									<h4>Pilates</h4>
+									<p>Lorem ipsum dolor sit.</p>
+								</div>
+								<div
+									class="browseclasscard"
+									data-value="Parent & Child"
+								>
+									<img
+										src="images/classes/parent.webp"
+										alt=""
+									/>
+									<div class="card-gradient"></div>
+									<h4>Parent & Child</h4>
+									<p>Lorem ipsum dolor sit.</p>
+								</div>
+								<div
+									class="browseclasscard"
+									data-value="Calisthenics"
+								>
+									<img
+										src="images/classes/calisthenics.webp"
+										alt=""
+									/>
+									<div class="card-gradient"></div>
+									<h4>Calisthenics</h4>
+									<p>Lorem, ipsum dolor.</p>
+								</div>
+								<div
+									class="browseclasscard"
+									data-value="Kids Fundamentals"
+								>
+									<img
+										src="images/classes/kids.webp"
+										alt=""
+									/>
+									<div class="card-gradient"></div>
+									<h4>Kids Fundamentals</h4>
+									<p>Lorem ipsum dolor sit amet consectetur.</p>
 								</div>
 							</div>
 						</div>
@@ -280,20 +342,22 @@
 								</div>
 							</div>
 						</div>
-						<div class="altsection">
-							<div class="container">
-								<h3>Upcoming Classes</h3>
-								<!-- Landing Page Upcoming Bookings -->
-								<!--  -->
+					</div>
+					<div class="altsection">
+						<div class="container">
+							<h3>Upcoming Classes</h3>
+							<p>View and manage your upcoming classes, all in one place.</p>
+
+							<!-- Landing Page Upcoming Bookings -->
+
+							<div
+								id="landing"
+								class="app-section"
+							>
 								<div
-									id="landing"
-									class="app-section"
-								>
-									<div
-										id="landing-agenda"
-										class="agenda-container"
-									></div>
-								</div>
+									id="landing-agenda"
+									class="agenda-container"
+								></div>
 							</div>
 						</div>
 					</div>
@@ -334,8 +398,8 @@
 						<div class="container">
 							<h3>Payments & Transactions</h3>
 							<p>
-								Users with a negative balance are visible by default. Searching
-								allows for all users regardless of balance to appear.
+								Users with outstanding balances are shown first. Use the search
+								bar to find any user by name.
 							</p>
 
 							<!-- Search bar -->
@@ -363,11 +427,12 @@
 							<div class="admin-topup-form">
 								<h3>Add Payment</h3>
 								<p>
-									Use this panel to manually log a payment for a selected user.
-
-									<br />
-									<br />Selecting "Manual Correction" will flag the entry for
-									internal adjustments or balance fixes.
+									Log a payment for the selected user. Use this panel to record
+									manual or offline transactions.
+								</p>
+								<p>
+									Manual Correction is for internal use only. Use it to fix
+									balance errors or apply one-off adjustments.
 								</p>
 								<div class="block">
 									<h4>Credits</h4>
