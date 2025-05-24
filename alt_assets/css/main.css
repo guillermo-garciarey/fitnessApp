@@ -3730,7 +3730,7 @@ input[type="button"]:disabled,
 	min-height: 72.5vh;
 	display: flex;
 	flex-direction: column;
-	justify-content: space-evenly;
+	justify-content: start;
 	padding-top: 2.25em;
 }
 
