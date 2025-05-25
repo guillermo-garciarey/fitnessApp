@@ -3764,8 +3764,8 @@ input[type="button"]:disabled,
 	display: none;
 }
 
-.agenda-card.matches-filter {
-	display: block;
+.matches-filter {
+	display: flex !important;
 }
 
 .agenda-card.highlighted.agenda-dot {
@@ -4862,6 +4862,7 @@ input[type="text"] {
 	align-items: center;
 	justify-content: space-between;
 	margin-bottom: 1rem;
+	display: none;
 }
 
 .cardpic {
