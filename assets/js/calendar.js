@@ -45,6 +45,12 @@ export function populateClassFilter(classList) {
 	// Remove all existing filter options
 	filterList.innerHTML = "";
 
+	// Create and append "All" option
+	const allOption = document.createElement("li");
+	allOption.dataset.value = "all";
+	allOption.textContent = "All";
+	filterList.appendChild(allOption);
+
 	const uniqueNames = [...new Set(classList.map((cls) => cls.name))]
 		.filter(Boolean)
 		.sort((a, b) => a.localeCompare(b));
@@ -135,8 +141,26 @@ export async function renderCalendar() {
 		cell.appendChild(number);
 
 		const classes = groupedByDate[dateStr] || [];
+
 		if (classes.length === 0) {
 			cell.classList.add("no-classes");
+		} else {
+			let showDot = false;
+
+			if (getUserRole() === "admin") {
+				showDot = true;
+			} else if (selectedFilter === "all") {
+				showDot = true;
+			} else if (selectedFilter) {
+				showDot = classes.some((cls) => cls.name === selectedFilter);
+			}
+
+			if (showDot) {
+				cell.classList.add("has-class");
+				const dot = document.createElement("div");
+				dot.classList.add("dot", "green-dot");
+				cell.appendChild(dot);
+			}
 		}
 
 		// Marking today logic
@@ -151,25 +175,6 @@ export async function renderCalendar() {
 			cell.classList.add("is-today");
 		}
 
-		let showDot = false;
-
-		if (getUserRole() === "admin") {
-			// ✅ Admin sees a dot if any class has at least 1 booking
-			showDot = classes.some((cls) => cls.booked_slots > 0);
-		} else {
-			// 👤 Users see dot based on their bookings or selected filter
-			showDot = selectedFilter
-				? classes.some((cls) => cls.name === selectedFilter)
-				: false;
-		}
-
-		if (showDot) {
-			cell.classList.add("has-class");
-			const dot = document.createElement("div");
-			dot.classList.add("dot", "green-dot");
-			cell.appendChild(dot);
-		}
-
 		if (dateStr === selectedDate) {
 			cell.classList.add("selected");
 		}
@@ -182,17 +187,6 @@ export async function renderCalendar() {
 			await renderAgenda(dateStr);
 
 			const element = document.querySelector(".altsection");
-
-			// element.scrollIntoView({
-			// 	behavior: "smooth",
-			// 	block: "start",
-			// });
-
-			// element.scrollIntoView({
-			// 	behavior: "smooth",
-			// 	block: "start",
-			// });
-
 			const overlay = document.getElementById("schedule-overlay");
 
 			overlay.scrollTo({
@@ -261,8 +255,15 @@ filterOptions.addEventListener("click", async (e) => {
 	await renderCalendar();
 	await renderAgenda(selectedDate);
 	// window.scrollTo({ top: 0, behavior: "smooth" });
-	const targetSection = document.querySelector(".mainsection");
-	targetSection?.scrollIntoView({ behavior: "smooth", block: "start" });
+
+	const element = document.querySelector(".mainsection");
+
+	const overlay = document.getElementById("schedule-overlay");
+
+	overlay.scrollTo({
+		top: element.offsetTop,
+		behavior: "smooth",
+	});
 });
 
 // Close dropdown when clicking outside
@@ -320,16 +321,15 @@ export function refreshCalendarDots() {
 		let showDot = false;
 
 		for (const cls of classes) {
-			console.log("🆔 Class:", cls.id, "Booked slots:", cls.booked_slots);
-
 			if (getUserRole() === "admin") {
-				if (cls.booked_slots > 0) {
-					showDot = true;
-					break;
-				}
+				showDot = true;
+				// if (cls.booked_slots > 0) {
+				// 	showDot = true;
+				// 	break;
+				// }
 			}
 
-			if (selectedFilter && cls.name === selectedFilter) {
+			if (selectedFilter === "all" || cls.name === selectedFilter) {
 				showDot = true;
 				break;
 			}
@@ -347,9 +347,7 @@ export function refreshCalendarDots() {
 			}
 
 			cell.appendChild(dot);
-			console.log(`✅ Dot added for ${dateStr}`);
 		} else {
-			console.log(`🚫 No dot for ${dateStr}`);
 		}
 	});
 }
@@ -392,8 +390,6 @@ export async function forceRefreshClassesForMonth(date) {
 	// 🔁 Remove the cache so the month gets re-fetched
 	loadedMonths.delete(key);
 	delete classCache[key];
-
-	console.log(`♻️ Forcing refetch for month ${key}`);
 
 	await fetchClassesForMonth(date);
 }

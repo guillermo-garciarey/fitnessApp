@@ -191,15 +191,11 @@ function errorIcon() {
 // Helper Toast functions
 
 export function showSuccessToast() {
-	showToast(
-		"Yay!",
-		"success",
-		"Whatever you were doing went alright : ) this is just some more text for testing purposes, lets see how itlooks once it loads and itslong AF"
-	);
+	showToast("yay!", "success", "Whatever you were doing went alright : )");
 }
 
 export function showErrorToast() {
-	showToast("Oh no!", "error", "Something didn’t go as planned. : (");
+	showToast("aww dang...", "error", "Something didn’t go as planned. : (");
 }
 
 // Confirmation Modal

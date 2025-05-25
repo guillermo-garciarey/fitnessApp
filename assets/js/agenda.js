@@ -129,7 +129,9 @@ export async function renderAgenda(dateStr) {
 
 		const isBooked = userBookings.includes(cls.id);
 		const isMatch =
-			selectedFilter !== "bookings" && cls.name === selectedFilter;
+			internalUserRole === "admin" ||
+			selectedFilter === "all" ||
+			cls.name === selectedFilter;
 
 		const dot = document.createElement("span");
 		dot.classList.add("agenda-dot");
