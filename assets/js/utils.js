@@ -551,11 +551,3 @@ document.querySelectorAll(".browseclasscard").forEach((card) => {
 		main.classList.add("no-scroll");
 	});
 });
-
-// Close schedule
-document.getElementById("close-schedule").addEventListener("click", () => {
-	const main = document.getElementById("main");
-	const overlay = document.getElementById("schedule-overlay");
-	overlay.classList.remove("active");
-	main.classList.remove("no-scroll");
-});

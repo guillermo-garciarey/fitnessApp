@@ -4497,14 +4497,14 @@ body {
 
 #filter-button {
 	background-color: transparent;
-	color: var(--text1);
+	color: var(--accent1);
 	border: none;
 	border-radius: 6px;
 	cursor: pointer;
 	display: flex !important;
 	gap: 1rem;
 	font-size: smaller;
-	text-decoration: dotted underline;
+	font-weight: bold;
 }
 
 #filter-options {
@@ -4561,13 +4561,13 @@ body {
 	height: auto;
 	width: 100%;
 	background-color: var(--bg1);
-	padding: 0 0 2.25em 0;
+	padding: 2.25em 0 2.25em 0;
 	border-bottom: solid 1px var(--border);
 	/* overflow: auto; */
 }
 
 .altsection {
-	min-height: 72vh;
+	min-height: 80vh;
 	width: 100%;
 	background-color: var(--bg2);
 	padding: 2.25em 0 2.25em 0;
@@ -4755,8 +4755,8 @@ input[type="text"] {
 
 #close-schedule {
 	display: flex;
-	justify-self: end;
-	padding-top: 1rem;
+
+	padding-block: 1.5rem;
 	font-size: larger;
 }
 

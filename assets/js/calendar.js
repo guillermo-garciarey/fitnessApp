@@ -189,8 +189,10 @@ export async function renderCalendar() {
 			const element = document.querySelector(".altsection");
 			const overlay = document.getElementById("schedule-overlay");
 
+			const scrollTarget = element.offsetTop - overlay.offsetTop;
+
 			overlay.scrollTo({
-				top: element.offsetTop,
+				top: scrollTarget,
 				behavior: "smooth",
 			});
 		});
@@ -394,7 +396,28 @@ export async function forceRefreshClassesForMonth(date) {
 	await fetchClassesForMonth(date);
 }
 
-//
+// Click listener on main to close Schedule Overlay
+
+const overlay = document.getElementById("schedule-overlay");
+
+function closeOverlay() {
+	if (overlay) {
+		overlay.classList.remove("active");
+	}
+}
+
+// Elements that remain visible behind the overlay
+const closableAreas = document.querySelectorAll(".nav-bottom, .image, .main");
+
+closableAreas.forEach((el) => {
+	el.addEventListener("click", () => {
+		if (overlay.classList.contains("active")) {
+			closeOverlay();
+		}
+		const main = document.getElementById("main");
+		main.classList.remove("no-scroll");
+	});
+});
 
 // Browse Class Card Click → Trigger Calendar Filter + Open Overlay
 
