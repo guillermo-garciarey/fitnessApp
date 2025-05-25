@@ -3836,6 +3836,7 @@ input[type="button"]:disabled,
 
 #toast-container {
 	display: flex;
+	flex-direction: column;
 	position: relative;
 	bottom: 15rem;
 	z-index: 9999;
@@ -4145,7 +4146,7 @@ input[type="button"]:disabled,
 	width: 90%;
 	max-width: 400px;
 	padding: 1rem;
-	max-height: 70vh;
+	max-height: 85vh;
 	border: solid 1px var(--border);
 }
 
@@ -4157,10 +4158,10 @@ input[type="button"]:disabled,
 }
 
 .admin-user-list-container {
-	max-height: 150px;
+	max-height: 220px;
 	overflow: auto;
 	padding-right: 1rem;
-	margin-bottom: 2.25em;
+	margin-bottom: 1rem;
 }
 
 #admin-user-select {
@@ -4171,12 +4172,17 @@ input[type="button"]:disabled,
 }
 
 .admin-modal-header h3 {
-	margin: 0;
+	margin-bottom: 1rem;
+	letter-spacing: 1px;
+}
+
+.admin-modal-body h4 {
+	margin-bottom: 1rem;
 	letter-spacing: 1px;
 }
 
 .admin-modal-body p {
-	margin-block: 1rem !important;
+	margin-block: 0 !important;
 	padding-left: 1rem;
 	color: var(--text2);
 }
