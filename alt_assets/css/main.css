@@ -4374,7 +4374,7 @@ body {
 	display: flex;
 	flex-direction: column;
 	height: 100vh;
-	padding-bottom: 7.5vh;
+	padding-bottom: 3em;
 	border: solid 1px var(--bg4);
 }
 
