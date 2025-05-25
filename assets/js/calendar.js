@@ -183,9 +183,21 @@ export async function renderCalendar() {
 
 			const element = document.querySelector(".altsection");
 
-			element.scrollIntoView({
+			// element.scrollIntoView({
+			// 	behavior: "smooth",
+			// 	block: "start",
+			// });
+
+			// element.scrollIntoView({
+			// 	behavior: "smooth",
+			// 	block: "start",
+			// });
+
+			const overlay = document.getElementById("schedule-overlay");
+
+			overlay.scrollTo({
+				top: element.offsetTop,
 				behavior: "smooth",
-				block: "start",
 			});
 		});
 	}
@@ -413,4 +425,34 @@ document.querySelectorAll(".browseclasscard").forEach((card) => {
 			overlay.scrollTop = 0;
 		}
 	});
+});
+
+// Binding the back button to close the schedule overlay
+
+function openScheduleOverlay() {
+	const overlay = document.getElementById("schedule-overlay");
+	overlay.classList.add("active");
+
+	// Push a fake state so back button triggers `popstate`
+	history.pushState({ overlay: true }, "");
+}
+
+window.addEventListener("popstate", (event) => {
+	const overlay = document.getElementById("schedule-overlay");
+
+	if (overlay.classList.contains("active")) {
+		// Close the overlay instead of navigating
+		overlay.classList.remove("active");
+
+		// Optional: scroll to top or reset things
+		overlay.scrollTop = 0;
+
+		// Don't let it navigate further back
+		// We'll handle the history manually
+		return;
+	}
+});
+
+window.addEventListener("load", () => {
+	history.pushState({}, ""); // base state
 });

@@ -3748,7 +3748,7 @@ input[type="button"]:disabled,
 }
 
 .agenda-container {
-	min-height: 72.5vh;
+	/* min-height: 55vh; */
 	display: flex;
 	flex-direction: column;
 	justify-content: start;
@@ -4554,6 +4554,7 @@ body {
 /* Section containers */
 
 .mainsection {
+	height: auto;
 	width: 100%;
 	background-color: var(--bg1);
 	padding: 0 0 2.25em 0;
@@ -4562,6 +4563,7 @@ body {
 }
 
 .altsection {
+	min-height: 55vh;
 	width: 100%;
 	background-color: var(--bg2);
 	padding: 2.25em 0 2.25em 0;
@@ -4721,7 +4723,7 @@ input[type="text"] {
 	bottom: -100%;
 	left: 0;
 	width: 100%;
-	height: 72.5vh;
+	height: 55vh;
 	background: var(--bg1);
 	overflow-y: auto;
 	z-index: 1000;
