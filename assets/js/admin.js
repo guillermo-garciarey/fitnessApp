@@ -12,6 +12,8 @@ import {
 	formatDate,
 	groupClassesByDate,
 	withSpinner,
+	showSuccessToast,
+	showErrorToast,
 } from "./utils.js";
 
 import {
@@ -147,7 +149,7 @@ document
 		const userId = document.getElementById("admin-user-select").value;
 
 		if (!userId) {
-			showToast?.("Please select a user to add.", "warning");
+			showToast("Oh no!", "error", "No user selected : (");
 			console.warn("⚠️ No user selected in admin-user-select dropdown");
 			return;
 		}
@@ -170,11 +172,11 @@ document
 
 			if (error) {
 				console.error("❌ Admin booking RPC failed:", error.message);
-				showToast("Failed to book user via admin.", "error");
+				showErrorToast();
 				return;
 			}
 
-			showToast("✅ User added and charged 1 credit.", "success");
+			showSuccessToast();
 			console.log(
 				`✅ Successfully booked user (${userId}) for class (${currentClassId})`
 			);
@@ -200,7 +202,7 @@ document
 			});
 		} catch (err) {
 			console.error("❌ Unexpected admin booking error:", err.message, err);
-			showToast("An unexpected error occurred.", "error");
+			showErrorToast();
 		}
 	});
 
@@ -228,11 +230,11 @@ document
 
 			if (error) {
 				console.error("❌ RPC failed:", error.message);
-				showToast("Error removing user via admin.", "error");
+				showErrorToast();
 				return;
 			}
 
-			showToast("User removed and refunded.", "success");
+			showSuccessToast();
 
 			await renderAgenda(selectedDate);
 
@@ -242,7 +244,7 @@ document
 			});
 		} catch (err) {
 			console.error("❌ Unexpected error:", err.message);
-			showToast("Error removing user.", "error");
+			showErrorToast();
 		}
 	});
 
@@ -267,11 +269,11 @@ document
 
 			if (error) {
 				console.error("❌ Failed to delete class via RPC:", error.message);
-				showToast("Failed to delete class.", "error");
+				showErrorToast();
 				return;
 			}
 
-			showToast("Class deleted and refunds issued.", "success");
+			showSuccessToast();
 
 			// ✅ Remove the deleted class from the correct cache entry
 			for (const key in classCache) {
@@ -286,6 +288,6 @@ document
 			await renderAgenda(selectedDate);
 		} catch (err) {
 			console.error("❌ Unexpected delete class error:", err.message);
-			showToast("Something went wrong while deleting the class.", "error");
+			showErrorToast();
 		}
 	});

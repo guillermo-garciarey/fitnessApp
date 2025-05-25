@@ -143,19 +143,63 @@ export function formatDate(date) {
 
 // Toast
 
-export function showToast(message, type = "success") {
+export function showToast(
+	message = "Yay!",
+	type = "success",
+	description = ""
+) {
 	const toastContainer = document.getElementById("toast-container");
 
 	const toast = document.createElement("div");
-	toast.className = `toast toast-${type}`;
-	toast.textContent = message;
+	toast.className = `toast-entry ${type}-alert`;
+
+	toast.innerHTML = `
+		<div class="toast-content">
+			<div class="icon-wrapper">
+				${type === "success" ? successIcon() : errorIcon()}
+			</div>
+			<div class="text-block">
+				<p class="title">${message}</p>
+				${description ? `<p class="desc">${description}</p>` : ""}
+			</div>
+		</div>
+	`;
 
 	toastContainer.appendChild(toast);
 
-	// Remove after animation completes (e.g., 3s)
+	// Fade and remove after animation duration
 	setTimeout(() => {
-		toast.remove();
-	}, 3000);
+		toast.classList.add("fade-out");
+		setTimeout(() => toast.remove(), 300);
+	}, 4000);
+}
+
+function successIcon() {
+	return `
+	<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+		<path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+	</svg>`;
+}
+
+function errorIcon() {
+	return `
+	<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+		<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+	</svg>`;
+}
+
+// Helper Toast functions
+
+export function showSuccessToast() {
+	showToast(
+		"Yay!",
+		"success",
+		"Whatever you were doing went alright : ) this is just some more text for testing purposes, lets see how itlooks once it loads and itslong AF"
+	);
+}
+
+export function showErrorToast() {
+	showToast("Oh no!", "error", "Something didn’t go as planned. : (");
 }
 
 // Confirmation Modal
@@ -299,7 +343,11 @@ async function generateScheduleForMonth(year, monthIndex) {
 		console.log("🧾 Payload:", newClasses);
 		showToast?.("Failed to generate schedule.", "error");
 	} else {
-		showToast?.("Schedule generated successfully!", "success");
+		showToast(
+			"Schedule generated successfully!",
+			"success",
+			"We're all set for the month : )"
+		);
 		console.log("✅ Insert complete!");
 	}
 }

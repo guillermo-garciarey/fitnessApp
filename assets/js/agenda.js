@@ -11,6 +11,8 @@ import {
 	formatDate,
 	groupClassesByDate,
 	withSpinner,
+	showSuccessToast,
+	showErrorToast,
 } from "./utils.js";
 
 import {
@@ -151,6 +153,9 @@ export async function renderAgenda(dateStr) {
 		}
 
 		const slotsAvailable = cls.capacity - cls.booked_slots;
+		if (slotsAvailable > 1) {
+			card.classList.add("class-has-slots");
+		}
 
 		card.innerHTML = `
 			<div class="agenda-card-header"></div>
@@ -199,7 +204,13 @@ export async function renderAgenda(dateStr) {
 
 			// 🛑 Block interaction if expired
 			if (card.classList.contains("expired-class")) {
-				showToast("You can't interact with an expired class.", "error");
+				showErrorToast();
+				return;
+			}
+
+			// 🛑 Block interaction if full
+			if (!card.classList.contains("class-has-slots")) {
+				showErrorToast();
 				return;
 			}
 
@@ -260,14 +271,14 @@ export async function bookClass(classId) {
 		});
 
 		if (error) {
-			showToast("Booking failed.", "error");
+			showErrorToast();
 			console.error("❌ RPC failed:", error.message);
 			return;
 		}
 
-		showToast("Class booked successfully!", "success");
+		showSuccessToast();
 	} catch (err) {
-		showToast("Something went wrong.", "error");
+		showErrorToast();
 		console.error("❌ Unexpected booking error:", err.message);
 	} finally {
 		bookingInProgress.delete(classId);
@@ -291,15 +302,15 @@ export async function cancelBooking(classId) {
 		});
 
 		if (error) {
-			showToast("Cancellation failed.", "error");
+			showErrorToast();
 			console.error("❌ RPC failed:", error.message);
 			return;
 		}
 
-		showToast("Booking cancelled and credit refunded!", "success");
+		showSuccessToast();
 	} catch (err) {
 		console.error("❌ Unexpected cancel error:", err.message);
-		showToast("Something went wrong during cancellation.", "error");
+		showErrorToast();
 	} finally {
 		cancelInProgress.delete(classId);
 	}

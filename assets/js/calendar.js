@@ -14,6 +14,8 @@ import {
 	formatDate,
 	getUserRole,
 	withSpinner,
+	showSuccessToast,
+	showErrorToast,
 } from "./utils.js";
 
 import { renderAgenda, fetchUserRole, internalUserRole } from "./agenda.js";
@@ -135,6 +137,18 @@ export async function renderCalendar() {
 		const classes = groupedByDate[dateStr] || [];
 		if (classes.length === 0) {
 			cell.classList.add("no-classes");
+		}
+
+		// Marking today logic
+		const now = new Date();
+		const today = new Date(
+			Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate())
+		)
+			.toISOString()
+			.split("T")[0];
+
+		if (dateStr === today) {
+			cell.classList.add("is-today");
 		}
 
 		let showDot = false;

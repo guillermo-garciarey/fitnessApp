@@ -1,4 +1,10 @@
-import { getSession, showToast, withSpinner } from "./utils.js";
+import {
+	getSession,
+	showToast,
+	withSpinner,
+	showSuccessToast,
+	showErrorToast,
+} from "./utils.js";
 import { supabase } from "./supabaseClient.js";
 
 const colors = [
@@ -125,12 +131,12 @@ confirmBtn.addEventListener("click", async () => {
 	const amount = parseInt(amountInput?.value, 10);
 
 	if (!selectedUserId) {
-		showToast("Please select a user.", "error");
+		showErrorToast();
 		return;
 	}
 
 	if (!selectedPaymentMethod) {
-		showToast("Please select a payment method.", "error");
+		showErrorToast();
 		return;
 	}
 
@@ -148,12 +154,12 @@ confirmBtn.addEventListener("click", async () => {
 
 	if (error) {
 		console.error("❌ Payment failed:", error.message);
-		showToast("Failed to add payment. Try again.", "error");
+		showErrorToast();
 		return;
 	}
 
 	// ✅ Success
-	showToast("✅ Payment added successfully!", "success");
+	showSuccessToast;
 	resetTopupForm();
 	await fetchProfiles();
 	document.getElementById("main")?.scrollTo({
