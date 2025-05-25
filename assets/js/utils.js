@@ -10,12 +10,13 @@ export async function fetchAndSetUserRole(supabase) {
 
 	const { data, error } = await supabase
 		.from("profiles")
-		.select("role")
+		.select("role, name")
 		.eq("id", userId)
 		.single();
 
 	if (!error && data?.role) {
 		userRole = data.role;
+		userName = data.name;
 	}
 }
 
@@ -233,59 +234,89 @@ export function confirmAction(message, title) {
 	});
 }
 
-// Generate Schedule Trigger (Admin only)
+// Generate Schedule
+document.addEventListener("DOMContentLoaded", () => {
+	const generateBtn = document.getElementById("generate-schedule");
+	const monthSelect = document.getElementById("month-select");
+	const yearSelect = document.getElementById("year-input");
 
-document
-	.getElementById("generate-schedule")
-	.addEventListener("click", async () => {
-		const label = document.getElementById("month-label").textContent.trim(); // e.g. "June 2025"
-		const [monthName, yearStr] = label.split(" ");
-		const year = parseInt(yearStr);
-		const monthIndex = new Date(`${monthName} 1, 2000`).getMonth(); // ✅ 0-based
+	console.log("🔍 Button:", generateBtn);
+	console.log("🔍 Month select:", monthSelect);
+	console.log("🔍 Year select:", yearSelect);
 
-		if (!year || isNaN(monthIndex)) {
-			showToast?.("Invalid month label.", "error");
-			return;
-		}
+	if (generateBtn && monthSelect && yearSelect) {
+		console.log("✅ All elements found, adding click listener");
 
-		// Step 1: Check for existing classes
-		const monthStart = `${year}-${String(monthIndex + 1).padStart(2, "0")}-01`;
-		const monthEnd = formatDate(new Date(year, monthIndex + 1, 0)); // ✅ end of the month
+		generateBtn.addEventListener("click", async () => {
+			console.log("🖱️ Generate button clicked");
 
-		const { data: existing, error: checkError } = await supabase
-			.from("classes")
-			.select("id")
-			.gte("date", monthStart)
-			.lte("date", monthEnd)
-			.limit(1);
+			const monthIndex = parseInt(monthSelect.value);
+			const year = parseInt(yearSelect.value);
+			const monthName = monthSelect.options[monthSelect.selectedIndex].text;
 
-		if (checkError) {
-			console.error("❌ Error checking existing classes:", checkError.message);
-			showToast?.("Failed to check existing classes.", "error");
-			return;
-		}
+			console.log(`📅 Selected: ${monthName} ${year} (index: ${monthIndex})`);
 
-		if (existing.length > 0) {
-			showToast?.(
-				"Month already contains classes. Please clear them first.",
-				"warning"
+			if (!year || isNaN(monthIndex)) {
+				console.warn("⚠️ Invalid month/year selection");
+				showErrorToast("Please select a valid month and year.");
+				return;
+			}
+
+			const monthStart = `${year}-${String(monthIndex + 1).padStart(
+				2,
+				"0"
+			)}-01`;
+			const monthEnd = formatDate(new Date(year, monthIndex + 1, 0));
+
+			console.log(
+				`📆 Checking for existing schedule between ${monthStart} and ${monthEnd}`
 			);
-			return;
-		}
 
-		const confirmed = await confirmAction(
-			`This will generate a full class schedule for ${monthName} ${year}.\n\nAre you sure you want to continue?`,
-			"Generate Schedule"
+			const { data: existing, error: checkError } = await supabase
+				.from("classes")
+				.select("id")
+				.gte("date", monthStart)
+				.lte("date", monthEnd)
+				.limit(1);
+
+			if (checkError) {
+				console.error("❌ Supabase error:", checkError.message);
+				showErrorToast("Error checking existing schedule.");
+				return;
+			}
+
+			if (existing.length > 0) {
+				console.log("🛑 Schedule already exists for that month.");
+				showErrorToast("Schedule already exists for this month.");
+				return;
+			}
+
+			const confirmed = await confirmAction(
+				`This will generate a full schedule for ${monthName} ${year}.\n\nAre you sure?`,
+				"Generate Schedule"
+			);
+
+			if (!confirmed) {
+				console.log("❌ User cancelled generation");
+				return;
+			}
+
+			console.log("✅ Generating schedule...");
+			await generateScheduleForMonth(year, monthIndex);
+		});
+	} else {
+		console.warn(
+			"⚠️ Could not find one or more required elements. Listener not attached."
 		);
-
-		if (!confirmed) return;
-
-		await generateScheduleForMonth(year, monthIndex); // ✅ uses 0-based month
-	});
+	}
+});
 
 // Generate Schedule Function
 
-async function generateScheduleForMonth(year, monthIndex) {
+window.generateScheduleForMonth = async function generateScheduleForMonth(
+	year,
+	monthIndex
+) {
 	const { data: templates, error: templateError } = await supabase
 		.from("class_schedule_template")
 		.select("*");
@@ -326,7 +357,7 @@ async function generateScheduleForMonth(year, monthIndex) {
 	console.log(`🧾 Preparing to insert ${newClasses.length} classes`);
 
 	if (newClasses.length === 0) {
-		showToast?.("No matching templates for this month.", "info");
+		showErrorToast();
 		return;
 	}
 
@@ -337,16 +368,11 @@ async function generateScheduleForMonth(year, monthIndex) {
 	if (insertError) {
 		console.error("❌ Insert failed:", insertError.message);
 		console.log("🧾 Payload:", newClasses);
-		showToast?.("Failed to generate schedule.", "error");
+		showErrorToast();
 	} else {
-		showToast(
-			"Schedule generated successfully!",
-			"success",
-			"We're all set for the month : )"
-		);
-		console.log("✅ Insert complete!");
+		showSuccessToast();
 	}
-}
+};
 
 // Helper function to adjust user credits (for admin use)
 

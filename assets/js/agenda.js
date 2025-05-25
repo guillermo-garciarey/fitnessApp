@@ -74,7 +74,6 @@ export async function renderAgenda(dateStr) {
 	const agendaContainer = document.getElementById("agenda");
 	agendaContainer.innerHTML = "";
 
-	// ✅ Step 1: Refresh classes from DB for this date
 	const { data: latest, error } = await supabase
 		.from("classes")
 		.select("*")
@@ -87,14 +86,12 @@ export async function renderAgenda(dateStr) {
 		return;
 	}
 
-	// ✅ Replace existing classes for this date only
 	allClasses = allClasses
 		.filter((cls) => cls.date !== selectedDate)
 		.concat(latest);
 
 	setGroupedByDate(groupClassesByDate(allClasses));
 
-	// ✅ Step 2: Continue with render logic
 	const dayClasses = groupedByDate[selectedDate] || [];
 	const sortedClasses = dayClasses.sort((a, b) => a.time.localeCompare(b.time));
 
@@ -103,12 +100,11 @@ export async function renderAgenda(dateStr) {
 		return;
 	}
 
-	// const selectedFilter = document.getElementById("class-filter").value;
 	console.log("📦 selectedFilter from calendar.js:", selectedFilter);
 
 	sortedClasses.forEach((cls) => {
 		const card = document.createElement("div");
-		card.className = "agenda-card pressable";
+		card.className = "agendacard2";
 		card.dataset.id = cls.id;
 
 		const classDateTime = new Date(`${cls.date}T${cls.time}`);
@@ -155,46 +151,44 @@ export async function renderAgenda(dateStr) {
 		}
 
 		const slotsAvailable = cls.capacity - cls.booked_slots;
+		const isFull = slotsAvailable < 1;
 		if (slotsAvailable > 1) {
 			card.classList.add("class-has-slots");
 		}
 
 		card.innerHTML = `
-			<div class="agenda-card-header"></div>
-			${
-				cls.description
-					? `<div class="agenda-description">${cls.description}</div>`
-					: ""
-			}
-			
-
-		<div class="agenda-participants ${slotsAvailable < 1 ? "overbooked" : ""}">
-    ${slotsAvailable} slot${slotsAvailable !== 1 ? "s" : ""} available
-    ${slotsAvailable < 1 ? `<span class="overbooked"> · Full</span>` : ""}
-  </div>
-
+			<div class="cardpic">
+				<img src="${cls.image_url || "images/classes/default.webp"}" alt="${
+			cls.name
+		}" />
+			</div>
+			<div class="cardcontent">
+				<h3>${cls.name} ${
+			cls.description
+				? `<span id="description"> - ${cls.description}</span>`
+				: ""
+		}</h3>
+				<div class="carddeets">
+					<p class="time">${timeFormatted}</p>
+					<p class="slots ${isFull ? "overbooked" : ""}">
+						${slotsAvailable} slot${slotsAvailable !== 1 ? "s" : ""} available
+						${isFull ? `<span class="overbooked"> · Full</span>` : ""}
+					</p>
+				</div>
+			</div>
+			<button class="cardaction fa-solid fa-ellipsis"></button>
 		`;
 
-		const header = card.querySelector(".agenda-card-header");
-		header.appendChild(dot);
-
-		const nameEl = document.createElement("span");
-		nameEl.className = "agenda-name";
-		nameEl.textContent = cls.name;
-		header.appendChild(nameEl);
-
-		const timeEl = document.createElement("span");
-		timeEl.className = "agenda-time";
-		timeEl.textContent = timeFormatted;
-		header.appendChild(timeEl);
+		// Insert dot manually into the cardcontent
+		const cardContent = card.querySelector(".cardcontent");
+		cardContent?.prepend(dot);
 
 		agendaContainer.appendChild(card);
 	});
 
-	// Attach click handler only once
 	if (!agendaClickListenerAttached) {
 		agendaContainer.addEventListener("click", async (e) => {
-			const card = e.target.closest(".agenda-card");
+			const card = e.target.closest(".agendacard2");
 			if (!card) return;
 
 			const classId = card.dataset.id;
@@ -204,13 +198,11 @@ export async function renderAgenda(dateStr) {
 				return;
 			}
 
-			// 🛑 Block interaction if expired
 			if (card.classList.contains("expired-class")) {
 				showErrorToast();
 				return;
 			}
 
-			// 🛑 Block interaction if full
 			if (!card.classList.contains("class-has-slots")) {
 				showErrorToast();
 				return;
@@ -350,7 +342,6 @@ export async function renderBookedAgenda(selector = "#landing-agenda") {
 
 	container.innerHTML = "";
 
-	// 🧠 Group by date
 	const groupedByDate = {};
 	upcomingBooked.forEach((cls) => {
 		if (!groupedByDate[cls.date]) groupedByDate[cls.date] = [];
@@ -374,7 +365,7 @@ export async function renderBookedAgenda(selector = "#landing-agenda") {
 
 		group.forEach((cls) => {
 			const card = document.createElement("div");
-			card.className = "agenda-card pressable";
+			card.className = "agendacard2";
 			card.classList.add("matches-filter");
 			card.dataset.id = cls.id;
 
@@ -391,23 +382,39 @@ export async function renderBookedAgenda(selector = "#landing-agenda") {
 				hour12: true,
 			});
 			const slotsAvailable = cls.capacity - cls.booked_slots;
+			const isFull = slotsAvailable < 1;
+			if (slotsAvailable > 1) {
+				card.classList.add("class-has-slots");
+			}
 
 			card.innerHTML = `
-  <div class="agenda-card-header">
-    <span class="agenda-dot" style="background: var(--success-500);"></span>
-    <span class="agenda-name">${cls.name}</span>
-    <span class="agenda-time">${timeFormatted}</span>
-  </div>
-  ${
-		cls.description
-			? `<div class="agenda-description">${cls.description}</div>`
-			: ""
-	}
-  <div class="agenda-participants ${slotsAvailable < 1 ? "overbooked" : ""}">
-    ${slotsAvailable} slot${slotsAvailable !== 1 ? "s" : ""} available
-    ${slotsAvailable < 1 ? `<span class="overbooked"> · Full</span>` : ""}
-  </div>
-`;
+				<div class="cardpic">
+					<img src="${cls.image_url || "images/classes/default.webp"}" alt="${
+				cls.name
+			}" />
+				</div>
+				<div class="cardcontent">
+					<h3>${cls.name} ${
+				cls.description
+					? `<span id="description"> - ${cls.description}</span>`
+					: ""
+			}</h3>
+					<div class="carddeets">
+						<p class="time">${timeFormatted}</p>
+						<p class="slots ${isFull ? "overbooked" : ""}">
+							${slotsAvailable} slot${slotsAvailable !== 1 ? "s" : ""} available
+							${isFull ? `<span class="overbooked"> · Full</span>` : ""}
+						</p>
+					</div>
+				</div>
+				<button class="cardaction fa-solid fa-ellipsis"></button>
+			`;
+
+			const cardContent = card.querySelector(".cardcontent");
+			const dot = document.createElement("span");
+			dot.classList.add("agenda-dot");
+			dot.style.background = "var(--success-500)";
+			cardContent?.prepend(dot);
 
 			dayContainer.appendChild(card);
 		});
@@ -415,12 +422,11 @@ export async function renderBookedAgenda(selector = "#landing-agenda") {
 		container.appendChild(dayContainer);
 	}
 
-	// Attach click handler to landing agenda
 	if (!window.landingAgendaClickListenerAttached) {
 		const landingAgendaContainer = document.getElementById("landing-agenda");
 
 		landingAgendaContainer.addEventListener("click", async (e) => {
-			const card = e.target.closest(".agenda-card");
+			const card = e.target.closest(".agendacard2");
 			if (!card) return;
 
 			const classId = card.dataset.id;

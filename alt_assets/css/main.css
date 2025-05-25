@@ -3550,11 +3550,9 @@ input[type="button"]:disabled,
 }
 
 #generate-schedule {
-	font-size: larger;
 }
 
 #generate-class {
-	font-size: larger;
 }
 
 .calendar-container {
@@ -3790,6 +3788,7 @@ input[type="button"]:disabled,
 	background: var(--text2);
 	border-radius: 50%;
 	margin-right: 0.5rem;
+	display: none;
 }
 
 .agenda-name {
@@ -3815,9 +3814,8 @@ input[type="button"]:disabled,
 	color: var(--text2);
 }
 
-.agenda-participants.overbooked {
+.overbooked {
 	color: var(--warning-500);
-	font-weight: bold;
 }
 
 .no-classes-msg {
@@ -4306,7 +4304,7 @@ input[type="button"]:disabled,
 	/* border-top: solid 1px var(--border); */
 	height: 7.5vh;
 	width: 100vw;
-	z-index: 999;
+	z-index: 1002;
 }
 
 .nav-btn {
@@ -4647,19 +4645,29 @@ input[type="text"] {
 
 .form-buttons {
 	display: flex;
+	flex-direction: column;
 	justify-content: space-evenly;
 	padding-top: 0.5rem;
-	gap: 2rem;
 }
 
 .form-buttons button {
-	width: 100%;
-	padding: 0.5rem 1rem;
-	border: none;
-	border-radius: 4px;
-	background: var(--success-500);
+	background: var(--danger-500);
 	color: var(--bg1);
+	padding: 0.5rem;
+	border: none;
+	width: 100%;
+	border-radius: 4px;
 	cursor: pointer;
+	margin-bottom: 0.5rem;
+	height: 44px;
+}
+
+.form-buttons select {
+	margin-bottom: 0.5rem;
+	height: 44px;
+
+	width: 100%;
+	border-radius: 4px;
 }
 
 .form-buttons #reset-form {
@@ -4712,18 +4720,15 @@ input[type="text"] {
 	font-size: x-small;
 }
 
-/* Spinner */
-
-/* Browse Cards */
-
 /* Schedule Overlay */
 
 #schedule-overlay {
+	padding-bottom: 7.5vh;
 	position: fixed;
 	bottom: -100%;
 	left: 0;
 	width: 100%;
-	height: 72vh;
+	height: 80vh;
 	background: var(--bg1);
 	overflow-y: auto;
 	z-index: 1000;
@@ -4839,4 +4844,70 @@ input[type="text"] {
 	font-size: smaller;
 	color: var(--text2);
 	z-index: 2;
+}
+
+/* New Cards */
+
+.agendacard2container {
+	padding-block: 2em;
+}
+
+.agendacard2 {
+	background-color: var(--bg1);
+	width: 100%;
+	justify-self: center;
+	display: flex;
+	border-radius: 4px;
+	border: 1px solid var(--border);
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 1rem;
+}
+
+.cardpic {
+	display: flex;
+	width: 78px;
+	aspect-ratio: 1;
+	align-items: center;
+	justify-content: center;
+}
+
+.cardpic img {
+	border-top-left-radius: 4px;
+	border-bottom-left-radius: 4px;
+	object-fit: cover;
+	aspect-ratio: 1;
+	width: 100%;
+	object-position: center;
+}
+
+.cardcontent {
+	padding-left: 1rem;
+	display: flex;
+	flex: 2;
+	flex-direction: column;
+	gap: 0.7rem;
+}
+
+.cardcontent > * {
+	font-size: small;
+	color: #232531;
+	margin: 0 !important;
+	line-height: 1rem;
+}
+
+.carddeets > * {
+	line-height: 1rem;
+	font-size: x-small;
+	color: var(--text1);
+	margin: 0 !important;
+}
+
+.cardaction {
+	aspect-ratio: 1;
+	font-size: medium;
+	padding: 1rem;
+	border: none !important;
+	background-color: transparent !important;
+	color: var(--text1);
 }
