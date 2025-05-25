@@ -3805,8 +3805,12 @@ input[type="button"]:disabled,
 
 .agenda-participants {
 	font-size: 0.75rem;
-
 	color: var(--text2);
+}
+
+.agenda-participants.overbooked {
+	color: var(--warning-500);
+	font-weight: bold;
 }
 
 .no-classes-msg {

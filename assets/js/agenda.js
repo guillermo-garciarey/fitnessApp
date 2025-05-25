@@ -145,11 +145,12 @@ export async function renderAgenda(dateStr) {
 				dot.style.background = "var(--success-500)";
 			} else if (isMatch) {
 				card.classList.add("matches-filter");
-				dot.style.background = "var(--warning-500)";
 			} else {
 				dot.style.background = "var(--text2)";
 			}
 		}
+
+		const slotsAvailable = cls.capacity - cls.booked_slots;
 
 		card.innerHTML = `
 			<div class="agenda-card-header"></div>
@@ -158,9 +159,13 @@ export async function renderAgenda(dateStr) {
 					? `<div class="agenda-description">${cls.description}</div>`
 					: ""
 			}
-			<div class="agenda-participants">${cls.booked_slots} / ${
-			cls.capacity
-		} participants</div>
+			
+
+		<div class="agenda-participants ${slotsAvailable < 1 ? "overbooked" : ""}">
+    ${slotsAvailable} slot${slotsAvailable !== 1 ? "s" : ""} available
+    ${slotsAvailable < 1 ? `<span class="overbooked"> · Full</span>` : ""}
+  </div>
+
 		`;
 
 		const header = card.querySelector(".agenda-card-header");
@@ -372,22 +377,24 @@ export async function renderBookedAgenda(selector = "#landing-agenda") {
 				minute: "2-digit",
 				hour12: true,
 			});
+			const slotsAvailable = cls.capacity - cls.booked_slots;
 
 			card.innerHTML = `
-				<div class="agenda-card-header">
-					<span class="agenda-dot" style="background: var(--success-500);"></span>
-					<span class="agenda-name">${cls.name}</span>
-					<span class="agenda-time">${timeFormatted}</span>
-				</div>
-				${
-					cls.description
-						? `<div class="agenda-description">${cls.description}</div>`
-						: ""
-				}
-				<div class="agenda-participants">${cls.booked_slots} / ${
-				cls.capacity
-			} participants</div>
-			`;
+  <div class="agenda-card-header">
+    <span class="agenda-dot" style="background: var(--success-500);"></span>
+    <span class="agenda-name">${cls.name}</span>
+    <span class="agenda-time">${timeFormatted}</span>
+  </div>
+  ${
+		cls.description
+			? `<div class="agenda-description">${cls.description}</div>`
+			: ""
+	}
+  <div class="agenda-participants ${slotsAvailable < 1 ? "overbooked" : ""}">
+    ${slotsAvailable} slot${slotsAvailable !== 1 ? "s" : ""} available
+    ${slotsAvailable < 1 ? `<span class="overbooked"> · Full</span>` : ""}
+  </div>
+`;
 
 			dayContainer.appendChild(card);
 		});
