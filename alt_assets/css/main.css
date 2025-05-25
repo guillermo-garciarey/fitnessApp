@@ -4563,7 +4563,7 @@ body {
 }
 
 .altsection {
-	min-height: 55vh;
+	min-height: 60vh;
 	width: 100%;
 	background-color: var(--bg2);
 	padding: 2.25em 0 2.25em 0;
@@ -4723,7 +4723,7 @@ input[type="text"] {
 	bottom: -100%;
 	left: 0;
 	width: 100%;
-	height: 55vh;
+	height: 60vh;
 	background: var(--bg1);
 	overflow-y: auto;
 	z-index: 1000;
