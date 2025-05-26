@@ -18,7 +18,12 @@ import {
 	showErrorToast,
 } from "./utils.js";
 
-import { renderAgenda, fetchUserRole, internalUserRole } from "./agenda.js";
+import {
+	renderAgenda,
+	fetchUserRole,
+	internalUserRole,
+	renderBookedAgenda,
+} from "./agenda.js";
 
 let viewDate = new Date();
 let selectedDate = formatDate(new Date());
@@ -397,9 +402,15 @@ export async function forceRefreshClassesForMonth(date) {
 
 const overlay = document.getElementById("schedule-overlay");
 
-function closeOverlay() {
+async function closeOverlay() {
 	if (overlay) {
 		overlay.classList.remove("active");
+		const session = await getSession();
+		const userId = session?.user?.id;
+
+		await updateCalendarDots(userId);
+		await renderBookedAgenda("#landing-agenda");
+		await renderAgenda(selectedDate);
 	}
 }
 
