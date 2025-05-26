@@ -4789,20 +4789,20 @@ input[type="text"] {
 }
 
 .browseclasses_container {
-	scrollbar-width: none; /* Firefox */
-	-ms-overflow-style: none; /* IE and Edge */
+	/* scrollbar-width: none; 
+	-ms-overflow-style: none;  */
 }
 
 .browseclasses_container::-webkit-scrollbar {
-	display: none; /* Chrome, Safari, Opera */
+	/* display: none;  */
 }
 
 .browseclasscard {
-	aspect-ratio: 4/5;
+	/* aspect-ratio: 4/5; */
 	position: relative;
 	display: flex;
 	flex-direction: column;
-	min-width: 80%;
+	min-width: 75%;
 	padding: 16px;
 	background-color: var(--bg1);
 	border-radius: 4px;
@@ -4812,6 +4812,7 @@ input[type="text"] {
 	text-align: start;
 	scroll-snap-align: center;
 	justify-content: end;
+	height: 375px;
 }
 
 .browseclasscard img {
