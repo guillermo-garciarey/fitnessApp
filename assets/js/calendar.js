@@ -186,13 +186,10 @@ export async function renderCalendar() {
 			await renderCalendar();
 			await renderAgenda(dateStr);
 
-			const element = document.querySelector(".altsection");
 			const overlay = document.getElementById("schedule-overlay");
 
-			const scrollTarget = element.offsetTop - overlay.offsetTop;
-
 			overlay.scrollTo({
-				top: scrollTarget,
+				top: 450,
 				behavior: "smooth",
 			});
 		});
