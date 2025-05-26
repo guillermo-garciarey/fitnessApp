@@ -542,12 +542,60 @@ export async function withSpinner(callback) {
 }
 
 // Schedule overlay open
-document.querySelectorAll(".browseclasscard").forEach((card) => {
-	card.addEventListener("click", () => {
-		const main = document.getElementById("main");
-		const overlay = document.getElementById("schedule-overlay");
-		overlay.classList.add("active");
-		overlay.scrollTop = 0;
-		main.classList.add("no-scroll");
-	});
+const container = document.querySelector(".browseclasses_container");
+
+container.addEventListener("click", (e) => {
+	const card = e.target.closest(".browseclasscard");
+	if (!card) return;
+
+	const main = document.getElementById("main");
+	const overlay = document.getElementById("schedule-overlay");
+
+	overlay.classList.add("active");
+	overlay.scrollTop = 0;
+	main.classList.add("no-scroll");
+});
+
+// Browse Class Cards Scroller
+
+window.addEventListener("DOMContentLoaded", () => {
+	const container = document.querySelector(".browseclasses_container");
+	if (!container) return;
+
+	// Step 1: Clone content for infinite loop
+	container.innerHTML += container.innerHTML;
+
+	// Step 2: Start scrolling loop
+	let scrollSpeed = 1; // pixels per frame
+	let scrollInterval;
+
+	function startAutoScroll() {
+		stopAutoScroll(); // Ensure no duplicate intervals
+
+		scrollInterval = setInterval(() => {
+			container.scrollLeft += scrollSpeed;
+
+			// Step 3: Reset at halfway point (original content length)
+			if (container.scrollLeft >= container.scrollWidth / 2) {
+				// Disable smooth animation for the jump
+				container.style.scrollBehavior = "auto";
+				container.scrollLeft = 0;
+				container.style.scrollBehavior = "smooth";
+			}
+		}, 20);
+	}
+
+	function stopAutoScroll() {
+		clearInterval(scrollInterval);
+	}
+
+	// Step 4: Pause/resume on hover or touch
+	container.addEventListener("mouseenter", stopAutoScroll);
+	container.addEventListener("mouseleave", startAutoScroll);
+	container.addEventListener("touchstart", stopAutoScroll);
+	container.addEventListener("touchend", startAutoScroll);
+
+	// Kick it off
+	container.style.scrollBehavior = "smooth";
+	startAutoScroll();
 });
