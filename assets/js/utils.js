@@ -545,18 +545,33 @@ export async function withSpinner(callback) {
 const container = document.querySelector(".browseclasses_container");
 
 container.addEventListener("click", (e) => {
-	const card = e.target.closest(".browseclasscard");
-	if (!card) return;
+	// If the click is on the "See Schedule" button
+	if (e.target.classList.contains("open-schedule-btn")) {
+		const card = e.target.closest(".browseclasscard");
+		if (!card) return;
 
-	const main = document.getElementById("main");
-	const overlay = document.getElementById("schedule-overlay");
+		const selectedValue = card.dataset.value;
+		if (!selectedValue) return;
 
-	overlay.classList.add("active");
-	overlay.scrollTop = 0;
-	main.classList.add("no-scroll");
+		// Simulate the filter click to show the relevant classes
+		const li = document.querySelector(
+			`#filter-options li[data-value="${selectedValue}"]`
+		);
+		if (li) li.click();
+
+		// Now open the schedule overlay
+		const main = document.getElementById("main");
+		const overlay = document.getElementById("schedule-overlay");
+
+		if (overlay && main) {
+			overlay.classList.add("active");
+			overlay.scrollTop = 0;
+			main.classList.add("no-scroll");
+		}
+	}
 });
 
-// Browse Class Cards Scroller
+//  Browse Class Cards Scroller
 
 window.addEventListener("DOMContentLoaded", () => {
 	const container = document.querySelector(".browseclasses_container");

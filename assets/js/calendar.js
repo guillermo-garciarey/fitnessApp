@@ -428,30 +428,35 @@ closableAreas.forEach((el) => {
 });
 
 // Browse Class Card Click → Trigger Calendar Filter + Open Overlay
+const container = document.querySelector(".browseclasses_container");
 
-document.querySelectorAll(".browseclasscard").forEach((card) => {
-	card.addEventListener("click", () => {
+container.addEventListener("click", (e) => {
+	const card = e.target.closest(".browseclasscard");
+	if (!card) return;
+
+	// If schedule button was clicked, trigger overlay logic
+	if (e.target.classList.contains("open-schedule-btn")) {
 		const selectedValue = card.dataset.value;
-
-		// Find matching <li> in the filter dropdown
 		const li = document.querySelector(
 			`#filter-options li[data-value="${selectedValue}"]`
 		);
-		if (!li) {
-			console.warn(`No filter option found for value: ${selectedValue}`);
-			return;
-		}
+		if (li) li.click();
 
-		// Simulate click to apply filter + update button label
-		li.click();
+		document.getElementById("schedule-overlay").classList.add("active");
+		document.getElementById("main").classList.add("no-scroll");
+		return;
+	}
 
-		// Show the schedule overlay if it exists
-		const overlay = document.getElementById("schedule-overlay");
-		if (overlay) {
-			overlay.classList.add("active");
-			overlay.scrollTop = 0;
-		}
-	});
+	// Toggle show-info
+	if (card.classList.contains("show-info")) {
+		card.classList.remove("show-info");
+	} else {
+		// Close any others
+		document
+			.querySelectorAll(".browseclasscard")
+			.forEach((c) => c.classList.remove("show-info"));
+		card.classList.add("show-info");
+	}
 });
 
 // Binding the back button to close the schedule overlay
