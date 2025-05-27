@@ -253,7 +253,7 @@ a {
 	-webkit-transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
 	-ms-transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
 	transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
-	border-bottom: solid 1px #e4e4e4;
+	/* border-bottom: solid 1px #e4e4e4; */
 	color: inherit;
 	text-decoration: none;
 }
@@ -4452,7 +4452,7 @@ body {
 }
 
 .image.main {
-	height: 10vh !important;
+	height: 20vh !important;
 	border-bottom: solid 1px var(--border);
 }
 
@@ -4559,10 +4559,10 @@ body {
 /* Section containers */
 
 .mainsection {
-	min-height: 82.5vh;
+	min-height: 72.5vh;
 	display: flex;
 	flex-direction: column;
-	justify-content: space-around;
+	justify-content: center;
 
 	width: 100%;
 	background-color: var(--bg1);
@@ -4787,6 +4787,8 @@ input[type="text"] {
 
 .next_section {
 	align-self: center;
+	text-align: center;
+	width: 100%;
 }
 
 .browseclasses_wrapper {
@@ -4803,7 +4805,7 @@ input[type="text"] {
 	/* height: 300px; */
 	overflow-x: auto;
 	/* padding-inline: 1.75em; */
-	/* scroll-snap-type: x; */
+	scroll-snap-type: x;
 	scroll-behavior: smooth;
 }
 
@@ -4822,9 +4824,9 @@ input[type="text"] {
 	position: relative;
 	display: flex;
 	flex-direction: column;
-	min-width: 75%;
+	min-width: 65%;
 	padding: 16px;
-	/* border: solid 1px var(--border); */
+	border: solid 1px var(--border);
 	cursor: pointer;
 	transition: transform 0.2s ease;
 	text-align: start;
