@@ -2980,8 +2980,8 @@ input[type="button"]:disabled,
 
 #main {
 	overflow-y: auto;
-
-	padding-bottom: 15vh; /* ONE place only */
+	padding: 0 !important;
+	/* padding-bottom: 15vh;  */
 }
 
 #main > section {
@@ -4308,7 +4308,7 @@ input[type="button"]:disabled,
 	justify-content: end;
 	align-items: center;
 	/* border-top: solid 1px var(--border); */
-	height: 3em;
+	height: 7.5vh;
 	width: 100vw;
 	z-index: 1002;
 }
@@ -4319,7 +4319,7 @@ input[type="button"]:disabled,
 	align-items: center;
 	justify-content: center;
 	aspect-ratio: 1;
-	height: 3em;
+	height: 7.5vh;
 	background: none;
 	border: none;
 	background-color: var(--bg4);
@@ -4374,7 +4374,7 @@ body {
 	display: flex;
 	flex-direction: column;
 	height: 100vh;
-	padding-bottom: 3em;
+	padding-bottom: 7.5vh;
 	border: solid 1px var(--bg4);
 }
 
@@ -4451,7 +4451,7 @@ body {
 }
 
 .image.main {
-	height: 8em !important;
+	height: 10vh !important;
 	border-bottom: solid 1px var(--border);
 }
 
@@ -4558,7 +4558,11 @@ body {
 /* Section containers */
 
 .mainsection {
-	height: auto;
+	height: 82.5vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+
 	width: 100%;
 	background-color: var(--bg1);
 	padding: 2.25em 0 2.25em 0;
@@ -4567,7 +4571,7 @@ body {
 }
 
 .altsection {
-	min-height: 35em;
+	min-height: 82.5vh;
 	width: 100%;
 	background-color: var(--bg2);
 	padding: 2.25em 0 2.25em 0;
@@ -4795,7 +4799,7 @@ input[type="text"] {
 }
 
 .browseclasscard {
-	/* aspect-ratio: 4/5; */
+	aspect-ratio: 4/5;
 	position: relative;
 	display: flex;
 	flex-direction: column;
@@ -4807,7 +4811,7 @@ input[type="text"] {
 	text-align: start;
 	scroll-snap-align: center;
 	justify-content: end;
-	height: 375px;
+	/* height: 375px; */
 	overflow-y: hidden;
 }
 
