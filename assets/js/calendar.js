@@ -415,12 +415,16 @@ async function closeOverlay() {
 }
 
 // Elements that remain visible behind the overlay
-const closableAreas = document.querySelectorAll(".nav-bottom, .image, .main");
+const closableAreas = document.querySelectorAll(
+	".nav-bottom, .image, .main, .schedule-close-btn"
+);
 
 closableAreas.forEach((el) => {
 	el.addEventListener("click", () => {
 		if (overlay.classList.contains("active")) {
 			closeOverlay();
+			// Also hide the fixed close button directly
+			document.querySelector(".schedule-close-btn").style.display = "none";
 		}
 		const main = document.getElementById("main");
 		main.classList.remove("no-scroll");
@@ -441,9 +445,10 @@ container.addEventListener("click", (e) => {
 			`#filter-options li[data-value="${selectedValue}"]`
 		);
 		if (li) li.click();
-
+		document.querySelector(".schedule-close-btn").style.display = "block";
 		document.getElementById("schedule-overlay").classList.add("active");
 		document.getElementById("main").classList.add("no-scroll");
+
 		return;
 	}
 
