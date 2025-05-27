@@ -3384,7 +3384,7 @@ input[type="button"]:disabled,
 	/* Main */
 
 	#main > section > * {
-		padding: 1.5em 0 0 0;
+		padding: 1.5em 0 1.5em 0;
 	}
 
 	/* Footer */
@@ -4742,6 +4742,7 @@ input[type="text"] {
 	background-color: var(--bg2);
 	border: solid 1px var(--border);
 	color: var(--text2);
+	z-index: 999999;
 }
 
 #schedule-overlay {
@@ -4820,7 +4821,7 @@ input[type="text"] {
 	position: relative;
 	display: flex;
 	flex-direction: column;
-	min-width: 75%;
+	min-width: 55%;
 	padding: 16px;
 	/* border: solid 1px var(--border); */
 	cursor: pointer;
@@ -4873,7 +4874,7 @@ input[type="text"] {
 
 .card-info-overlay {
 	position: absolute;
-	gap: 1rem;
+
 	justify-content: end;
 	bottom: 0;
 	left: 0;
