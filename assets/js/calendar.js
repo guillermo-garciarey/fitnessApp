@@ -445,9 +445,10 @@ container.addEventListener("click", (e) => {
 			`#filter-options li[data-value="${selectedValue}"]`
 		);
 		if (li) li.click();
-		document.querySelector(".schedule-close-btn").style.display = "block";
+
 		document.getElementById("schedule-overlay").classList.add("active");
 		document.getElementById("main").classList.add("no-scroll");
+		document.querySelector(".schedule-close-btn").style.display = "block";
 
 		return;
 	}
@@ -469,6 +470,7 @@ container.addEventListener("click", (e) => {
 function openScheduleOverlay() {
 	const overlay = document.getElementById("schedule-overlay");
 	overlay.classList.add("active");
+	overlay.scrollTop = 0;
 
 	// Push a fake state so back button triggers `popstate`
 	history.pushState({ overlay: true }, "");
