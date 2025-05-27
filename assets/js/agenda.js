@@ -186,6 +186,8 @@ export async function renderAgenda(dateStr) {
 		agendaContainer.appendChild(card);
 	});
 
+	checkIfEmptyAgenda();
+
 	if (!agendaClickListenerAttached) {
 		agendaContainer.addEventListener("click", async (e) => {
 			const card = e.target.closest(".agendacard2");
@@ -230,6 +232,33 @@ export async function renderAgenda(dateStr) {
 			await renderAgenda(selectedDate);
 		});
 		agendaClickListenerAttached = true;
+	}
+}
+
+function checkIfEmptyAgenda() {
+	const container = document.getElementById("agenda");
+	const allCards = container.querySelectorAll(".agendacard2");
+	const anyVisible = Array.from(allCards).some(
+		(card) => getComputedStyle(card).display !== "none"
+	);
+
+	// Check if message already exists
+	let emptyMsg = container.querySelector(".empty-message");
+
+	if (!anyVisible) {
+		if (!emptyMsg) {
+			const msg = document.createElement("div");
+			msg.className = "empty-message";
+			msg.innerHTML = `
+				<img src="images/misc/no-data.svg" alt="No classes of the selected type available" />
+				<p>No matching classes found.</p>
+				
+				
+			`;
+			container.appendChild(msg);
+		}
+	} else {
+		if (emptyMsg) emptyMsg.remove();
 	}
 }
 

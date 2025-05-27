@@ -3767,7 +3767,6 @@ input[type="button"]:disabled,
 
 .matches-filter {
 	display: flex !important;
-	opacity: 1 !important;
 }
 
 .agenda-card.highlighted.agenda-dot {
@@ -4959,8 +4958,8 @@ input[type="text"] {
 	align-items: center;
 	justify-content: space-between;
 	margin-bottom: 1rem;
-	/* display: none; */
-	opacity: 0.5;
+	display: none;
+	/* opacity: 0.5; */
 }
 
 .cardpic {
@@ -5009,4 +5008,17 @@ input[type="text"] {
 	border: none !important;
 	background-color: transparent !important;
 	color: var(--text1);
+}
+
+/* Empty message */
+
+.empty-message {
+	text-align: center;
+	padding: 2rem;
+	opacity: 0.6;
+	font-size: 1rem;
+}
+.empty-message img {
+	max-width: 90%;
+	margin-bottom: 1rem;
 }

@@ -446,7 +446,11 @@ container.addEventListener("click", (e) => {
 		);
 		if (li) li.click();
 
-		document.getElementById("schedule-overlay").classList.add("active");
+		const overlay = document.getElementById("schedule-overlay");
+		overlay.classList.add("active");
+		requestAnimationFrame(() => {
+			overlay.scrollTop = 0;
+		});
 		document.getElementById("main").classList.add("no-scroll");
 		document.querySelector(".schedule-close-btn").style.display = "block";
 
