@@ -141,6 +141,7 @@ video {
 	font-size: 100%;
 	font: inherit;
 	vertical-align: baseline;
+	scroll-behavior: smooth;
 }
 
 article,
@@ -4558,7 +4559,7 @@ body {
 /* Section containers */
 
 .mainsection {
-	height: 82.5vh;
+	min-height: 82.5vh;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
@@ -4770,6 +4771,10 @@ input[type="text"] {
 }
 
 /* Browse Card Scroller  */
+
+.next_section {
+	align-self: center;
+}
 
 .browseclasses_wrapper {
 	width: 100%;
