@@ -4808,12 +4808,13 @@ input[type="text"] {
 }
 
 .browseclasses_container {
-	scrollbar-width: none;
-	-ms-overflow-style: none;
+	/* scrollbar-width: none;
+	-ms-overflow-style: none; */
+	overflow-x: scroll;
 }
 
 .browseclasses_container::-webkit-scrollbar {
-	display: none;
+	/* display: none; */
 }
 
 .browseclasscard {
