@@ -416,7 +416,7 @@ async function closeOverlay() {
 
 // Elements that remain visible behind the overlay
 const closableAreas = document.querySelectorAll(
-	".nav-bottom, .image, .main, .schedule-close-btn"
+	".nav-btn, .schedule-close-btn"
 );
 
 closableAreas.forEach((el) => {
