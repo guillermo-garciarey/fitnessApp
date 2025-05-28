@@ -4184,6 +4184,12 @@ input[type="button"]:disabled,
 	margin-bottom: 1rem;
 }
 
+.admin-waitlist-container {
+	max-height: 220px;
+	overflow: auto;
+	padding-right: 1rem;
+}
+
 #admin-user-select {
 	background-color: var(--bg1);
 	margin-bottom: 0.5rem;
@@ -4234,6 +4240,7 @@ input[type="button"]:disabled,
 	padding: 0.5rem;
 	background: var(--bg1);
 	cursor: pointer;
+	align-items: center;
 }
 
 .danger {
@@ -4274,6 +4281,8 @@ input[type="button"]:disabled,
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
+	font-size: 1.2rem;
+	color: var(--danger-500);
 }
 
 /* Press Button */

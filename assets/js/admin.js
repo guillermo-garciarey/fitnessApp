@@ -107,9 +107,7 @@ export async function openAdminModal(classId) {
 		const li = document.createElement("li");
 		li.innerHTML = `
       ${b.profiles.name} ${b.profiles.surname}
-      <button class="remove-user-btn" data-user-id="${b.user_id}">
-  <i class="fa-solid fa-xmark"></i>
-</button>
+      <i class="fa-solid fa-xmark remove-user-btn" data-user-id="${b.user_id}"></i>
     `;
 		userList.appendChild(li);
 	});
