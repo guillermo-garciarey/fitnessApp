@@ -124,6 +124,10 @@ export async function renderAgenda(dateStr) {
 		);
 
 		const isBooked = userBookings.includes(cls.id);
+
+		if (isBooked) {
+			card.classList.add("has-booking");
+		}
 		const isMatch =
 			internalUserRole === "admin" ||
 			selectedFilter === "all" ||

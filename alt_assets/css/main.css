@@ -3769,6 +3769,25 @@ input[type="button"]:disabled,
 	display: flex !important;
 }
 
+.has-booking {
+	display: flex !important;
+}
+
+.has-booking::after {
+	content: "Booked";
+	position: absolute;
+	top: 0;
+	right: 0;
+	font-size: 0.6rem;
+	color: var(--bg2);
+	background: var(--accent1);
+	padding: 4px 4px;
+	border: solid 1px var(--border);
+	border-top-right-radius: 4px;
+	font-weight: bold;
+	line-height: normal;
+}
+
 .agenda-card.highlighted.agenda-dot {
 	background: var(--color-amber-400);
 	box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
@@ -4949,6 +4968,7 @@ input[type="text"] {
 }
 
 .agendacard2 {
+	position: relative;
 	background-color: var(--bg1);
 	width: 100%;
 	justify-self: center;
