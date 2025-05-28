@@ -100,6 +100,16 @@ export async function renderAgenda(dateStr) {
 		return;
 	}
 
+	const session = await getSession();
+	const userId = session?.user?.id;
+
+	const { data: waitlisted, error: waitlistError } = await supabase
+		.from("waitlist")
+		.select("class_id")
+		.eq("user_id", userId);
+
+	const waitlistedClassIds = (waitlisted || []).map((w) => w.class_id);
+
 	console.log("📦 selectedFilter from calendar.js:", selectedFilter);
 
 	sortedClasses.forEach((cls) => {
@@ -124,10 +134,11 @@ export async function renderAgenda(dateStr) {
 		);
 
 		const isBooked = userBookings.includes(cls.id);
+		const isWaitlisted = waitlistedClassIds.includes(cls.id);
 
-		if (isBooked) {
-			card.classList.add("has-booking");
-		}
+		if (isBooked) card.classList.add("has-booking");
+		if (isWaitlisted) card.classList.add("waitlisted");
+
 		const isMatch =
 			internalUserRole === "admin" ||
 			selectedFilter === "all" ||
@@ -156,7 +167,7 @@ export async function renderAgenda(dateStr) {
 
 		const slotsAvailable = cls.capacity - cls.booked_slots;
 		const isFull = slotsAvailable < 1;
-		if (slotsAvailable > 1) {
+		if (slotsAvailable > 0) {
 			card.classList.add("class-has-slots");
 		}
 
@@ -183,60 +194,74 @@ export async function renderAgenda(dateStr) {
 			<button class="cardaction fa-solid fa-ellipsis"></button>
 		`;
 
-		// Insert dot manually into the cardcontent
 		const cardContent = card.querySelector(".cardcontent");
 		cardContent?.prepend(dot);
-
 		agendaContainer.appendChild(card);
 	});
 
 	checkIfEmptyAgenda();
 
-	if (!agendaClickListenerAttached) {
-		agendaContainer.addEventListener("click", async (e) => {
-			const card = e.target.closest(".agendacard2");
-			if (!card) return;
+	// Remove previous listener to avoid duplicates
+	agendaContainer.replaceWith(agendaContainer.cloneNode(true));
+	const refreshedAgendaContainer = document.getElementById("agenda");
 
-			const classId = card.dataset.id;
+	refreshedAgendaContainer.addEventListener("click", async (e) => {
+		const card = e.target.closest(".agendacard2");
+		if (!card) return;
 
-			if (internalUserRole === "admin") {
-				openAdminModal(classId);
-				return;
-			}
+		const classId = card.dataset.id;
 
-			if (card.classList.contains("expired-class")) {
-				showErrorToast();
-				return;
-			}
+		if (internalUserRole === "admin") {
+			openAdminModal(classId);
+			return;
+		}
 
-			if (!card.classList.contains("class-has-slots")) {
-				showErrorToast();
-				return;
-			}
+		if (card.classList.contains("expired-class")) {
+			showErrorToast();
+			return;
+		}
 
-			const isBooked = userBookings.includes(classId);
-			const confirmed = await confirmAction(
-				isBooked
-					? "Are we absolutely positive about this? Take your time, it's a big decision..."
-					: "Look at you go! I'm proud of you for jumping on the health train!",
-				isBooked ? "Cancel Class" : "Book Class"
+		const isBooked = userBookings.includes(classId);
+		const isWaitlisted = waitlistedClassIds.includes(classId);
+		const isFull = !card.classList.contains("class-has-slots");
+
+		let confirmed;
+
+		if (isBooked) {
+			confirmed = await confirmAction(
+				"Are we absolutely positive about this? Take your time, it's a big decision...",
+				"Cancel Class"
 			);
-
 			if (!confirmed) return;
+			await cancelBooking(classId);
+		} else if (isFull && isWaitlisted) {
+			confirmed = await confirmAction(
+				"You're on the waitlist for this class. Remove yourself?",
+				"Leave Waitlist"
+			);
+			if (!confirmed) return;
+			await removeFromWaitlist(classId);
+		} else if (isFull && !isWaitlisted) {
+			confirmed = await confirmAction(
+				"This class is full, but you can join the waitlist.",
+				"Join Waitlist"
+			);
+			if (!confirmed) return;
+			await addToWaitlist(classId);
+		} else {
+			confirmed = await confirmAction(
+				"Look at you go! I'm proud of you for jumping on the health train!",
+				"Book Class"
+			);
+			if (!confirmed) return;
+			await bookClass(classId);
+		}
 
-			if (isBooked) {
-				await cancelBooking(classId);
-			} else {
-				await bookClass(classId);
-			}
-
-			const session = await getSession();
-			const userId = session?.user?.id;
-			await updateCalendarDots(userId);
-			await renderAgenda(selectedDate);
-		});
-		agendaClickListenerAttached = true;
-	}
+		const session = await getSession();
+		const userId = session?.user?.id;
+		await updateCalendarDots(userId);
+		await renderAgenda(selectedDate);
+	});
 }
 
 function checkIfEmptyAgenda() {
@@ -276,8 +301,19 @@ function checkIfEmptyAgenda() {
 	const { getAvailableClasses } = await import("./utils.js");
 	const classes = await getAvailableClasses();
 
+	// Optional: Still store classes globally if needed
 	setAgendaData(classes);
-	renderAgenda(selectedDate);
+
+	// ✅ Fetch waitlisted class IDs
+	const { data: waitlisted, error: waitlistError } = await supabase
+		.from("waitlist")
+		.select("class_id")
+		.eq("user_id", userId);
+
+	const waitlistedClassIds = (waitlisted || []).map((w) => w.class_id);
+
+	// ✅ Pass waitlisted class IDs into both renders
+	renderAgenda(selectedDate, waitlistedClassIds);
 	renderBookedAgenda("#landing-agenda");
 })();
 
@@ -292,9 +328,10 @@ export async function bookClass(classId) {
 		const userId = session?.user?.id;
 		if (!userId) throw new Error("Not logged in");
 
+		// This RPC books the class AND removes user from waitlist (if applicable)
 		const { error } = await supabase.rpc("book_class_transaction", {
-			uid: userId,
-			class_id: classId,
+			p_uid: userId,
+			p_class_id: classId,
 		});
 
 		if (error) {
@@ -493,4 +530,57 @@ export async function renderBookedAgenda(selector = "#landing-agenda") {
 
 		window.landingAgendaClickListenerAttached = true;
 	}
+}
+
+// Add user to waitlist for a class
+export async function addToWaitlist(classId) {
+	const session = await getSession();
+	const userId = session?.user?.id;
+	if (!userId) {
+		showToast("awww dang!", "error", "Please log in to join the waitlist.");
+		return;
+	}
+
+	const { data, error } = await supabase.from("waitlist").insert([
+		{
+			class_id: classId,
+			user_id: userId,
+		},
+	]);
+
+	if (error) {
+		console.error("❌ Failed to join waitlist:", error.message);
+		showToast("awww dang!", "error", "We couldn't add you to the waitlist.");
+		return;
+	}
+
+	showToast(
+		"yay!",
+		"success",
+		"You're on the waitlist! We'll let you know if a spot opens up : )"
+	);
+}
+
+// Remove user from waitlist (optional UI feature)
+export async function removeFromWaitlist(classId) {
+	const session = await getSession();
+	const userId = session?.user?.id;
+	if (!userId) return;
+
+	const { error } = await supabase
+		.from("waitlist")
+		.delete()
+		.match({ class_id: classId, user_id: userId });
+
+	if (error) {
+		console.error("❌ Failed to remove from waitlist:", error.message);
+		showToast(
+			"awww dang!",
+			"error",
+			"We couldn't remove you from the waitlist : ("
+		);
+		return;
+	}
+
+	showToast("yay!", "success", "You've been removed from the waitlist : )");
 }
