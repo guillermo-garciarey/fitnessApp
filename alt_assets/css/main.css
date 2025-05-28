@@ -5055,7 +5055,21 @@ input[type="text"] {
 /* Waitlist */
 
 .waitlisted {
-	border: solid 1px var(--warning-500) !important;
+}
+
+.waitlisted::after {
+	content: "Waitlist";
+	position: absolute;
+	top: 0;
+	right: 0;
+	font-size: 0.6rem;
+	color: var(--bg2);
+	background: var(--warning-500);
+	padding: 4px 4px;
+	border: solid 1px var(--border);
+	border-top-right-radius: 4px;
+	font-weight: bold;
+	line-height: normal;
 }
 
 .whatsapp-icon {
