@@ -402,7 +402,7 @@ export async function forceRefreshClassesForMonth(date) {
 
 const overlay = document.getElementById("schedule-overlay");
 
-async function closeOverlay() {
+export async function closeOverlay() {
 	if (overlay) {
 		overlay.classList.remove("active");
 		const session = await getSession();
@@ -415,21 +415,21 @@ async function closeOverlay() {
 }
 
 // Elements that remain visible behind the overlay
-const closableAreas = document.querySelectorAll(
-	".nav-btn, .schedule-close-btn"
-);
+// const closableAreas = document.querySelectorAll(
+// 	".nav-btn, .schedule-close-btn"
+// );
 
-closableAreas.forEach((el) => {
-	el.addEventListener("click", () => {
-		if (overlay.classList.contains("active")) {
-			closeOverlay();
-			// Also hide the fixed close button directly
-			document.querySelector(".schedule-close-btn").style.display = "none";
-		}
-		const main = document.getElementById("main");
-		main.classList.remove("no-scroll");
-	});
-});
+// closableAreas.forEach((el) => {
+// 	el.addEventListener("click", () => {
+// 		if (overlay.classList.contains("active")) {
+// 			closeOverlay();
+
+// 			document.querySelector(".schedule-close-btn").style.display = "none";
+// 		}
+// 		const main = document.getElementById("main");
+// 		main.classList.remove("no-scroll");
+// 	});
+// });
 
 // Browse Class Card Click → Trigger Calendar Filter + Open Overlay
 const container = document.querySelector(".browseclasses_container");
@@ -452,7 +452,6 @@ container.addEventListener("click", (e) => {
 			overlay.scrollTop = 0;
 		});
 		document.getElementById("main").classList.add("no-scroll");
-		document.querySelector(".schedule-close-btn").style.display = "block";
 
 		return;
 	}
