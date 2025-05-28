@@ -40,7 +40,8 @@ const calendarBody = document.getElementById("calendar");
 const monthLabel = document.getElementById("month-label");
 
 function updateMonthLabel() {
-	const options = { year: "numeric", month: "long" };
+	// const options = { year: "numeric", month: "long" };
+	const options = { month: "short" };
 	monthLabel.textContent = viewDate.toLocaleDateString("en-US", options);
 }
 

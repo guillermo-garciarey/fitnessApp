@@ -3565,9 +3565,12 @@ input[type="button"]:disabled,
 }
 
 #month-label {
-	color: var(--text1);
-	/* text-transform: uppercase;
-	letter-spacing: 0.25em; */
+	color: var(--bg1);
+	background-color: var(--danger-500);
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	text-transform: uppercase;
+	letter-spacing: 0.25em;
 	font-weight: bold;
 }
 
@@ -5077,4 +5080,16 @@ input[type="text"] {
 	margin-left: 0.5rem;
 	color: #25d366;
 	font-size: 1.2rem;
+}
+
+/* Calendar box */
+
+.calendar-box {
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	aspect-ratio: 1;
+	width: 78px;
+	border-radius: 4px;
+	border: solid 1px var(--border);
 }
