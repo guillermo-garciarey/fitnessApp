@@ -5048,3 +5048,9 @@ input[type="text"] {
 .waitlisted {
 	border: solid 1px var(--warning-500) !important;
 }
+
+.whatsapp-icon {
+	margin-left: 0.5rem;
+	color: #25d366;
+	font-size: 1.2rem;
+}

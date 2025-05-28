@@ -114,6 +114,33 @@ export async function openAdminModal(classId) {
 		userList.appendChild(li);
 	});
 
+	// 🔹 Fetch waitlisted users
+	const { data: waitlist } = await supabase
+		.from("waitlist")
+		.select("user_id, profiles(id, name, surname, phone_number)")
+		.eq("class_id", classId);
+
+	// 🔹 List waitlisted users
+	const waitlistEl = document.getElementById("admin-waitlist");
+	waitlistEl.innerHTML = "";
+
+	waitlist.forEach((w) => {
+		const phone = w.profiles.phone_number?.replace(/^0/, "+353") || "";
+		const msg = encodeURIComponent(
+			`There is a spot open for the ${cls.name} class on ${cls.date}.`
+		);
+		const link = `https://wa.me/${phone}?text=${msg}`;
+
+		const li = document.createElement("li");
+		li.innerHTML = `
+		${w.profiles.name} ${w.profiles.surname}
+		<a href="${link}" target="_blank" class="whatsapp-icon">
+			<i class="fa-brands fa-whatsapp"></i>
+		</a>
+	`;
+		waitlistEl.appendChild(li);
+	});
+
 	// 🔹 Populate add-user dropdown (excluding already booked)
 	allUsers
 		.filter((u) => !bookedUserIds.includes(u.id))
