@@ -48,6 +48,10 @@ createAccountForm.addEventListener("submit", async (e) => {
 	const { data, error } = await supabase.auth.signUp({
 		email: signupEmail.value,
 		password: signupPassword.value,
+		options: {
+			emailRedirectTo:
+				"https://guillermo-garciarey.github.io/fitnessApp/index.html",
+		},
 	});
 
 	if (error || !data.user) {
