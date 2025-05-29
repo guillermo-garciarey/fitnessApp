@@ -62,6 +62,11 @@ export async function fetchUserRole() {
 
 	internalUserRole = data.role || "user";
 	console.log("👤 Role from profiles table:", internalUserRole);
+	if (internalUserRole !== "admin") {
+		document
+			.querySelectorAll('[data-target="data"], [data-target="transactions"]')
+			.forEach((el) => (el.style.display = "none"));
+	}
 }
 
 export function setAgendaData(classes) {

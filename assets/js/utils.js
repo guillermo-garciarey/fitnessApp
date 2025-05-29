@@ -21,6 +21,24 @@ export async function fetchAndSetUserRole(supabase) {
 	}
 }
 
+// Logout Button
+document
+	.getElementById("logout-session")
+	.addEventListener("click", async () => {
+		const { error } = await supabase.auth.signOut();
+
+		if (error) {
+			console.error("❌ Logout failed:", error.message);
+			showToast?.("Logout failed", "error");
+			return;
+		}
+
+		showToast?.("Logged out successfully", "success");
+
+		// Redirect to login or index page
+		window.location.href = "index.html";
+	});
+
 export function getUserRole() {
 	return internalUserRole;
 }
