@@ -7,6 +7,9 @@ const form = document.getElementById("signup-form");
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
 const signupBtn = document.getElementById("signup-btn");
+const signupPasswordConfirm = document.getElementById(
+	"signup-password-confirm"
+);
 
 const signupOverlay = document.getElementById("signup-overlay");
 const createAccountForm = document.getElementById("create-account-form");
@@ -43,6 +46,12 @@ signupBtn.addEventListener("click", () => {
 // Handle account creation
 createAccountForm.addEventListener("submit", async (e) => {
 	e.preventDefault();
+
+	// Password match check
+	if (signupPassword.value !== signupPasswordConfirm.value) {
+		alert("Passwords do not match. Please try again.");
+		return;
+	}
 
 	// Step 1: Sign up user with auth
 	const { data, error } = await supabase.auth.signUp({
