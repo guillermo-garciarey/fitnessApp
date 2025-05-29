@@ -404,6 +404,50 @@ export async function adjustUserCredits(userId, delta) {
 	return true;
 }
 
+// Bottom Nav Expand Panel
+
+const navIcons = document.querySelectorAll(".nav-btn");
+const sections = document.querySelectorAll(".panel");
+
+const main = document.getElementById("main");
+
+navIcons.forEach((icon) => {
+	icon.addEventListener("click", () => {
+		const targetId = icon.dataset.target;
+		console.log("Clicked nav icon for:", targetId);
+
+		// if (targetId === "sidebar") {
+		// 	console.log("Toggling class 'header-visible' on body");
+		// 	document.body.classList.toggle("header-visible");
+		// 	return;
+		// }
+
+		const targetSection = document.getElementById(targetId);
+		if (!targetSection) {
+			console.warn("Target section not found:", targetId);
+			return;
+		}
+
+		// Switch active nav icon
+		navIcons.forEach((i) => i.classList.remove("active"));
+		icon.classList.add("active");
+
+		// Activate the selected panel
+		sections.forEach((section) => {
+			if (section.id === targetId) {
+				section.classList.add("active");
+
+				section.scrollTop = 0;
+			} else {
+				section.classList.remove("active");
+			}
+		});
+
+		// Remove sidebar if coming from "four"
+		// document.body.classList.remove("header-visible");
+	});
+});
+
 // Sidebar Nav
 
 const sidebarLinks = document.querySelectorAll("#nav a");

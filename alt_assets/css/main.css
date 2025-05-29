@@ -3149,7 +3149,7 @@ input[type="button"]:disabled,
 		position: fixed;
 		top: 0;
 		width: 23em;
-		z-index: 10002;
+		z-index: 1000;
 		-moz-transform: translateX(23em);
 		-webkit-transform: translateX(23em);
 		-ms-transform: translateX(23em);
@@ -3197,7 +3197,7 @@ input[type="button"]:disabled,
 		position: fixed;
 		bottom: 0;
 		width: 100%;
-		z-index: 10001;
+		z-index: 1000;
 		background: var(--gray-1200);
 		color: var(--gray-1200);
 		min-width: 320px;
@@ -3566,7 +3566,7 @@ input[type="button"]:disabled,
 
 #month-label {
 	color: var(--bg1);
-	background-color: var(--danger-500);
+	background-color: var(--accent1);
 	border-top-left-radius: 4px;
 	border-top-right-radius: 4px;
 	text-transform: uppercase;
@@ -3741,7 +3741,7 @@ input[type="button"]:disabled,
 	appearance: none;
 	text-decoration: dotted underline;
 
-	z-index: 99999;
+	z-index: 1000;
 }
 
 /* Agenda */
@@ -3969,7 +3969,7 @@ input[type="button"]:disabled,
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	z-index: 9999;
+	z-index: 1004;
 }
 
 .modal.hidden {
@@ -4159,7 +4159,7 @@ input[type="button"]:disabled,
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	z-index: 1000;
+	z-index: 1003;
 }
 
 .admin-modal {
@@ -4169,7 +4169,7 @@ input[type="button"]:disabled,
 	width: 90%;
 	max-width: 400px;
 	padding: 1rem;
-	max-height: 85vh;
+	/* max-height: 85vh; */
 	border: solid 1px var(--border);
 }
 
@@ -4181,14 +4181,14 @@ input[type="button"]:disabled,
 }
 
 .admin-user-list-container {
-	max-height: 220px;
+	max-height: 180px;
 	overflow: auto;
 	padding-right: 1rem;
 	margin-bottom: 1rem;
 }
 
 .admin-waitlist-container {
-	max-height: 220px;
+	max-height: 110px;
 	overflow: auto;
 	padding-right: 1rem;
 }
@@ -4256,6 +4256,14 @@ input[type="button"]:disabled,
 	cursor: pointer;
 	margin-bottom: 0.5rem;
 	height: 44px; /* Match admin-add-user */
+}
+
+.admin-button-container {
+	display: flex;
+
+	justify-content: space-around;
+	align-items: center;
+	gap: 0.5rem;
 }
 
 #admin-add-user {
@@ -4503,7 +4511,6 @@ body {
 	align-items: center;
 	justify-content: center;
 	cursor: pointer;
-	z-index: 1000;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
@@ -4547,7 +4554,6 @@ body {
 	margin-top: 4px;
 	list-style: none;
 	width: max-content;
-	z-index: 100;
 	background: var(--bg1);
 	color: var(--text2);
 	border-radius: 4px;
@@ -4784,7 +4790,6 @@ input[type="text"] {
 	background-color: var(--bg2);
 	border: solid 1px var(--border);
 	color: var(--text2);
-	z-index: 999999;
 }
 
 #schedule-overlay {
@@ -4901,6 +4906,7 @@ input[type="text"] {
 	background: linear-gradient(
 		to bottom,
 		rgba(0, 0, 0, 0) 0%,
+		rgba(0, 0, 0, 0) 60%,
 		rgba(0, 0, 0, 0.8) 75%,
 		rgba(0, 0, 0, 0.8) 100%
 	);
@@ -5089,7 +5095,15 @@ input[type="text"] {
 	display: flex;
 	flex-direction: column;
 	aspect-ratio: 1;
-	width: 78px;
+	width: 68px;
 	border-radius: 4px;
 	border: solid 1px var(--border);
+}
+
+/* Iphone SE Stuff */
+
+@media screen and (max-height: 667px) {
+	.browseclasscard {
+		min-width: 50%;
+	}
 }
