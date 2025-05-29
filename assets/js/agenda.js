@@ -94,9 +94,17 @@ export async function renderAgenda(dateStr) {
 
 	const dayClasses = groupedByDate[selectedDate] || [];
 	const sortedClasses = dayClasses.sort((a, b) => a.time.localeCompare(b.time));
-
+	const container = document.getElementById("agenda");
 	if (sortedClasses.length === 0) {
-		agendaContainer.innerHTML = `<p class="no-classes-msg">No classes on this day.</p>`;
+		const msg = document.createElement("div");
+		msg.className = "empty-message";
+		msg.innerHTML = `
+				
+				<p>No classes scheduled for this day.</p>
+				
+				
+			`;
+		container.appendChild(msg);
 		return;
 	}
 
@@ -279,7 +287,7 @@ function checkIfEmptyAgenda() {
 			const msg = document.createElement("div");
 			msg.className = "empty-message";
 			msg.innerHTML = `
-				<img src="images/misc/no-data.svg" alt="No classes of the selected type available" />
+				
 				<p>No matching classes found.</p>
 				
 				

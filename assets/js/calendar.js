@@ -54,7 +54,7 @@ export function populateClassFilter(classList) {
 	// Create and append "All" option
 	const allOption = document.createElement("li");
 	allOption.dataset.value = "all";
-	allOption.textContent = "All";
+	allOption.textContent = "All Classes";
 	filterList.appendChild(allOption);
 
 	const uniqueNames = [...new Set(classList.map((cls) => cls.name))]
@@ -242,6 +242,34 @@ document.getElementById("prev-month").addEventListener("click", async () => {
 
 // Dropdown filter
 
+// const filterButton = document.getElementById("filter-button");
+// const filterOptions = document.getElementById("filter-options");
+
+// filterButton.addEventListener("click", () => {
+// 	filterOptions.classList.toggle("hidden");
+// });
+
+// filterOptions.addEventListener("click", async (e) => {
+// 	const value = e.target.dataset.value;
+// 	if (!value) return;
+
+// 	selectedFilter = value;
+// 	filterButton.textContent = `${e.target.textContent}`;
+// 	filterOptions.classList.add("hidden");
+
+// 	await renderCalendar();
+// 	await renderAgenda(selectedDate);
+
+// 	const element = document.querySelector(".mainsection");
+
+// 	const overlay = document.getElementById("schedule-overlay");
+
+// 	overlay.scrollTo({
+// 		top: element.offsetTop,
+// 		behavior: "smooth",
+// 	});
+// });
+
 const filterButton = document.getElementById("filter-button");
 const filterOptions = document.getElementById("filter-options");
 
@@ -254,15 +282,16 @@ filterOptions.addEventListener("click", async (e) => {
 	if (!value) return;
 
 	selectedFilter = value;
-	filterButton.textContent = `${e.target.textContent}`;
+
+	const label =
+		e.target.textContent === "All" ? "All Classes" : e.target.textContent;
+	filterButton.textContent = `${label}`;
 	filterOptions.classList.add("hidden");
 
 	await renderCalendar();
 	await renderAgenda(selectedDate);
-	// window.scrollTo({ top: 0, behavior: "smooth" });
 
 	const element = document.querySelector(".mainsection");
-
 	const overlay = document.getElementById("schedule-overlay");
 
 	overlay.scrollTo({
@@ -414,23 +443,6 @@ export async function closeOverlay() {
 		await renderAgenda(selectedDate);
 	}
 }
-
-// Elements that remain visible behind the overlay
-// const closableAreas = document.querySelectorAll(
-// 	".nav-btn, .schedule-close-btn"
-// );
-
-// closableAreas.forEach((el) => {
-// 	el.addEventListener("click", () => {
-// 		if (overlay.classList.contains("active")) {
-// 			closeOverlay();
-
-// 			document.querySelector(".schedule-close-btn").style.display = "none";
-// 		}
-// 		const main = document.getElementById("main");
-// 		main.classList.remove("no-scroll");
-// 	});
-// });
 
 // Browse Class Card Click → Trigger Calendar Filter + Open Overlay
 const container = document.querySelector(".browseclasses_container");
