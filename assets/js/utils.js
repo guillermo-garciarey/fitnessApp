@@ -577,3 +577,20 @@ document.querySelectorAll(".nav-btn").forEach((btn) => {
 		}
 	});
 });
+
+const themeToggle = document.getElementById("theme-switch");
+const body = document.body;
+
+// 🔄 Load theme from localStorage
+const savedTheme = localStorage.getItem("theme");
+if (savedTheme === "dark") {
+	body.classList.add("darkmode");
+}
+
+// 🌗 Toggle theme on click
+themeToggle.addEventListener("click", () => {
+	body.classList.toggle("darkmode");
+
+	const isDark = body.classList.contains("darkmode");
+	localStorage.setItem("theme", isDark ? "dark" : "light");
+});

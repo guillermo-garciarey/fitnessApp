@@ -1,12 +1,6 @@
 @import url("fontawesome-all.min.css");
 @import url("https://fonts.googleapis.com/css?family=Lato:400,400italic,700,700italic|Source+Code+Pro:400");
 
-/*
-	Read Only by Pixelarity
-	pixelarity.com | hello@pixelarity.com
-	License: pixelarity.com/license
-*/
-
 :root {
 	/* Backgrounds */
 
@@ -15,6 +9,7 @@
 	--bg3: hsl(0, 0%, 91%); /* Hover/active surfaces */
 	--bg4: hsl(200, 9%, 20%); /* Darker accent / contrast bg */
 	--bg5: hsl(180, 5.5%, 11%); /* Darker accent / contrast bg */
+	--cardtitle: hsl(0, 0%, 97%);
 
 	/* Text */
 	--text1: hsl(0, 0%, 43%); /* Primary text */
@@ -28,6 +23,8 @@
 	/* Accents */
 	--accent1: hsl(350, 50%, 50%, 1);
 	--accenthover: hsla(350, 50%, 50%, 0.25);
+	--navbottom: hsl(180, 5.5%, 11%);
+	--sidemenu: hsl(200, 9%, 20%);
 
 	/* ✅ Success (Green) */
 	--success-100: hsl(156, 73%, 85%); /* light green */
@@ -48,6 +45,28 @@
 	--info-100: hsl(217, 94%, 92%); /* light blue */
 	--info-500: hsl(217, 91%, 60%); /* base blue */
 	--info-700: hsl(221, 83%, 44%); /* dark blue */
+}
+
+/* Theme Switch */
+
+#theme-switch {
+	background-color: transparent;
+	border: none !important;
+	align-items: center;
+	justify-content: center;
+	padding: 1rem;
+}
+
+#theme-switch svg:last-child {
+	display: none;
+}
+
+.darkmode #theme-switch svg:first-child {
+	display: none;
+}
+
+.darkmode #theme-switch svg:last-child {
+	display: block;
 }
 
 * {
@@ -2845,7 +2864,7 @@ input[type="button"]:disabled,
 	-webkit-justify-content: space-between;
 	-ms-justify-content: space-between;
 	justify-content: space-between;
-	background: var(--bg4);
+	background: var(--sidemenu);
 	color: var(--text2);
 	height: 100%;
 	overflow-y: auto;
@@ -2955,7 +2974,7 @@ input[type="button"]:disabled,
 	-ms-transition: none;
 	transition: none;
 	border: 0;
-	color: var(--bg1) !important;
+	color: var(--cardtitle) !important;
 	display: block;
 	padding: 0.85em 0;
 	text-decoration: none;
@@ -4342,7 +4361,7 @@ input[type="button"]:disabled,
 	bottom: 0;
 	left: 50%;
 	transform: translateX(-50%);
-	background-color: var(--bg5);
+	background-color: var(--navbottom);
 
 	display: flex;
 	justify-content: end;
@@ -4362,8 +4381,8 @@ input[type="button"]:disabled,
 	height: 7.5vh;
 	background: none;
 	border: none;
-	background-color: var(--bg4);
-	color: var(--bg1);
+	background-color: var(--sidemenu);
+	color: var(--cardtitle);
 
 	position: relative;
 	padding: 10px;
@@ -4907,14 +4926,14 @@ input[type="text"] {
 		to bottom,
 		rgba(0, 0, 0, 0) 0%,
 		rgba(0, 0, 0, 0) 60%,
-		rgba(0, 0, 0, 0.8) 75%,
+		rgba(0, 0, 0, 0.4) 75%,
 		rgba(0, 0, 0, 0.8) 100%
 	);
 	z-index: 1;
 }
 
 .browseclasscard h4 {
-	color: var(--bg2);
+	color: var(--cardtitle);
 	margin: 0 0 8px;
 
 	z-index: 2;
@@ -5028,7 +5047,7 @@ input[type="text"] {
 
 .cardcontent > * {
 	font-size: small;
-	color: #232531;
+	color: var(--text3);
 	margin: 0 !important;
 	line-height: 1rem;
 }

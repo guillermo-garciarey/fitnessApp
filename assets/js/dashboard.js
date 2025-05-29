@@ -41,7 +41,7 @@ import {
 	const welcomeName = document.getElementById("welcome");
 	if (logoLink) logoLink.textContent = name + " " + surname;
 	if (titleName) titleName.textContent = name + " " + surname;
-	if (welcomeName) welcomeName.textContent = "Welcome " + name + "!";
+	if (welcomeName) welcomeName.textContent = "Welcome, " + name + "";
 })();
 
 // Enable avatar picture upload
