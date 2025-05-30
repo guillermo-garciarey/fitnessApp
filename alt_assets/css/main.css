@@ -2963,7 +2963,7 @@ input[type="button"]:disabled,
 }
 
 #header > nav ul li {
-	border-top: solid 2px var(--bg4);
+	/* border-top: solid 2px var(--bg4); */
 	display: block;
 	padding: 0;
 }
