@@ -366,6 +366,7 @@ window.generateScheduleForMonth = async function generateScheduleForMonth(
 				time: template.time,
 				capacity: template.capacity,
 				description: template.description || null,
+				image_url: template.image_url || null, // ✅ Add this line
 				// trainer: template.trainer || null, // optional
 			};
 
