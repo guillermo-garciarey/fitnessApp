@@ -3604,8 +3604,6 @@ input[type='button']:disabled,
   background-color: var(--accent1);
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
-  text-transform: uppercase;
-  letter-spacing: 0.25em;
   font-weight: bold;
 }
 
@@ -5141,7 +5139,7 @@ input[type='text'] {
   display: flex;
   flex-direction: column;
   aspect-ratio: 1;
-  width: 68px;
+  width: 58px;
   border-radius: 4px;
   border: solid 1px var(--border);
 }
