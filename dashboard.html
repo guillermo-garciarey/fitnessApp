@@ -1,872 +1,633 @@
-<!DOCTYPE html>
+<!doctype html>
 
 <html>
-	<head>
-		<title>Fitness App</title>
-		<meta charset="utf-8" />
+  <head>
+    <title>Fitness App</title>
+    <meta charset="utf-8" />
 
-		<meta
-			name="viewport"
-			content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
-		/>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+    />
 
-		<link
-			rel="stylesheet"
-			href="alt_assets/css/main.css"
-		/>
-		<link
-			rel="stylesheet"
-			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-		/>
+    <link rel="stylesheet" href="alt_assets/css/main.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
 
-		<link
-			rel="icon"
-			href="data:,"
-		/>
-		<link
-			rel="manifest"
-			href="manifest.json"
-		/>
-		<meta
-			name="theme-color"
-			content="#222222"
-		/>
-	</head>
-	<body class="is-preload">
-		<!-- Header & Sidebar -->
-		<section id="header">
-			<header>
-				<span
-					id="avatar-trigger"
-					class="image avatar avatar-container"
-					><img
-						id="avatar-preview"
-						src="alt_images/avatar.jpg"
-						alt="Profile" />
-					<input
-						type="file"
-						id="avatar-upload"
-						accept="image/*"
-						hidden
-				/></span>
-				<h1 id="logo"><a href="javascript:void(0)"></a></h1>
-				<p>Fitness Enthusiast</p>
-			</header>
+    <link rel="icon" href="data:," />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#222222" />
+  </head>
+  <body class="is-preload">
+    <!-- Header & Sidebar -->
+    <section id="header">
+      <header>
+        <span id="avatar-trigger" class="image avatar avatar-container"
+          ><img id="avatar-preview" src="alt_images/avatar.jpg" alt="Profile" />
+          <input type="file" id="avatar-upload" accept="image/*" hidden
+        /></span>
+        <h1 id="logo"><a href="javascript:void(0)"></a></h1>
+        <p>Fitness Enthusiast</p>
+      </header>
 
-			<!-- Navigation Sidebar -->
-			<nav id="nav">
-				<ul>
-					<li>
-						<a
-							href="javascript:void(0)"
-							class="active"
-							data-target="dashboard"
-							>Home</a
-						>
-					</li>
+      <!-- Navigation Sidebar -->
+      <nav id="nav">
+        <ul>
+          <li>
+            <a href="javascript:void(0)" class="active" data-target="dashboard"
+              >Home</a
+            >
+          </li>
 
-					<li>
-						<a
-							href="javascript:void(0)"
-							data-target="data"
-							>Data & Analytics</a
-						>
-					</li>
-					<li>
-						<a
-							href="javascript:void(0)"
-							data-target="transactions"
-							>Payments</a
-						>
-					</li>
-					<li>
-						<a
-							href="javascript:void(0)"
-							data-target="attributions"
-							>Credits & Attributions</a
-						>
-					</li>
-					<li>
-						<a
-							id="logout-session"
-							href="javascript:void(0)"
-							data-target=""
-							>Logout</a
-						>
-					</li>
-				</ul>
-			</nav>
+          <li>
+            <a href="javascript:void(0)" data-target="data">Data & Analytics</a>
+          </li>
+          <li>
+            <a href="javascript:void(0)" data-target="transactions">Payments</a>
+          </li>
+          <li>
+            <a href="javascript:void(0)" data-target="attributions"
+              >Credits & Attributions</a
+            >
+          </li>
+          <li>
+            <a id="logout-session" href="javascript:void(0)" data-target=""
+              >Logout</a
+            >
+          </li>
+        </ul>
+      </nav>
 
-			<!-- Footer ICONS -->
-			<footer>
-				<button id="theme-switch">
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						height="24px"
-						viewBox="0 -960 960 960"
-						width="24px"
-						fill="#e3e3e3"
-					>
-						<path
-							d="M480-280q-83 0-141.5-58.5T280-480q0-83 58.5-141.5T480-680q83 0 141.5 58.5T680-480q0 83-58.5 141.5T480-280ZM200-440H40v-80h160v80Zm720 0H760v-80h160v80ZM440-760v-160h80v160h-80Zm0 720v-160h80v160h-80ZM256-650l-101-97 57-59 96 100-52 56Zm492 496-97-101 53-55 101 97-57 59Zm-98-550 97-101 59 57-100 96-56-52ZM154-212l101-97 55 53-97 101-59-57Z"
-						/>
-					</svg>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						height="24px"
-						viewBox="0 -960 960 960"
-						width="24px"
-						fill="#e3e3e3"
-					>
-						<path
-							d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Z"
-						/>
-					</svg>
-				</button>
-			</footer>
-		</section>
+      <!-- Footer ICONS -->
+      <footer>
+        <button id="theme-switch">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="#e3e3e3"
+          >
+            <path
+              d="M480-280q-83 0-141.5-58.5T280-480q0-83 58.5-141.5T480-680q83 0 141.5 58.5T680-480q0 83-58.5 141.5T480-280ZM200-440H40v-80h160v80Zm720 0H760v-80h160v80ZM440-760v-160h80v160h-80Zm0 720v-160h80v160h-80ZM256-650l-101-97 57-59 96 100-52 56Zm492 496-97-101 53-55 101 97-57 59Zm-98-550 97-101 59 57-100 96-56-52ZM154-212l101-97 55 53-97 101-59-57Z"
+            />
+          </svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="#e3e3e3"
+          >
+            <path
+              d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Z"
+            />
+          </svg>
+        </button>
+      </footer>
+    </section>
 
-		<!-- Wrapper -->
-		<div id="wrapper">
-			<section id="home">
-				<!--  -->
-			</section>
-			<!-- Main -->
-			<div id="main">
-				<!-- One -->
-				<section
-					class="panel active"
-					id="dashboard"
-				>
-					<div
-						class="image main"
-						data-position="center"
-					>
-						<img
-							src="alt_images/banner.jpg"
-							alt=""
-						/>
-					</div>
-					<div class="mainsection">
-						<div class="container">
-							<h2 id="welcome"></h2>
-							<p>
-								Tap on any card to view upcoming sessions and book your spot.
-							</p>
-						</div>
-						<div class="browseclasses_wrapper">
-							<div class="browseclasses_container">
-								<div
-									class="browseclasscard"
-									data-value="Strong Yoga"
-								>
-									<img
-										src="images/classes/yoga.webp"
-										alt=""
-									/>
-									<div class="card-gradient"></div>
-									<h4>Yoga</h4>
-									<!-- <p>Fit and bendy.</p> -->
-									<!-- Overlay handles everything -->
-									<div class="card-info-overlay">
-										<button class="open-schedule-btn">See Schedule</button>
-									</div>
-								</div>
+    <!-- Wrapper -->
+    <div id="wrapper">
+      <section id="home">
+        <!--  -->
+      </section>
+      <!-- Main -->
+      <div id="main">
+        <!-- One -->
+        <section class="panel active" id="dashboard">
+          <div class="image main" data-position="center">
+            <img src="alt_images/banner.jpg" alt="" />
+          </div>
+          <div class="mainsection">
+            <div class="container">
+              <h2 id="welcome"></h2>
+              <p>
+                Tap on any card to view upcoming sessions and book your spot.
+              </p>
+            </div>
+            <div class="browseclasses_wrapper">
+              <div class="browseclasses_container">
+                <div class="browseclasscard" data-value="Strong Yoga">
+                  <img src="images/classes/yoga.webp" alt="" />
+                  <div class="card-gradient"></div>
+                  <h4>Yoga</h4>
+                  <!-- <p>Fit and bendy.</p> -->
+                  <!-- Overlay handles everything -->
+                  <div class="card-info-overlay">
+                    <button class="open-schedule-btn">See Schedule</button>
+                  </div>
+                </div>
 
-								<div
-									class="browseclasscard"
-									data-value="Kids Fundamentals"
-								>
-									<img
-										src="images/classes/kids.webp"
-										alt=""
-									/>
-									<div class="card-gradient"></div>
-									<h4>Kids Fundamentals</h4>
-									<!-- <p>Lorem ipsum dolor sit amet consectetur.</p> -->
-									<!-- Overlay handles everything -->
-									<div class="card-info-overlay">
-										<button class="open-schedule-btn">See Schedule</button>
-									</div>
-								</div>
+                <div class="browseclasscard" data-value="Kids Fundamentals">
+                  <img src="images/classes/kids.webp" alt="" />
+                  <div class="card-gradient"></div>
+                  <h4>Kids Fundamentals</h4>
+                  <!-- <p>Lorem ipsum dolor sit amet consectetur.</p> -->
+                  <!-- Overlay handles everything -->
+                  <div class="card-info-overlay">
+                    <button class="open-schedule-btn">See Schedule</button>
+                  </div>
+                </div>
 
-								<div
-									class="browseclasscard"
-									data-value="HIIT"
-								>
-									<img
-										src="images/classes/hiit.webp"
-										alt=""
-									/>
-									<div class="card-gradient"></div>
-									<h4>HIIT</h4>
-									<!-- <p>High intensity training.</p> -->
-									<!-- Overlay handles everything -->
-									<div class="card-info-overlay">
-										<button class="open-schedule-btn">See Schedule</button>
-									</div>
-								</div>
+                <div class="browseclasscard" data-value="HIIT">
+                  <img src="images/classes/hiit.webp" alt="" />
+                  <div class="card-gradient"></div>
+                  <h4>HIIT</h4>
+                  <!-- <p>High intensity training.</p> -->
+                  <!-- Overlay handles everything -->
+                  <div class="card-info-overlay">
+                    <button class="open-schedule-btn">See Schedule</button>
+                  </div>
+                </div>
 
-								<div
-									class="browseclasscard"
-									data-value="Calisthenics"
-								>
-									<img
-										src="images/classes/calisthenics.webp"
-										alt=""
-									/>
-									<div class="card-gradient"></div>
-									<h4>Calisthenics</h4>
-									<!-- <p>Lorem, ipsum dolor.</p> -->
-									<!-- Overlay handles everything -->
-									<div class="card-info-overlay">
-										<button class="open-schedule-btn">See Schedule</button>
-									</div>
-								</div>
-								<div
-									class="browseclasscard"
-									data-value="Strength & Conditioning"
-								>
-									<img
-										src="images/classes/strength.webp"
-										alt=""
-									/>
-									<div class="card-gradient"></div>
-									<h4>Strength & Conditioning</h4>
-									<!-- <p>Lorem ipsum dolor sit amet.</p> -->
-									<!-- Overlay handles everything -->
-									<div class="card-info-overlay">
-										<button class="open-schedule-btn">See Schedule</button>
-									</div>
-								</div>
-								<div
-									class="browseclasscard"
-									data-value="Love 2 Run"
-								>
-									<img
-										src="images/classes/running.webp"
-										alt=""
-									/>
-									<div class="card-gradient"></div>
-									<h4>Love 2 Run</h4>
-									<!-- <p>Lorem ipsum dolor amet consectetur.</p> -->
-									<!-- Overlay handles everything -->
-									<div class="card-info-overlay">
-										<button class="open-schedule-btn">See Schedule</button>
-									</div>
-								</div>
-								<div
-									class="browseclasscard"
-									data-value="Pilates"
-								>
-									<img
-										src="images/classes/pilates.webp"
-										alt=""
-									/>
-									<div class="card-gradient"></div>
-									<h4>Pilates</h4>
-									<!-- <p>Lorem ipsum dolor sit.</p> -->
-									<!-- Overlay handles everything -->
-									<div class="card-info-overlay">
-										<button class="open-schedule-btn">See Schedule</button>
-									</div>
-								</div>
-								<div
-									class="browseclasscard"
-									data-value="Parent & Child"
-								>
-									<img
-										src="images/classes/parent.webp"
-										alt=""
-									/>
-									<div class="card-gradient"></div>
-									<h4>Parent & Child</h4>
-									<!-- <p>Lorem ipsum dolor sit.</p> -->
-									<!-- Overlay handles everything -->
-									<div class="card-info-overlay">
-										<button class="open-schedule-btn">See Schedule</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<a
-							class="next_section"
-							href="#upcoming_classes"
-						>
-							<i class="fa-solid fa-chevron-down"></i>
-						</a>
-					</div>
-					<div
-						id="upcoming_classes"
-						class="altsection"
-					>
-						<div class="container">
-							<h3>Upcoming Classes</h3>
-							<p>View and manage your upcoming classes, all in one place.</p>
+                <div class="browseclasscard" data-value="Calisthenics">
+                  <img src="images/classes/calisthenics.webp" alt="" />
+                  <div class="card-gradient"></div>
+                  <h4>Calisthenics</h4>
+                  <!-- <p>Lorem, ipsum dolor.</p> -->
+                  <!-- Overlay handles everything -->
+                  <div class="card-info-overlay">
+                    <button class="open-schedule-btn">See Schedule</button>
+                  </div>
+                </div>
+                <div
+                  class="browseclasscard"
+                  data-value="Strength & Conditioning"
+                >
+                  <img src="images/classes/strength.webp" alt="" />
+                  <div class="card-gradient"></div>
+                  <h4>Strength & Conditioning</h4>
+                  <!-- <p>Lorem ipsum dolor sit amet.</p> -->
+                  <!-- Overlay handles everything -->
+                  <div class="card-info-overlay">
+                    <button class="open-schedule-btn">See Schedule</button>
+                  </div>
+                </div>
+                <div class="browseclasscard" data-value="Love 2 Run">
+                  <img src="images/classes/running.webp" alt="" />
+                  <div class="card-gradient"></div>
+                  <h4>Love 2 Run</h4>
+                  <!-- <p>Lorem ipsum dolor amet consectetur.</p> -->
+                  <!-- Overlay handles everything -->
+                  <div class="card-info-overlay">
+                    <button class="open-schedule-btn">See Schedule</button>
+                  </div>
+                </div>
+                <div class="browseclasscard" data-value="Pilates">
+                  <img src="images/classes/pilates.webp" alt="" />
+                  <div class="card-gradient"></div>
+                  <h4>Pilates</h4>
+                  <!-- <p>Lorem ipsum dolor sit.</p> -->
+                  <!-- Overlay handles everything -->
+                  <div class="card-info-overlay">
+                    <button class="open-schedule-btn">See Schedule</button>
+                  </div>
+                </div>
+                <div class="browseclasscard" data-value="Parent & Child">
+                  <img src="images/classes/parent.webp" alt="" />
+                  <div class="card-gradient"></div>
+                  <h4>Parent & Child</h4>
+                  <!-- <p>Lorem ipsum dolor sit.</p> -->
+                  <!-- Overlay handles everything -->
+                  <div class="card-info-overlay">
+                    <button class="open-schedule-btn">See Schedule</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <a class="next_section" href="#upcoming_classes">
+              <i class="fa-solid fa-chevron-down"></i>
+            </a>
+          </div>
+          <div id="upcoming_classes" class="altsection">
+            <div class="container">
+              <h3>Upcoming Classes</h3>
+              <p>View and manage your upcoming classes, all in one place.</p>
 
-							<!-- Landing Page Upcoming Bookings -->
+              <!-- Landing Page Upcoming Bookings -->
 
-							<div
-								id="landing"
-								class="app-section"
-							>
-								<div
-									id="landing-agenda"
-									class="agenda-container"
-								></div>
-							</div>
-						</div>
-					</div>
-					<!-- Schedule Overlay -->
-				</section>
+              <div id="landing" class="app-section">
+                <div id="landing-agenda" class="agenda-container"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Schedule Overlay -->
+        </section>
 
-				<!-- Two -->
+        <!-- Two -->
 
-				<section
-					class="panel"
-					id="data"
-				>
-					<div
-						class="image main"
-						data-position="center"
-					>
-						<img
-							src="alt_images/banner.jpg"
-							alt=""
-						/>
-					</div>
-					<div class="mainsection">
-						<div class="container">
-							<h3>Data & Analytics</h3>
-							<p>
-								Download your platform’s data in CSV format for reporting,
-								backups, or offline analysis. Choose the type of data you'd like
-								to export below.
-							</p>
-							<ul class="feature-icons">
-								<li class="icon solid fa-users">User Data</li>
-								<li class="icon solid fa-calendar-check">Booking Data</li>
-								<li class="icon solid fa-calendar-day">Class Data</li>
-								<li class="icon solid fa-calendar">Schedule Data</li>
-								<li class="icon solid fa-credit-card">Payment Data</li>
-							</ul>
-						</div>
-					</div>
-					<div class="altsection">
-						<div class="container">
-							<h3>Generate Schedule</h3>
-							<p>
-								This will generate a schedule for the currently selected month.
-							</p>
-							<div class="form-buttons">
-								<select id="month-select">
-									<option value="0">January</option>
-									<option value="1">February</option>
-									<option value="2">March</option>
-									<option value="3">April</option>
-									<option value="4">May</option>
-									<option value="5">June</option>
-									<option value="6">July</option>
-									<option value="7">August</option>
-									<option value="8">September</option>
-									<option value="9">October</option>
-									<option value="10">November</option>
-									<option value="11">December</option>
-								</select>
+        <section class="panel" id="data">
+          <div class="image main" data-position="center">
+            <img src="alt_images/banner.jpg" alt="" />
+          </div>
+          <div class="mainsection">
+            <div class="container">
+              <h3>Data & Analytics</h3>
+              <p>
+                Download your platform’s data in CSV format for reporting,
+                backups, or offline analysis. Choose the type of data you'd like
+                to export below.
+              </p>
+              <ul class="feature-icons">
+                <li class="icon solid fa-users">
+                  <a href="#" data-export="profiles">User Data</a>
+                </li>
+                <li class="icon solid fa-calendar-check">
+                  <a href="#" data-export="bookings">Booking Data</a>
+                </li>
+                <li class="icon solid fa-calendar-day">
+                  <a href="#" data-export="classes">Class Data</a>
+                </li>
+                <li class="icon solid fa-calendar">
+                  <a href="#" data-export="class_schedule_template"
+                    >Schedule Data</a
+                  >
+                </li>
+                <li class="icon solid fa-credit-card">
+                  <a href="#" data-export="payments">Payment Data</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="altsection">
+            <div class="container">
+              <h3>Generate Schedule</h3>
+              <p>
+                This will generate a schedule for the currently selected month.
+              </p>
+              <div class="form-buttons">
+                <select id="month-select">
+                  <option value="0">January</option>
+                  <option value="1">February</option>
+                  <option value="2">March</option>
+                  <option value="3">April</option>
+                  <option value="4">May</option>
+                  <option value="5">June</option>
+                  <option value="6">July</option>
+                  <option value="7">August</option>
+                  <option value="8">September</option>
+                  <option value="9">October</option>
+                  <option value="10">November</option>
+                  <option value="11">December</option>
+                </select>
 
-								<select id="year-input">
-									<option value="2025">2025</option>
-									<option value="2026">2026</option>
-									<option value="2027">2027</option>
-								</select>
+                <select id="year-input">
+                  <option value="2025">2025</option>
+                  <option value="2026">2026</option>
+                  <option value="2027">2027</option>
+                </select>
 
-								<button
-									id="generate-schedule"
-									class="danger"
-								>
-									Generate Schedule
-								</button>
-							</div>
-						</div>
-					</div>
-				</section>
+                <button id="generate-schedule" class="danger">
+                  Generate Schedule
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
 
-				<!-- Three -->
-				<section
-					class="panel"
-					id="attributions"
-				>
-					<div
-						class="image main"
-						data-position="center"
-					>
-						<img
-							src="alt_images/banner.jpg"
-							alt=""
-						/>
-					</div>
-					<div class="mainsection credits">
-						<div class="container">
-							<h3>Credits & Attributions</h3>
-							<p>
-								This project wouldn't have been possible without the generosity
-								of creators who share their work freely. A huge thank you to the
-								following platforms for providing high-quality, open-access
-								visuals and tools:
-							</p>
-							<ul>
-								<li>
-									Images sourced from
-									<a
-										href="https://www.pexels.com/"
-										target="_blank"
-										rel="noopener"
-										>Pexels</a
-									>
-								</li>
-								<li>
-									Icons provided by
-									<a
-										href="https://fontawesome.com/"
-										target="_blank"
-										rel="noopener"
-										>Font Awesome</a
-									>
-								</li>
-								<li>
-									Illustrations from
-									<a
-										href="https://storyset.com/"
-										target="_blank"
-										rel="noopener"
-										>Storyset</a
-									>
-								</li>
-								<li>
-									Additional graphics from
-									<a
-										href="https://undraw.co/"
-										target="_blank"
-										rel="noopener"
-										>unDraw</a
-									>
-									and
-									<a
-										href="https://www.flaticon.com/"
-										target="_blank"
-										rel="noopener"
-										>Flaticon</a
-									>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</section>
+        <!-- Three -->
+        <section class="panel" id="attributions">
+          <div class="image main" data-position="center">
+            <img src="alt_images/banner.jpg" alt="" />
+          </div>
+          <div class="mainsection credits">
+            <div class="container">
+              <h3>Credits & Attributions</h3>
+              <p>
+                This project wouldn't have been possible without the generosity
+                of creators who share their work freely. A huge thank you to the
+                following platforms for providing high-quality, open-access
+                visuals and tools:
+              </p>
+              <ul>
+                <li>
+                  Images sourced from
+                  <a
+                    href="https://www.pexels.com/"
+                    target="_blank"
+                    rel="noopener"
+                    >Pexels</a
+                  >
+                </li>
+                <li>
+                  Icons provided by
+                  <a
+                    href="https://fontawesome.com/"
+                    target="_blank"
+                    rel="noopener"
+                    >Font Awesome</a
+                  >
+                </li>
+                <li>
+                  Illustrations from
+                  <a href="https://storyset.com/" target="_blank" rel="noopener"
+                    >Storyset</a
+                  >
+                </li>
+                <li>
+                  Additional graphics from
+                  <a href="https://undraw.co/" target="_blank" rel="noopener"
+                    >unDraw</a
+                  >
+                  and
+                  <a
+                    href="https://www.flaticon.com/"
+                    target="_blank"
+                    rel="noopener"
+                    >Flaticon</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
 
-				<!-- Four -->
-				<section
-					class="panel"
-					id="transactions"
-				>
-					<div
-						class="image main"
-						data-position="center"
-					>
-						<img
-							src="alt_images/banner.jpg"
-							alt=""
-						/>
-					</div>
-					<div class="mainsection">
-						<div class="container">
-							<h3>Payments & Transactions</h3>
-							<p>
-								Users with outstanding balances are shown first. Use the search
-								bar to find any user by name.
-							</p>
+        <!-- Four -->
+        <section class="panel" id="transactions">
+          <div class="image main" data-position="center">
+            <img src="alt_images/banner.jpg" alt="" />
+          </div>
+          <div class="mainsection">
+            <div class="container">
+              <h3>Payments & Transactions</h3>
+              <p>
+                Users with outstanding balances are shown first. Use the search
+                bar to find any user by name.
+              </p>
 
-							<!-- Search bar -->
-							<div class="pressable table-search-bar">
-								<input
-									type="text"
-									id="userSearch"
-									placeholder="Search users..."
-								/>
-								<i class="fa-solid fa-magnifying-glass"></i>
-							</div>
+              <!-- Search bar -->
+              <div class="pressable table-search-bar">
+                <input
+                  type="text"
+                  id="userSearch"
+                  placeholder="Search users..."
+                />
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </div>
 
-							<!-- User list container -->
-							<div
-								id="balance-table-body"
-								class="user-list-container"
-							>
-								<!-- JS will dynamically insert .user-row elements here -->
-							</div>
-						</div>
-					</div>
+              <!-- User list container -->
+              <div id="balance-table-body" class="user-list-container">
+                <!-- JS will dynamically insert .user-row elements here -->
+              </div>
+            </div>
+          </div>
 
-					<div class="altsection">
-						<div class="container">
-							<div class="admin-topup-form">
-								<h3>Add Payment</h3>
-								<p>
-									Log a payment for the selected user. Use this panel to record
-									manual or offline transactions.
-								</p>
-								<p>
-									Manual Correction is for internal use only. Use it to fix
-									balance errors or apply one-off adjustments.
-								</p>
-								<div class="block">
-									<h4>Credits</h4>
-									<p>
-										How many credits would you like to give
-										<span id="selected-username"></span>?
-									</p>
-									<input
-										type="number"
-										id="credit-value"
-										min="-99"
-										step=""
-										placeholder="-"
-										class="paid-input"
-									/>
-								</div>
+          <div class="altsection">
+            <div class="container">
+              <div class="admin-topup-form">
+                <h3>Add Payment</h3>
+                <p>
+                  Log a payment for the selected user. Use this panel to record
+                  manual or offline transactions.
+                </p>
+                <p>
+                  Manual Correction is for internal use only. Use it to fix
+                  balance errors or apply one-off adjustments.
+                </p>
+                <div class="block">
+                  <h4>Credits</h4>
+                  <p>
+                    How many credits would you like to give
+                    <span id="selected-username"></span>?
+                  </p>
+                  <input
+                    type="number"
+                    id="credit-value"
+                    min="-99"
+                    step=""
+                    placeholder="-"
+                    class="paid-input"
+                  />
+                </div>
 
-								<div class="block">
-									<h4>Paid Amount</h4>
+                <div class="block">
+                  <h4>Paid Amount</h4>
 
-									<div class="currency-input">
-										<input
-											type="number"
-											id="amount-value"
-											min="0"
-											step=""
-											placeholder="-"
-											class="paid-amount-input"
-										/>
-									</div>
-								</div>
+                  <div class="currency-input">
+                    <input
+                      type="number"
+                      id="amount-value"
+                      min="0"
+                      step=""
+                      placeholder="-"
+                      class="paid-amount-input"
+                    />
+                  </div>
+                </div>
 
-								<div class="block">
-									<h4>Payment Method</h4>
-									<div class="payment-methods">
-										<div
-											class="method-card"
-											data-method="revolut"
-										>
-											<img
-												src="images/logos/Revolut.svg"
-												alt="Revolut"
-											/>
-											<div class="method-check"></div>
-										</div>
-										<div
-											class="method-card"
-											data-method="credit_card"
-										>
-											<img
-												src="images/logos/Mastercard.svg"
-												alt="Mastercard"
-											/>
-											<div class="method-check"></div>
-										</div>
-										<div
-											class="method-card"
-											data-method="Paypal"
-										>
-											<img
-												src="images/logos/PayPal.svg"
-												alt="PayPal"
-											/>
-											<div class="method-check"></div>
-										</div>
-										<div
-											class="method-card"
-											data-method="Cash"
-										>
-											<img
-												src="images/logos/cash.svg"
-												alt="Cash"
-											/>
-											<div class="method-check"></div>
-										</div>
-										<div
-											class="method-card"
-											data-method="Bank Transfer"
-										>
-											<img
-												src="images/logos/Bank.svg"
-												alt="Bank Transfer"
-											/>
-											<div class="method-check"></div>
-										</div>
-										<div
-											class="method-card"
-											data-method="Manual Correction"
-										>
-											<span class="method-label">Manual Correction</span>
-											<div class="method-check"></div>
-										</div>
-									</div>
-								</div>
+                <div class="block">
+                  <h4>Payment Method</h4>
+                  <div class="payment-methods">
+                    <div class="method-card" data-method="revolut">
+                      <img src="images/logos/Revolut.svg" alt="Revolut" />
+                      <div class="method-check"></div>
+                    </div>
+                    <div class="method-card" data-method="credit_card">
+                      <img src="images/logos/Mastercard.svg" alt="Mastercard" />
+                      <div class="method-check"></div>
+                    </div>
+                    <div class="method-card" data-method="Paypal">
+                      <img src="images/logos/PayPal.svg" alt="PayPal" />
+                      <div class="method-check"></div>
+                    </div>
+                    <div class="method-card" data-method="Cash">
+                      <img src="images/logos/cash.svg" alt="Cash" />
+                      <div class="method-check"></div>
+                    </div>
+                    <div class="method-card" data-method="Bank Transfer">
+                      <img src="images/logos/Bank.svg" alt="Bank Transfer" />
+                      <div class="method-check"></div>
+                    </div>
+                    <div class="method-card" data-method="Manual Correction">
+                      <span class="method-label">Manual Correction</span>
+                      <div class="method-check"></div>
+                    </div>
+                  </div>
+                </div>
 
-								<div class="block">
-									<div class="form-buttons">
-										<button id="confirm-topup">Confirm</button>
-										<button id="reset-form">Reset</button>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</section>
-			</div>
+                <div class="block">
+                  <div class="form-buttons">
+                    <button id="confirm-topup">Confirm</button>
+                    <button id="reset-form">Reset</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
 
-			<!-- Desktop Overlay -->
+      <!-- Desktop Overlay -->
 
-			<div class="desktop-blocker">
-				<img
-					src="images/misc/error.svg"
-					alt=""
-				/>
-				<p>(please open this site on a mobile device)</p>
-			</div>
+      <div class="desktop-blocker">
+        <img src="images/misc/error.svg" alt="" />
+        <p>(please open this site on a mobile device)</p>
+      </div>
 
-			<!-- Toast Container -->
-			<div id="toast-container"></div>
+      <!-- Toast Container -->
+      <div id="toast-container"></div>
 
-			<!-- Confirmation Modal -->
-			<div
-				id="confirm-modal"
-				class="hidden modal"
-			>
-				<div class="modal-content">
-					<h3 id="confirm-title">Title</h3>
-					<p id="confirm-message">Are you sure?</p>
-					<div class="modal-actions">
-						<button id="confirm-yes">
-							<img
-								src="images/icons/confirm.png"
-								alt="Yes"
-							/>
-						</button>
-						<button id="confirm-no">
-							<img
-								src="images/icons/cancel.png"
-								alt="No"
-							/>
-						</button>
-					</div>
-				</div>
-			</div>
+      <!-- Confirmation Modal -->
+      <div id="confirm-modal" class="hidden modal">
+        <div class="modal-content">
+          <h3 id="confirm-title">Title</h3>
+          <p id="confirm-message">Are you sure?</p>
+          <div class="modal-actions">
+            <button id="confirm-yes">
+              <img src="images/icons/confirm.png" alt="Yes" />
+            </button>
+            <button id="confirm-no">
+              <img src="images/icons/cancel.png" alt="No" />
+            </button>
+          </div>
+        </div>
+      </div>
 
-			<!-- Admin Modal -->
+      <!-- Admin Modal -->
 
-			<div
-				id="admin-modal"
-				class="admin-modal-overlay"
-			>
-				<div class="admin-modal">
-					<div class="admin-modal-header">
-						<h3 id="admin-modal-title">Class Details</h3>
-						<button
-							id="admin-modal-close"
-							class="close-btn"
-						></button>
-					</div>
+      <div id="admin-modal" class="admin-modal-overlay">
+        <div class="admin-modal">
+          <div class="admin-modal-header">
+            <h3 id="admin-modal-title">Class Details</h3>
+            <button id="admin-modal-close" class="close-btn"></button>
+          </div>
 
-					<div class="admin-modal-body">
-						<p>
-							<span id="admin-modal-date"></span>
+          <div class="admin-modal-body">
+            <p>
+              <span id="admin-modal-date"></span>
 
-							<span id="admin-modal-time"></span>
-						</p>
+              <span id="admin-modal-time"></span>
+            </p>
 
-						<h4>Booked Users</h4>
-						<div class="admin-user-list-container">
-							<ul
-								id="admin-user-list"
-								class="user-list"
-							></ul>
-						</div>
-						<h4>Waitlist</h4>
-						<div class="admin-waitlist-container">
-							<ul
-								id="admin-waitlist"
-								class="user-list"
-							></ul>
-						</div>
+            <h4>Booked Users</h4>
+            <div class="admin-user-list-container">
+              <ul id="admin-user-list" class="user-list"></ul>
+            </div>
+            <h4>Waitlist</h4>
+            <div class="admin-waitlist-container">
+              <ul id="admin-waitlist" class="user-list"></ul>
+            </div>
 
-						<select id="admin-user-select">
-							<option value="">Add User</option>
-						</select>
-						<div class="admin-button-container">
-							<button
-								id="admin-add-user"
-								class=""
-							>
-								<i class="fa-solid fa-user-plus"></i>
-							</button>
+            <select id="admin-user-select">
+              <option value="">Add User</option>
+            </select>
+            <div class="admin-button-container">
+              <button id="admin-add-user" class="">
+                <i class="fa-solid fa-user-plus"></i>
+              </button>
 
-							<button
-								id="admin-delete-class"
-								class="danger full-width"
-							>
-								<i class="fa-solid fa-trash-can"></i>
-							</button>
-						</div>
-					</div>
-				</div>
-			</div>
+              <button id="admin-delete-class" class="danger full-width">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
 
-			<!-- Initial loader graphic -->
-			<div id="app-loader">
-				<div class="container">
-					<div class="folder">
-						<div class="top"></div>
-						<div class="bottom"></div>
-					</div>
-					<div class="title">getting files ready...</div>
-				</div>
-			</div>
+      <!-- Initial loader graphic -->
+      <div id="app-loader">
+        <div class="container">
+          <div class="folder">
+            <div class="top"></div>
+            <div class="bottom"></div>
+          </div>
+          <div class="title">getting files ready...</div>
+        </div>
+      </div>
 
-			<!-- Loading Spinner -->
+      <!-- Loading Spinner -->
 
-			<div
-				id="loading-spinner"
-				class="spinner-overlay hidden"
-			>
-				<div class="spinner"></div>
-			</div>
+      <div id="loading-spinner" class="spinner-overlay hidden">
+        <div class="spinner"></div>
+      </div>
 
-			<!-- Footer -->
+      <!-- Footer -->
 
-			<button id="filter-fab"><i class="fa-solid fa-sliders"></i></button>
-			<nav class="nav-bottom">
-				<div id="schedule-overlay">
-					<div class="mainsection_calendar">
-						<div class="container">
-							<!-- Calendar container -->
-							<div class="calendar-container">
-								<div class="calendar-header">
-									<i
-										id="prev-month"
-										class="pressable fas fa-chevron-left"
-										style="cursor: pointer"
-									></i>
-									<div class="calendar-box">
-										<span id="month-label">Month YYYY</span>
-									</div>
+      <button id="filter-fab"><i class="fa-solid fa-sliders"></i></button>
+      <nav class="nav-bottom">
+        <div id="schedule-overlay">
+          <div class="mainsection_calendar">
+            <div class="container">
+              <!-- Calendar container -->
+              <div class="calendar-container">
+                <div class="calendar-header">
+                  <i
+                    id="prev-month"
+                    class="pressable fas fa-chevron-left"
+                    style="cursor: pointer"
+                  ></i>
+                  <div class="calendar-box">
+                    <span id="month-label">Month YYYY</span>
+                  </div>
 
-									<i
-										id="next-month"
-										class="pressable fas fa-chevron-right"
-										style="cursor: pointer"
-									></i>
-								</div>
+                  <i
+                    id="next-month"
+                    class="pressable fas fa-chevron-right"
+                    style="cursor: pointer"
+                  ></i>
+                </div>
 
-								<div class="calendar-grid">
-									<div class="calendar-header-row">
-										<div class="day-header">Mon</div>
-										<div class="day-header">Tue</div>
-										<div class="day-header">Wed</div>
-										<div class="day-header">Thu</div>
-										<div class="day-header">Fri</div>
-										<div class="day-header">Sat</div>
-										<div class="day-header">Sun</div>
-									</div>
+                <div class="calendar-grid">
+                  <div class="calendar-header-row">
+                    <div class="day-header">Mon</div>
+                    <div class="day-header">Tue</div>
+                    <div class="day-header">Wed</div>
+                    <div class="day-header">Thu</div>
+                    <div class="day-header">Fri</div>
+                    <div class="day-header">Sat</div>
+                    <div class="day-header">Sun</div>
+                  </div>
 
-									<div
-										class="calendar-body"
-										id="calendar"
-									></div>
-								</div>
+                  <div class="calendar-body" id="calendar"></div>
+                </div>
 
-								<div class="filter-dropdown">
-									<button
-										class=""
-										id="filter-button"
-									>
-										Select a class
-									</button>
+                <div class="filter-dropdown">
+                  <button class="" id="filter-button">Select a class</button>
 
-									<!-- <button id="filter-button">My Bookings</button> -->
+                  <!-- <button id="filter-button">My Bookings</button> -->
 
-									<ul
-										id="filter-options"
-										class="dropdown hidden"
-									>
-										<li
-											data-value=""
-											class="disabled"
-										>
-											Select a class type…
-										</li>
+                  <ul id="filter-options" class="dropdown hidden">
+                    <li data-value="" class="disabled">Select a class type…</li>
 
-										<!-- The other options will be injected dynamically -->
-									</ul>
-								</div>
-							</div>
-						</div>
-					</div>
+                    <!-- The other options will be injected dynamically -->
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
 
-					<div class="altsection">
-						<div class="container">
-							<!-- Agenda container -->
-							<div
-								id="agenda"
-								class="agenda-container"
-							>
-								<!-- Agenda cards will be dynamically inserted here -->
-							</div>
-						</div>
-					</div>
-				</div>
-				<i
-					class="pressable fa-solid fa-bars nav-btn"
-					data-target="sidebar"
-				></i>
-			</nav>
-		</div>
+          <div class="altsection">
+            <div class="container">
+              <!-- Agenda container -->
+              <div id="agenda" class="agenda-container">
+                <!-- Agenda cards will be dynamically inserted here -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <i class="pressable fa-solid fa-bars nav-btn" data-target="sidebar"></i>
+      </nav>
+    </div>
 
-		<!-- Scripts -->
+    <!-- Scripts -->
 
-		<script src="alt_assets/js/jquery.min.js"></script>
-		<script src="alt_assets/js/jquery.scrollex.min.js"></script>
-		<script src="alt_assets/js/jquery.scrolly.min.js"></script>
-		<script src="alt_assets/js/browser.min.js"></script>
-		<script src="alt_assets/js/breakpoints.min.js"></script>
-		<script src="alt_assets/js/util.js"></script>
-		<script src="alt_assets/js/main.js"></script>
-		<!-- <script src="assets/js/backgroundslider.js"></script> -->
-		<script
-			type="module"
-			src="assets/js/supabaseClient.js"
-		></script>
-		<script
-			type="module"
-			src="assets/js/utils.js"
-		></script>
-		<script
-			type="module"
-			src="assets/js/dashboard.js"
-		></script>
-		<script
-			type="module"
-			src="assets/js/calendar.js"
-		></script>
-		<script
-			type="module"
-			src="assets/js/agenda.js"
-		></script>
-		<script
-			src="assets/js/transactions.js"
-			type="module"
-		></script>
-		<script
-			src="assets/js/admin.js"
-			type="module"
-		></script>
-	</body>
+    <script src="alt_assets/js/jquery.min.js"></script>
+    <script src="alt_assets/js/jquery.scrollex.min.js"></script>
+    <script src="alt_assets/js/jquery.scrolly.min.js"></script>
+    <script src="alt_assets/js/browser.min.js"></script>
+    <script src="alt_assets/js/breakpoints.min.js"></script>
+    <script src="alt_assets/js/util.js"></script>
+    <script src="alt_assets/js/main.js"></script>
+    <!-- <script src="assets/js/backgroundslider.js"></script> -->
+    <script type="module" src="assets/js/supabaseClient.js"></script>
+    <script type="module" src="assets/js/utils.js"></script>
+    <script type="module" src="assets/js/dashboard.js"></script>
+    <script type="module" src="assets/js/calendar.js"></script>
+    <script type="module" src="assets/js/agenda.js"></script>
+    <script src="assets/js/transactions.js" type="module"></script>
+    <script src="assets/js/admin.js" type="module"></script>
+  </body>
 </html>
