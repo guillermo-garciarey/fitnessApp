@@ -1,5 +1,5 @@
 import { supabase } from './supabaseClient.js';
-import { showSuccessToast, showErrorToast, showToast } from './utils.js';
+// import { showSuccessToast, showErrorToast, showToast } from './utils.js';
 
 console.log('Supabase client initialized');
 
@@ -94,7 +94,8 @@ createAccountForm.addEventListener('submit', async (e) => {
   }
 
   // Step 3: Notify and reset
-  showSuccessToast();
+  alert('Profile creation was a success! Please log in');
+  // showSuccessToast();
   signupOverlay.style.display = 'none';
   createAccountForm.reset();
 });
