@@ -377,7 +377,26 @@ window.generateScheduleForMonth = async function generateScheduleForMonth(
   console.log(`🧾 Preparing to insert ${newClasses.length} classes`);
 
   if (newClasses.length === 0) {
-    showErrorToast();
+    console.warn('⚠️ No classes generated. Investigating why...');
+    console.log(`📅 Processed ${daysInMonth} days`);
+    console.log(`📋 Loaded ${templates?.length || 0} templates`);
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const dateObj = new Date(Date.UTC(year, monthIndex, day));
+      const dayIndex = dateObj.getDay();
+
+      const matchingTemplates = templates.filter(
+        (t) => Number(t.day_of_week) === dayIndex,
+      );
+
+      if (matchingTemplates.length === 0) {
+        console.log(
+          `🕳️ No templates matched for ${formatDate(dateObj)} (day ${dayIndex})`,
+        );
+      }
+    }
+
+    showErrorToast?.('No classes generated for this month.');
     return;
   }
 
