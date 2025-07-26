@@ -5200,3 +5200,15 @@ input[type='text'] {
 .credits {
   justify-content: start !important;
 }
+
+.credit-highlight {
+  transition: color 0.3s ease;
+}
+
+.credit-positive {
+  color: green;
+}
+
+.credit-low {
+  color: orange;
+}

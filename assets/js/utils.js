@@ -505,6 +505,11 @@ sidebarLinks.forEach((link) => {
       return;
     }
 
+    if (targetId === 'balance') {
+      console.log('🔁 Loading credit balance for balance section...');
+      updateCreditDisplay();
+    }
+
     // Switch active sidebar link
     sidebarLinks.forEach((l) => l.classList.remove('active'));
     link.classList.add('active');
@@ -646,3 +651,36 @@ header.addEventListener('touchmove', (e) => {
 header.addEventListener('touchend', () => {
   isSwiping = false;
 });
+
+// Credit info fetching
+
+async function updateCreditDisplay() {
+  const session = await getSession();
+  const userId = session?.user?.id;
+
+  if (!userId) return;
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('credits')
+    .eq('id', userId)
+    .single();
+
+  if (error) {
+    console.error('❌ Failed to fetch credits:', error.message);
+    return;
+  }
+
+  const creditCountElement = document.getElementById('credit-count');
+  if (creditCountElement) {
+    creditCountElement.textContent = data.credits;
+
+    creditCountElement.classList.remove('credit-positive', 'credit-low');
+
+    if (data.credits >= 0) {
+      creditCountElement.classList.add('credit-positive');
+    } else {
+      creditCountElement.classList.add('credit-low');
+    }
+  }
+}
