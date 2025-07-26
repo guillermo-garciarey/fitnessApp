@@ -22,7 +22,10 @@
 
   /* Accents */
   --accent1: hsl(350, 50%, 50%, 1);
+  --accent1: hsl(95, 57%, 51%, 1);
+
   --accenthover: hsla(350, 50%, 50%, 0.25);
+  --accenthover: hsl(95, 57%, 51%, 0.5);
   --navbottom: hsl(180, 5.5%, 11%);
   --sidemenu: hsl(200, 9%, 20%);
 
@@ -45,9 +48,36 @@
   --info-100: hsl(217, 94%, 92%); /* light blue */
   --info-500: hsl(217, 91%, 60%); /* base blue */
   --info-700: hsl(221, 83%, 44%); /* dark blue */
+
+  /* Sidebar */
+  --sidebarbg: hsl(0, 0%, 10%); /* Main page background */
+  --sidebartitle: hsl(0, 0%, 95%); /* Primary text */
+  --sidebarsubtitle: hsl(0, 0%, 90%); /* Secondary text */
+  --sidebaractive: hsl(0, 0%, 14%); /* Card/panel background */
+  --sidebaractivetext: hsl(0, 0%, 95%); /* Primary text */
+  --sidebartext: hsl(0, 0%, 60%); /* Secondary text */
 }
 
 /* Theme Switch */
+
+body.darkmode {
+  /* Backgrounds */
+  --bg1: hsl(0, 0%, 10%); /* Main page background */
+  --bg2: hsl(0, 0%, 14%); /* Card/panel background */
+  --bg3: hsl(0, 0%, 20%); /* Hover/active surfaces */
+  --bg4: hsl(0, 0%, 30%); /* Slight contrast surface */
+  --bg5: hsl(0, 0%, 38%); /* Accent strip / separator */
+  --cardtitle: hsl(0, 0%, 95%); /* Light text for titles */
+
+  /* Text */
+  --text1: hsl(0, 0%, 95%); /* Primary text */
+  --text2: hsl(0, 0%, 60%); /* Secondary text */
+  --text3: hsl(0, 0%, 95%); /* Brightest / strongest emphasis */
+
+  /* Borders & shadows */
+  --border: hsl(0, 0%, 25%);
+  --bordershadow: hsla(0, 0%, 0%, 0.4); /* subtle shadow */
+}
 
 #theme-switch {
   background-color: transparent;
@@ -2881,7 +2911,8 @@ input[type='button']:disabled,
   -ms-justify-content: space-between;
   justify-content: space-between;
   background: var(--sidemenu);
-  color: var(--text2);
+  background: var(--sidebarbg);
+  color: var(--sidebarsubtitle);
   height: 100%;
   overflow-y: auto;
   position: fixed;
@@ -2897,7 +2928,7 @@ input[type='button']:disabled,
 #header h4,
 #header h5,
 #header h6 {
-  color: var(--bg1);
+  color: var(--sidebartitle);
 }
 
 #header h1 a,
@@ -2906,15 +2937,15 @@ input[type='button']:disabled,
 #header h4 a,
 #header h5 a,
 #header h6 a {
-  color: var(--bg1);
+  color: var(--sidebartitle);
 }
 
 #header header p {
-  color: var(--text2);
+  color: var(--sidebartitle);
 }
 
 #header a {
-  color: var(--bg1);
+  color: var(--sidebartitle);
 }
 
 #header a:hover {
@@ -2990,7 +3021,7 @@ input[type='button']:disabled,
   -ms-transition: none;
   transition: none;
   border: 0;
-  color: var(--cardtitle) !important;
+  color: var(--sidebartext) !important;
   display: block;
   padding: 0.85em 0;
   text-decoration: none;
@@ -2998,7 +3029,8 @@ input[type='button']:disabled,
 
 #header > nav ul li a.active {
   background: var(--bg1);
-  color: var(--text1) !important;
+  background: var(--sidebaractive);
+  color: var(--sidebaractivetext) !important;
 }
 
 #header > nav ul li:first-child {
@@ -4402,8 +4434,8 @@ input[type='button']:disabled,
   height: 7.5vh;
   background: none;
   border: none;
-  background-color: var(--sidemenu);
-  color: var(--cardtitle);
+  background-color: var(--sidebarbg);
+  color: var(--sidebartitle);
 
   position: relative;
   padding: 10px;
@@ -5010,6 +5042,7 @@ input[type='text'] {
 .open-schedule-btn {
   background: transparent;
   color: var(--bg1);
+  color: var(--cardtitle);
   padding: 0.5rem;
   border: solid 1px var(--border);
   width: 100%;
