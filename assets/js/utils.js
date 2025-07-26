@@ -614,3 +614,35 @@ themeToggle.addEventListener('click', () => {
   const isDark = body.classList.contains('darkmode');
   localStorage.setItem('theme', isDark ? 'dark' : 'light');
 });
+
+// Swipe support to close Nav Menu
+
+const header = document.getElementById('header');
+
+let startX = 0;
+let isSwiping = false;
+
+header.addEventListener('touchstart', (e) => {
+  if (e.touches.length === 1) {
+    startX = e.touches[0].clientX;
+    isSwiping = true;
+  }
+});
+
+header.addEventListener('touchmove', (e) => {
+  if (!isSwiping) return;
+
+  const currentX = e.touches[0].clientX;
+  const deltaX = currentX - startX;
+
+  // Trigger only if swipe is clearly left-to-right
+  if (deltaX > 50) {
+    isSwiping = false; // prevent repeat trigger
+    console.log("Toggling class 'header-visible' on body");
+    document.body.classList.toggle('header-visible');
+  }
+});
+
+header.addEventListener('touchend', () => {
+  isSwiping = false;
+});

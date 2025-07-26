@@ -3387,11 +3387,11 @@ input[type='button']:disabled,
   /* Header */
 
   #header {
-    width: 17em;
-    -moz-transform: translateX(17em);
-    -webkit-transform: translateX(17em);
-    -ms-transform: translateX(17em);
-    transform: translateX(17em);
+    width: 19em;
+    -moz-transform: translateX(19em);
+    -webkit-transform: translateX(19em);
+    -ms-transform: translateX(19em);
+    transform: translateX(19em);
     right: 0;
   }
 
@@ -3454,10 +3454,10 @@ input[type='button']:disabled,
 
   body.header-visible #wrapper,
   body.header-visible #titleBar {
-    -moz-transform: translateX(-17em);
-    -webkit-transform: translateX(-17em);
-    -ms-transform: translateX(-17em);
-    transform: translateX(-17em);
+    -moz-transform: translateX(-19em);
+    -webkit-transform: translateX(-19em);
+    -ms-transform: translateX(-19em);
+    transform: translateX(-19em);
   }
 }
 
