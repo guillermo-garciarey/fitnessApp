@@ -56,6 +56,7 @@
   --sidebaractive: hsl(0, 0%, 14%); /* Card/panel background */
   --sidebaractivetext: hsl(0, 0%, 95%); /* Primary text */
   --sidebartext: hsl(0, 0%, 60%); /* Secondary text */
+  --bottombar_border: hsl(0, 0%, 25%);
 }
 
 /* Theme Switch */
@@ -4415,11 +4416,10 @@ input[type='button']:disabled,
   left: 50%;
   transform: translateX(-50%);
   background-color: var(--navbottom);
-
   display: flex;
   justify-content: end;
   align-items: center;
-  /* border-top: solid 1px var(--border); */
+  border: solid 1px var(--bottombar_border);
   height: 7.5vh;
   width: 100vw;
   z-index: 1002;
@@ -4436,11 +4436,11 @@ input[type='button']:disabled,
   border: none;
   background-color: var(--sidebarbg);
   color: var(--sidebartitle);
-
   position: relative;
   padding: 10px;
   cursor: pointer;
   transition: color 0.3s ease;
+  border: solid 1px var(--bottombar_border);
 }
 
 .nav-btn.active {
@@ -4779,11 +4779,12 @@ input[type='text'] {
   flex-direction: column;
   justify-content: space-evenly;
   padding-top: 0.5rem;
+  color: var(--text2);
 }
 
 .form-buttons button {
   background: var(--danger-500);
-  color: var(--bg1);
+  color: var(--cardtitle);
   padding: 0.5rem;
   border: none;
   width: 100%;
