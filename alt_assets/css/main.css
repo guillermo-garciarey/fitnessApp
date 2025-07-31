@@ -4754,12 +4754,13 @@ input[type='text'] {
   border: 1px solid var(--border);
   border-radius: 4px;
   cursor: pointer;
-  background: var(--bg1);
+  background: var(--sidebartitle);
+  color: var(--bottombar_border);
   position: relative;
 }
 
 .method-card.selected {
-  border: solid 1px var(--bg4);
+  border: solid 2px var(--success-500);
 }
 
 .method-card img {
