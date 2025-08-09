@@ -3031,8 +3031,9 @@ input[type='button']:disabled,
 
 #header > nav ul li a.active {
   background: var(--bg1);
-  background: var(--sidebaractive);
+  /* background: var(--sidebaractive); */
   color: var(--sidebaractivetext) !important;
+  color: var(--accent1) !important;
 }
 
 #header > nav ul li:first-child {
@@ -3421,11 +3422,11 @@ input[type='button']:disabled,
   /* Header */
 
   #header {
-    width: 19em;
-    -moz-transform: translateX(19em);
-    -webkit-transform: translateX(19em);
-    -ms-transform: translateX(19em);
-    transform: translateX(19em);
+    width: 100%;
+    -moz-transform: translateX(100%);
+    -webkit-transform: translateX(100%);
+    -ms-transform: translateX(100%);
+    transform: translateX(100%);
     right: 0;
   }
 
@@ -3488,10 +3489,10 @@ input[type='button']:disabled,
 
   body.header-visible #wrapper,
   body.header-visible #titleBar {
-    -moz-transform: translateX(-19em);
-    -webkit-transform: translateX(-19em);
-    -ms-transform: translateX(-19em);
-    transform: translateX(-19em);
+    -moz-transform: translateX(-100%);
+    -webkit-transform: translateX(-100%);
+    -ms-transform: translateX(-100%);
+    transform: translateX(-100%);
   }
 }
 
@@ -5253,4 +5254,26 @@ input[type='text'] {
 
 .credit-low {
   color: orange;
+}
+
+.collapsebutton {
+  position: absolute;
+  left: 0;
+  height: 100vh;
+  width: 3rem;
+  background-color: var(--sidebaractive);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid var(--border);
+}
+
+.collapse {
+  left: 0; /* stick to left edge */
+  top: -100%; /* halfway down */
+  transform: translateY(-50%); /* center vertically */
+  font-size: 1.2rem; /* optional: adjust size */
+  cursor: pointer; /* optional: show it’s clickable */
+  padding: 0.5rem; /* optional: touch area */
+  color: var(--accent1);
 }
