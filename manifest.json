@@ -1,6 +1,6 @@
 {
-  "name": "EZ Booking",
-  "short_name": "EZ Booking",
+  "name": "EZ Family Fitness",
+  "short_name": "EZ Family Fitness",
   "start_url": "index.html",
   "scope": "./",
   "display": "standalone",
@@ -8,14 +8,14 @@
   "theme_color": "#222222",
   "icons": [
     {
-      "src": "icon256.png",
+      "src": "iconblack256.jpg",
       "sizes": "256x256",
-      "type": "image/png"
+      "type": "image/jpg"
     },
     {
-      "src": "icon512.png",
+      "src": "iconblack512.jpg",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/jpg"
     }
   ]
 }
