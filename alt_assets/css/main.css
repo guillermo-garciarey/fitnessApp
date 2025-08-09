@@ -2260,7 +2260,7 @@ input[type='radio'] + label:before {
   -moz-object-fit: cover;
   -webkit-object-fit: cover;
   -ms-object-fit: cover;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
   position: absolute;
   top: 0;
@@ -4424,6 +4424,9 @@ input[type='button']:disabled,
   height: 7.5vh;
   width: 100vw;
   z-index: 1002;
+  background-image: url('/images/patternblack.webp');
+  background-position: center;
+  background-size: cover;
 }
 
 .nav-btn {
@@ -4566,6 +4569,9 @@ body {
 .image.main {
   height: 20vh !important;
   border-bottom: solid 1px var(--border);
+  background-image: url('/images/patternblack.webp');
+  background-position: center;
+  background-size: cover;
 }
 
 /* Test */
