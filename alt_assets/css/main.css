@@ -23,6 +23,7 @@
   /* Accents */
   --accent1: hsl(350, 50%, 50%, 1);
   --accent1: hsl(95, 57%, 51%, 1);
+  --accent1: #7fc349;
 
   --accenthover: hsla(350, 50%, 50%, 0.25);
   --accenthover: hsl(95, 57%, 51%, 0.5);
@@ -2985,7 +2986,7 @@ input[type='button']:disabled,
   flex-shrink: 0;
   bottom: 0;
   left: 0;
-  padding: 2em;
+  /* padding: 2em; */
   width: 100%;
 }
 
@@ -3072,7 +3073,7 @@ input[type='button']:disabled,
   border-top: 0;
   color: #c0c0c0;
   overflow: hidden;
-  padding: 4em 0 2em 0;
+  /* padding: 4em 0 2em 0; */
 }
 
 #footer .copyright {
@@ -3122,7 +3123,7 @@ input[type='button']:disabled,
   }
 
   #header > footer {
-    padding: 1.5em;
+    /* padding: 1.5em; */
   }
 
   /* Wrapper */
@@ -3446,7 +3447,7 @@ input[type='button']:disabled,
   }
 
   #header > footer {
-    padding: 1.5em;
+    /* padding: 1.5em; */
   }
 
   /* Main */
