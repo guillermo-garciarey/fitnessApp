@@ -5258,20 +5258,20 @@ input[type='text'] {
 
 .collapsebutton {
   position: absolute;
-  left: 0;
-  height: 100vh;
-  width: 3rem;
-  background-color: var(--sidebaractive);
+  bottom: 0;
+  height: 3rem;
+  width: 100vw;
+  /* background-color: var(--sidebaractive); */
   display: flex;
   align-items: center;
   justify-content: center;
-  border-right: 1px solid var(--border);
+  /* border-right: 1px solid var(--border); */
 }
 
 .collapse {
-  left: 0; /* stick to left edge */
-  top: -100%; /* halfway down */
-  transform: translateY(-50%); /* center vertically */
+  bottom: 0; /* stick to left edge */
+  top: -100%;
+  transform: translateY(-50%);
   font-size: 1.2rem; /* optional: adjust size */
   cursor: pointer; /* optional: show it’s clickable */
   padding: 0.5rem; /* optional: touch area */
