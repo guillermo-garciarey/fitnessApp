@@ -653,6 +653,15 @@ header.addEventListener('touchend', () => {
   isSwiping = false;
 });
 
+// Collapse button click support
+const collapseButton = document.querySelector('.collapsebutton');
+if (collapseButton) {
+  collapseButton.addEventListener('click', () => {
+    console.log('Closing nav menu via collapse button');
+    document.body.classList.remove('header-visible');
+  });
+}
+
 // Credit info fetching
 
 async function updateCreditDisplay() {
