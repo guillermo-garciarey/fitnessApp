@@ -93,11 +93,11 @@
     <script type="module" src="assets/js/index.js"></script>
     <script type="module">
   import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
-
+const SUPABASE_URL = "https://jbcrdyjoggrsdiwkipda.supabase.co";
+const SUPABASE_ANON_KEY =
+	"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpiY3JkeWpvZ2dyc2Rpd2tpcGRhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY5NzY2ODksImV4cCI6MjA2MjU1MjY4OX0.Pa1rIyOnmM00fJTqRXj-IUHyLFCas1qBiMjBL4FFJFE
   // 🔧 Replace with your project values
-  const SUPABASE_URL = 'https://YOUR-PROJECT-REF.supabase.co'
-  const SUPABASE_ANON_KEY = 'YOUR-PUBLIC-ANON-KEY'
-
+  
   const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
   // If the recovery link uses a 'code' param, exchange it for a session
@@ -126,4 +126,5 @@
 </script>
   </body>
 </html>
+
 
