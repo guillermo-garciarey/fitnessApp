@@ -91,5 +91,39 @@
     <!-- Scripts -->
     <script src="assets/js/main.js"></script>
     <script type="module" src="assets/js/index.js"></script>
+    <script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
+
+  // 🔧 Replace with your project values
+  const SUPABASE_URL = 'https://YOUR-PROJECT-REF.supabase.co'
+  const SUPABASE_ANON_KEY = 'YOUR-PUBLIC-ANON-KEY'
+
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+
+  // If the recovery link uses a 'code' param, exchange it for a session
+  const url = new URL(window.location.href)
+  const hasCode = url.searchParams.get('code')
+  if (hasCode) {
+    // safe to call even if session already exists
+    supabase.auth.exchangeCodeForSession(window.location.href).catch(() => {})
+  }
+
+  // Listen for the recovery event and ask for a new password
+  supabase.auth.onAuthStateChange(async (event) => {
+    if (event === 'PASSWORD_RECOVERY') {
+      const pw = prompt('Enter a new password')
+      if (!pw) return
+      const { error } = await supabase.auth.updateUser({ password: pw })
+      if (error) {
+        alert('Could not update password: ' + (error.message || 'Unknown error'))
+      } else {
+        alert('Password updated. You can now log in with your new password.')
+        // Optional: refresh or navigate to your normal login flow
+        window.location.href = window.location.pathname
+      }
+    }
+  })
+</script>
   </body>
 </html>
+
