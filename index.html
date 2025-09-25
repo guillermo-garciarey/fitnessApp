@@ -93,38 +93,49 @@
     <script type="module" src="assets/js/index.js"></script>
     <script type="module">
   import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
-const SUPABASE_URL = "https://jbcrdyjoggrsdiwkipda.supabase.co";
-const SUPABASE_ANON_KEY =
-	"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpiY3JkeWpvZ2dyc2Rpd2tpcGRhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY5NzY2ODksImV4cCI6MjA2MjU1MjY4OX0.Pa1rIyOnmM00fJTqRXj-IUHyLFCas1qBiMjBL4FFJFE
-  // 🔧 Replace with your project values
-  
-  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
-  // If the recovery link uses a 'code' param, exchange it for a session
-  const url = new URL(window.location.href)
-  const hasCode = url.searchParams.get('code')
+  const SUPABASE_URL = "https://jbcrdyjoggrsdiwkipda.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpiY3JkeWpvZ2dyc2Rpd2tpcGRhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY5NzY2ODksImV4cCI6MjA2MjU1MjY4OX0.Pa1rIyOnmM00fJTqRXj-IUHyLFCas1qBiMjBL4FFJFE";
+
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // Exchange 'code' for a session if present (safe to call even if session exists)
+  const url = new URL(window.location.href);
+  const hasCode = url.searchParams.get('code');
   if (hasCode) {
-    // safe to call even if session already exists
-    supabase.auth.exchangeCodeForSession(window.location.href).catch(() => {})
+    supabase.auth.exchangeCodeForSession(window.location.href).catch(() => {});
   }
 
-  // Listen for the recovery event and ask for a new password
+  // Helper to run the password prompt flow
+  async function promptForNewPassword() {
+    const pw = prompt('Enter a new password');
+    if (!pw) return;
+    const { error } = await supabase.auth.updateUser({ password: pw });
+    if (error) {
+      alert('Could not update password: ' + (error.message || 'Unknown error'));
+    } else {
+      alert('Password updated. You can now log in with your new password.');
+      // Optional: reload to clear query params
+      window.location.href = window.location.pathname;
+    }
+  }
+
+  // 1) If URL explicitly indicates a recovery flow, prompt immediately.
+  const isRecoveryType = url.searchParams.get('type') === 'recovery';
+  if (isRecoveryType) {
+    // Give the session a tick to settle if we just exchanged the code
+    setTimeout(promptForNewPassword, 200);
+  }
+
+  // 2) Also listen for Supabase's PASSWORD_RECOVERY event (covers other cases)
   supabase.auth.onAuthStateChange(async (event) => {
     if (event === 'PASSWORD_RECOVERY') {
-      const pw = prompt('Enter a new password')
-      if (!pw) return
-      const { error } = await supabase.auth.updateUser({ password: pw })
-      if (error) {
-        alert('Could not update password: ' + (error.message || 'Unknown error'))
-      } else {
-        alert('Password updated. You can now log in with your new password.')
-        // Optional: refresh or navigate to your normal login flow
-        window.location.href = window.location.pathname
-      }
+      promptForNewPassword();
     }
-  })
+  });
 </script>
   </body>
 </html>
+
 
 
