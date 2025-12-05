@@ -1,6 +1,9 @@
 // supabaseClient.js
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
+// 2) Then your debug log
+console.log("[supabase-reset] script loaded");
+
 // 🔐 Supabase project config
 const supabaseUrl = "https://jbcrdyjoggrsdiwkipda.supabase.co";
 const supabaseKey =
