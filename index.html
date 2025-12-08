@@ -95,7 +95,8 @@
     <script src="assets/js/main.js"></script>
     <script type="module" src="assets/js/index.js"></script>
     <script type="module">
-  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
+  // import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
+      import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
   // 2) Then your debug log
 console.log("[supabase-reset] script loaded");
@@ -142,6 +143,7 @@ console.log("[supabase-reset] script loaded");
 </script>
   </body>
 </html>
+
 
 
 
