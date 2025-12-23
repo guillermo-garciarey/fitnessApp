@@ -71,9 +71,18 @@ export async function getUserProfile(userId) {
   return data;
 }
 
-// Get All Classes
+// Get Future Classes Only
 export async function getAvailableClasses() {
-  const { data, error } = await supabase.from('classes').select('*');
+  // "today" as 'YYYY-MM-DD' (matches your cls.date format)
+  const today = new Date().toISOString().slice(0, 10);
+
+  const { data, error } = await supabase
+    .from('classes')
+    .select('*')
+    .gte('date', today) // ⬅️ only today & future
+    .order('date', { ascending: true }) // optional but nice
+    .order('time', { ascending: true }) // optional but nice
+    .range(0, 9999); // ⬅️ avoid 1000-row default cap
 
   if (error) {
     console.error('Error fetching classes:', error.message);
